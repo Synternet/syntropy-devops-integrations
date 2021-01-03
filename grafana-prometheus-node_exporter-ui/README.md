@@ -1,3 +1,7 @@
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Logo.png'></center>
+
+
+
 # Monitoring solution with Grafana, Prometheus, node_exporter and Nginx
 
 Description:
@@ -50,6 +54,9 @@ sudo docker network create --subnet 172.30.0.0/24 syntropynet
 ## First VM (replace dedicated fields):
 
 - Create Domain on DuckDNS - https://www.duckdns.org/ and redirect on your Public IP
+
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/DuckDNS.png'></center>
+
 
 - Launch docker
 
