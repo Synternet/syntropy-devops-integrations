@@ -24,7 +24,7 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -d syntropynet/agent:stable
 ```
 
-
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/End-Point.png'></center>
 
 
 ## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
