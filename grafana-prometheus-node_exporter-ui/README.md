@@ -123,7 +123,10 @@ sudo docker run --net=syntropynet -d -p 9090:9090 --name prometheus -v $PWD/prom
 ```bash
 sudo docker run --net=x -d -p 9100:9100 --name node-exporter quay.io/prometheus/node-exporter
 ```
-    
+
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/End-Point%20and%20Services.png'></center>
+
+
 ## Configuration Grafana
 
 - Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
