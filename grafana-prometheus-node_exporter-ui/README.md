@@ -83,7 +83,7 @@ sudo docker run --detach --net=syntropynet \
 --env "LETSENCRYPT_HOST=DuckDNSDomain" \
 --env "LETSENCRYPT_EMAIL=mail@domain" \
 --env "GF_SECURITY_ADMIN_USER=admin" \
---env "GF_SECURITY_ADMIN_PASSWORD=password" \
+--env "GF_SECURITY_ADMIN_PASSWORD=syntropy" \
 --env "GF_USERS_ALLOW_SIGN_UP=false" \
 grafana/grafana
 ```
