@@ -77,7 +77,7 @@ Third VM:
     
       nano prometheus.yml
     
-- Paste in prometheus.yml
+- Paste in __prometheus.yml__
     
       global:
         scrape_interval: 5s
@@ -86,10 +86,10 @@ Third VM:
       scrape_configs:
         - job_name: 'prometheus'
           static_configs:
-            - targets: ['IP_SRV_PROMETHEUS:9090'] ## IP Address of the localhost
+            - targets: ['IP_SRV_PROMETHEUS:9090']
         - job_name: 'node-exporter'
           static_configs:
-            - targets: ['IP_SRV_NODE_EXPORTER:9100'] ## IP Address of the localhost
+            - targets: ['IP_SRV_NODE_EXPORTER:9100']
 
 - Launch docker (after the third VM)
     
