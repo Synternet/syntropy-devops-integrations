@@ -1,5 +1,3 @@
-# grafana-prometheus-node_exporter-ui
- 
 # Monitoring solution with Grafana, Prometheus, node_exporter and Nginx
 
 Description:
