@@ -24,6 +24,9 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -d syntropynet/agent:stable
 ```
 
+
+
+
 ## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
 
 First VM:
@@ -35,7 +38,7 @@ sudo docker network create --subnet 172.10.0.0/24 syntropynet
 Second VM:
 
 ```bash
-docker network create --subnet 172.20.0.0/24 syntropynet
+sudo docker network create --subnet 172.20.0.0/24 syntropynet
 ```
 
 Third VM:
