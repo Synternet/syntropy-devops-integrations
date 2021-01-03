@@ -4,13 +4,13 @@ Description:
 
 Create a monitoring network with minimum 3 nodes (preferably on different providers) with node_exporter, Prometheus, Grafana and Nginx (with Let’s Encrypt SSL certificates).
 
-# To start, build 3x VM from 3x different providers (preferablyto start, build 3x VM from 3x Different Suppliers (preferably)
+## To start, build 3x VM from 3x different providers (preferablyto start, build 3x VM from 3x Different Suppliers (preferably)
 
-     First VM:   Nginx + Grafana
-     Second VM:  Prometheus
-     Third VM:   Node-Exporter
+- First VM:   __Nginx + Grafana__
+- Second VM:  __Prometheus__
+- Third VM:   __Node-Exporter__
 
-# Start Syntropy Agent on every VM with this commande:
+## Start Syntropy Agent on every VM with this command (generate a token/api key on the platform):
 
      docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
      -v /var/run/docker.sock:/var/run/docker.sock:ro \
@@ -22,7 +22,7 @@ Create a monitoring network with minimum 3 nodes (preferably on different provid
      -e SYNTROPY_NETWORK_API='docker' \
      -d syntropynet/agent:stable
 
-# Launch services on each dedicated VM. Be careful by launching them on a different subnet:
+## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
 
 First VM:
    
@@ -36,13 +36,13 @@ Third VM:
 
       docker network create --subnet 172.30.0.0/24 syntropynet
          
-# First VM (replace dedicated fields):
+## First VM (replace dedicated fields):
 
 - Create Domain on DuckDNS - https://www.duckdns.org/ and redirect on your Public IP
 
 - Launch docker
      
-      docker run --detach --net=syntropynet \
+      docker run --detach --net=syntropynet \'' 
       --name nginx-proxy \
       --publish 80:80 \
       --publish 443:443 \
@@ -71,7 +71,7 @@ Third VM:
       --env "GF_USERS_ALLOW_SIGN_UP=false" \
       grafana/grafana
    
-# Second VM (set up after the third VM):
+## Second VM (set up after the third VM):
 
 - Create the file "prometheus.yml"
     
@@ -95,16 +95,17 @@ Third VM:
     
       docker run --net=syntropynet -d -p 9090:9090 --name prometheus -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest
     
-# Third VM: 
+## Third VM: 
 
       docker run --net=x -d -p 9100:9100 --name node-exporter quay.io/prometheus/node-exporter
  
     
-# Configuration Grafana
+## Configuration Grafana
 
 - Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
    
 - Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/SnapShot%20Node%20Exporter%20with%20Prometheus%20on%20Grafana.png'></center>
 
-Congratulations, your architecture is up and running ;-)
+
+__Congratulations, your architecture is up and running ;-)__
