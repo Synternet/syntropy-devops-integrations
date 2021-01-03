@@ -131,6 +131,14 @@ sudo docker run --net=syntropynet -d -p 9100:9100 --name node-exporter quay.io/p
 ## Create your Network on https://platform.syntropystack.com/ and Add all End-Point
 
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Create-Network.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network%20Syntropy.png'></center>
+
+
+
+## Interconnect services
+
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network_Topology.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network_Interonnexion.png'></center>
 
 
 
