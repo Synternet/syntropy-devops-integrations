@@ -105,6 +105,6 @@ Third VM:
 - Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
    
 - Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
-
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/SnapShot%20Node%20Exporter%20with%20Prometheus%20on%20Grafana.png'></center>
 
 Congratulations, your architecture is up and running ;-)
