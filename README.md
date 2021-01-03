@@ -1,164 +1,112 @@
-# Syntropy Involvement Guidelines
+# grafana-prometheus-node_exporter-ui
+ 
+# Monitoring solution with Grafana, Prometheus, node_exporter and Nginx
+
+Description:
+
+Create a monitoring network with minimum 3 nodes (preferably on different providers) with node_exporter, Prometheus, Grafana and Nginx (with Let’s Encrypt SSL certificates).
+
+# To start, build 3x VM from 3x different providers (preferablyto start, build 3x VM from 3x Different Suppliers (preferably)
+
+     First VM:   Nginx + Grafana
+     Second VM:  Prometheus
+     Third VM:   Node-Exporter
+
+# Start Syntropy Agent on every VM with this commande:
+
+     docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
+     -v /var/run/docker.sock:/var/run/docker.sock:ro \
+     --device /dev/net/tun:/dev/net/tun --name=syntropynet-agent \
+     -e SYNTROPY_API_KEY=CHANGE ME \
+     -e SYNTROPY_TAGS=CHANGE ME \ 
+     -e SYNTROPY_PROVIDER=CHANGE ME \
+     -e SYNTROPY_AGENT_NAME=CHANGE ME \
+     -e SYNTROPY_NETWORK_API='docker' \
+     -d syntropynet/agent:stable
+
+# Launch services on each dedicated VM. Be careful by launching them on a different subnet:
+
+First VM:
+   
+      docker network create --subnet 172.10.0.0/24 syntropynet
+     
+Second VM:
+
+      docker network create --subnet 172.20.0.0/24 syntropynet
+     
+Third VM:
+
+      docker network create --subnet 172.30.0.0/24 syntropynet
+         
+# First VM (replace dedicated fields):
+
+- Create Domain on DuckDNS - https://www.duckdns.org/ and redirect on your Public IP
+
+- Launch docker
+     
+      docker run --detach --net=syntropynet \
+      --name nginx-proxy \
+      --publish 80:80 \
+      --publish 443:443 \
+      --volume /etc/nginx/certs \
+      --volume /etc/nginx/vhost.d \
+      --volume /usr/share/nginx/html \
+      --volume /var/run/docker.sock:/tmp/docker.sock:ro \
+      jwilder/nginx-proxy
+
+      docker run --detach --net=syntropynet \
+      --name nginx-proxy-letsencrypt \
+      --volumes-from nginx-proxy \
+      --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+      --volume /etc/acme.sh \
+      --env "DEFAULT_EMAIL=mail@domain" \
+      jrcs/letsencrypt-nginx-proxy-companion
+
+      docker run --detach --net=syntropynet \
+      --name grafana \
+      --env "VIRTUAL_HOST=DuckDNSDomain" \
+      --env "VIRTUAL_PORT=3000" \
+      --env "LETSENCRYPT_HOST=DuckDNSDomain" \
+      --env "LETSENCRYPT_EMAIL=mail@domain" \
+      --env "GF_SECURITY_ADMIN_USER=admin" \
+      --env "GF_SECURITY_ADMIN_PASSWORD=password" \
+      --env "GF_USERS_ALLOW_SIGN_UP=false" \
+      grafana/grafana
+   
+# Second VM (set up after the third VM):
+
+- Create the file "prometheus.yml"
+    
+      nano prometheus.yml
+    
+- Paste in prometheus.yml
+    
+      global:
+        scrape_interval: 5s
+        external_labels:
+          monitor: 'node'
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['IP_SRV_PROMETHEUS:9090'] ## IP Address of the localhost
+        - job_name: 'node-exporter'
+          static_configs:
+            - targets: ['IP_SRV_NODE_EXPORTER:9100'] ## IP Address of the localhost
+
+- Launch docker (after the third VM)
+    
+      docker run --net=syntropynet -d -p 9090:9090 --name prometheus -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest
+    
+# Third VM: 
+
+      docker run --net=x -d -p 9100:9100 --name node-exporter quay.io/prometheus/node-exporter
+ 
+    
+# Configuration Grafana
 
-_Version: v.1.0_
+- Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
+   
+- Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
 
-_Latest Update: 2020-12-30_
 
-Hello, community!
-
-All kinds of contributions are welcome and necessary to our success as we move forward with the project. We couldn't be happier with your increasing involvement, and now we take this a step further. 
-
-We invite you to contribute to the Syntropy Stack development and growth!
-
-Here are the guidelines. Please let us know if you have any feedback on how we can improve this program. 
-
-To help you get started, we've prepared you a list of tasks, which you will find in a dedicated [Google sheet](https://docs.google.com/spreadsheets/d/17LkBLbccGLMq5LkBDgxBohNIXTJ-AZlJI8y34AYWBVE/edit?usp=sharing). As we progress, we will be updating the sheet with new tasks and letting you know on #community-involvement channel as we do so. 
-
-We always welcome new ideas, so if you have your own case study or contribution to propose, please do so on #community-involvement channel on Discord.
-
-
-# Registration
-
-In the task sheet, you will see whether someone had already completed the task or not, indicating tasks that are still open. 
-
-Every time we update the list of tasks, we will make an announcement on #community-involvement channel.
-
-If you want to apply to a specific task, you will need to fill in the [dedicated form](https://forms.gle/r7sznFvqjp5U7TZT8).
-
-You can apply to more than one task at once, but we will try our best to split the workload evenly among those who apply. We will decide who to assign to each task according to our internal guidelines and publish the list of assigned people on #community-involvement channel. 
-
-Complete registration does not mean that you are assigned for the task! 
-
-When your application is approved, we will invite you to join the corresponding working group channel and say hello to the Group Lead(s).
-
-
-# Working Groups
-
-Each task is always assigned to a working group. Working groups are comprised of individual developers or teams working on specific tasks. Working groups are here to facilitate the collaborative nature of the project. Ask questions if you have stumbled upon an obstacle and lend a hand for those in need. We are a one community.
-
-Each working group is assigned a channel for all related discussions. 
-
-The purpose of these channels is to keep all communication public so that:
-
-
-
-1. All information would be readily available to others who might join the working group in a later stage.
-2. Group Leads could better manage communications with developers.
-3. Other developers working on similar tasks would be able to help you with any obstacles you are having or provide feedback. 
-
-Working group channels are only visible to all, but only those currently involved in a task, those involved in the past, Group Leads and other Syntropy employees can participate in discussions.
-
-
-## Group Lead
-
-Group lead is your main point of contact if you need additional information, materials, assets, or just want to ask a question. Working groups can have more than one group lead. The one assigned to your task is responsible for validating and approving your work. Compensation is only distributed once the group lead deems the task as completed. We highly encourage you to use dedicated working group channels for all communications with your group lead and refrain from using private messages.
-
-
-# Tasks
-
-If the scope of work is too large, tasks are divided into subtasks. Subtasks should be treated the same way as tasks. Each task or subtask has a unique ID, which you will need to select in your application. We will use the task ID to refer to the specific task if there is such a need and encourage you to do so too.
-
-Tasks or subtasks can have bonus tasks - more on that in a dedicated chapter.
-
-Always check the full documentation of the task if available. There, you will find a complete description and requirements of the task.
-
-There are different types of tasks, e.g. "Case Study", "Contribution". As we move forward and add new types of tasks, we will update the guidelines.
-
-
-## Case Study
-
-These tasks are intended to leverage Syntropy Stack's existing functionality to develop new use-cases for the technology, facilitate future deployments and guide other developers. 
-
-
-## Contribution
-
-These tasks are intended to extend the functionality of Syntropy Stack, add integrations, etc. 
-
-
-# General Task Requirements
-
-For the task to be considered as completed:
-
-
-
-*   Your GitHub repository is finished and functional.
-*   Your GitHub repository includes a concise and detailed Readme.
-*   Your GitHub repository pull request is approved and merged. 
-*   Your Group Lead approved and validated your work.
-
-
-# Submitting a GitHub Repository
-
-_Will be updated shortly. _
-
-
-# Writing a Good Readme
-
-Each submitted GitHub repository has to include a concise and detailed Readme of the project. 
-
-You will find quality examples and articles on how to write a good Readme here:
-
-[https://github.com/matiassingers/awesome-readme](https://github.com/matiassingers/awesome-readme) 
-
-If you feel like improving your technical writing, Google has a fantastic course on the subject:
-
-[https://developers.google.com/tech-writing/overview](https://developers.google.com/tech-writing/overview) 
-
-
-# Bonus Tasks
-
-Some tasks or subtasks have bonus tasks. By completing these tasks, you will receive additional compensation determined in a task sheet. We highly encourage you to complete these bonus tasks together with the main task. If you choose not to do bonus tasks, they remain open for other community members. This means that others can join in and complete bonus tasks once you are done with the main task and receive rewards. The task is not marked as completed until all bonus tasks are completed.
-
-Some bonus tasks are required to be completed by the same person who completes the main task. Always check in the task sheet.
-
-There are different types of bonus tasks. We will describe them all in these guidelines and will update the list as we progress.
-
-
-## Tutorial / Blog
-
-For this task, you will be writing a tutorial for a blog post. The tutorial has to be written in clear and concise English.
-
-Imagine that you are a developer trying to achieve the same result you've just done by completing the main task. Write a tutorial for him/her. Make sure to include all major steps, code snippets, screenshots and whatever information you deem necessary.
-
-It also has to be uploaded to medium.com and dev.to. If you wish, you can also upload it to your blog or other sites of your choice (e.g. Hacker News, Reddit).
-
-Writing a tutorial is a lot easier while you are in the process of doing the main task. That's why we usually make this bonus task required to be completed together with your main task.
-
-Once you are done with the tutorial, it has to be approved by your Group Lead.
-
-Also, feel free to share it wherever you like!
-
-
-## Screen Recording
-
-For this task, you will be creating a screen recording. We recommend using Loom, but you can choose any software you like.
-
-Imagine that you are a developer trying to achieve the same result you've just done by completing the main task. Make a screen recording for him/her. Make sure to include all major steps and whatever information you deem necessary.
-
-If you've also written a tutorial, make sure to attach this recording to that publication. If not, make sure to upload it to your chosen platform (e.g. Twitter, Youtube, dev.to). One upload is required, but feel free to upload it to more than one platform.
-
-
-# Compensation
-
-In the task sheet, you will see the USD worth of compensation for each task. The compensation is based on the difficulty of the task and the time required to complete it. Payments will be made in an equivalent amount of $NOIA tokens to the compensation's USD value. The exact amount of tokens is calculated at the very moment we send you the rewards. When we distribute tokens depends on the gas price, but we do that as soon as possible after the task is marked as completed. You will be eligible for compensation only after the task is completed, and the responsible person validates it. Once it's done, please send the wallet address to which you wish to receive your tokens to @Nojus_Li.
-
-
-# Teamwork
-
-We have determined how many people are required to complete each task. If you believe that the number is too low or too high, you can shoot us a message, and we will reevaluate. However, keep in mind that the compensation pool is a fixed amount per task. 
-
-
-# Deadlines
-
-In the task sheet, you will find a due date for each task. Please stay within deadlines. Deadlines can be discussed and reevaluated before you commit to the task. Some tasks might be missing deadlines, but this does not mean that there is no deadline. In such cases, we will agree on a deadline before you commit to the task. If you feel that you won't be able to finish the task until the deadline, let us know beforehand. In that case, you can find someone from the community to help you, or we can find someone. Each case is different, so most importantly, communicate. 
-
-
-# Task Sheet
-
-[https://docs.google.com/spreadsheets/d/17LkBLbccGLMq5LkBDgxBohNIXTJ-AZlJI8y34AYWBVE/edit?usp=sharing](https://docs.google.com/spreadsheets/d/17LkBLbccGLMq5LkBDgxBohNIXTJ-AZlJI8y34AYWBVE/edit?usp=sharing) 
-
-
-# Application Form
-
-[https://forms.gle/r7sznFvqjp5U7TZT8](https://forms.gle/r7sznFvqjp5U7TZT8) 
-
+Congratulations, your architecture is up and running ;-)
