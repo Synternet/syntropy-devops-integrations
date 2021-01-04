@@ -123,13 +123,13 @@ sudo nano prometheus.yml
 - Launch docker (after the third VM)
 
 ```bash
-sudo docker run --net=syntropynet -d -p 9090:9090 --name prometheus -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest
+sudo docker run --net=syntropynet -d --name prometheus -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest
 ```
 
 ## Third VM: 
 
 ```bash
-sudo docker run --net=syntropynet -d -p 9100:9100 --name node-exporter quay.io/prometheus/node-exporter
+sudo docker run --net=syntropynet -d --name node-exporter quay.io/prometheus/node-exporter
 ```
 
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/End-Point%20and%20Services.png'></center>
@@ -152,7 +152,7 @@ sudo docker run --net=syntropynet -d -p 9100:9100 --name node-exporter quay.io/p
 
 ## Configuration Grafana
 
-- Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
+- Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify DOCKER_IP_PROMETHEUS
 
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Grafana.png'></center>
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/DataSource-Prometheus.png'></center>
