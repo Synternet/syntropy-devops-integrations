@@ -2,7 +2,7 @@
 
 
 
-# Monitoring solution with Grafana, Prometheus, <font color="#ad1414">Texte</font> node_exporter and Nginx
+# Monitoring solution with Grafana, Prometheus, node_exporter and Nginx
 
 Description / Requirements :
 
@@ -22,7 +22,7 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -v /var/run/docker.sock:/var/run/docker.sock:ro \
 --device /dev/net/tun:/dev/net/tun --name=syntropynet-agent \
 -e SYNTROPY_API_KEY=CHANGE ME \
--e SYNTROPY_TAGS=CHANGE ME \
+-e SYNTROPY_TAGS=<font color="#ad1414">Texte</font>CHANGE ME \
 -e SYNTROPY_PROVIDER=CHANGE ME \
 -e SYNTROPY_AGENT_NAME=CHANGE ME \
 -e SYNTROPY_NETWORK_API='docker' \
