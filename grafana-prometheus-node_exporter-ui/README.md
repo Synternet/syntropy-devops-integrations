@@ -36,19 +36,19 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 First VM:
    
 ```bash
-sudo docker network create --subnet 172.10.0.0/24 syntropynet
+sudo docker network create --subnet 172.16.0.0/24 syntropynet
 ```
 
 Second VM:
 
 ```bash
-sudo docker network create --subnet 172.20.0.0/24 syntropynet
+sudo docker network create --subnet 172.17.0.0/24 syntropynet
 ```
 
 Third VM:
 
 ```bash
-sudo docker network create --subnet 172.30.0.0/24 syntropynet
+sudo docker network create --subnet 172.18.0.0/24 syntropynet
 ```
 
 ## First VM (replace dedicated fields):
@@ -61,7 +61,7 @@ sudo docker network create --subnet 172.30.0.0/24 syntropynet
 - Launch docker
 
 ```bash
-sudo docker run --detach --net=syntropynet \'' 
+sudo docker run --detach --net=syntropynet \
 --name nginx-proxy \
 --publish 80:80 \
 --publish 443:443 \
@@ -113,10 +113,10 @@ sudo nano prometheus.yml
       scrape_configs:
         - job_name: 'prometheus'
           static_configs:
-            - targets: ['IP_SRV_PROMETHEUS:9090']
+            - targets: ['DOCKER_IP_PROMETHEUS:9090']
         - job_name: 'node-exporter'
           static_configs:
-            - targets: ['IP_SRV_NODE_EXPORTER:9100']
+            - targets: ['DOCKER_IP_EXPORTER:9100']
 ```
 
 - Launch docker (after the third VM)
