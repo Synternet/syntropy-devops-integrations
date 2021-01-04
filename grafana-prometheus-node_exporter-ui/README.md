@@ -2,7 +2,7 @@
 
 
 
-# Monitoring solution with Grafana, Prometheus, <FONT COLOR="red" >TEXTE </FONT> node_exporter and Nginx
+# Monitoring solution with Grafana, Prometheus, <font color="#ad1414">Texte</font> node_exporter and Nginx
 
 Description / Requirements :
 
