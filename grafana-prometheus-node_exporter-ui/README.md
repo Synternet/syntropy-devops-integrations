@@ -4,9 +4,10 @@
 
 # Monitoring solution with Grafana, Prometheus, node_exporter and Nginx
 
-Description:
+Description / Requirements :
 
-Create a monitoring network with minimum 3 nodes (preferably on different providers) with node_exporter, Prometheus, Grafana and Nginx (with Let’s Encrypt SSL certificates).
+- Create a monitoring network with minimum 3 nodes (preferably on different providers) with node_exporter, Prometheus, Grafana and Nginx (with Let’s Encrypt SSL certificates).
+- There must be __no ports exposed to the internet__ (except Nginx 443 with SSL). Set up your firewall accordingly.
 
 ## To start, build 3x VM from 3x different providers (preferablyto start, build 3x VM from 3x Different Suppliers (preferably)
 
