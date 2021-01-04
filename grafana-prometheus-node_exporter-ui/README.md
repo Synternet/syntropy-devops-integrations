@@ -1,4 +1,4 @@
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Logo.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Logo.png'></center>
 
 
 
@@ -28,7 +28,7 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -d syntropynet/agent:stable
 ```
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/End-Point.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/End-Point.png'></center>
 
 
 ## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
@@ -55,7 +55,7 @@ sudo docker network create --subnet 172.30.0.0/24 syntropynet
 
 - Create Domain on DuckDNS - https://www.duckdns.org/ and redirect on your Public IP
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/DuckDNS.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/DuckDNS.png'></center>
 
 
 - Launch docker
@@ -131,21 +131,21 @@ sudo docker run --net=syntropynet -d -p 9090:9090 --name prometheus -v $PWD/prom
 sudo docker run --net=syntropynet -d -p 9100:9100 --name node-exporter quay.io/prometheus/node-exporter
 ```
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/End-Point%20and%20Services.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/End-Point%20and%20Services.png'></center>
 
 
 
 ## Create your Network on https://platform.syntropystack.com/ and Add all End-Point
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Create-Network.png'></center>
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network%20Syntropy.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Create-Network.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Network%20Syntropy.png'></center>
 
 
 
 ## Interconnect services
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network_Topology.png'></center>
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Network_Interonnexion.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Network_Topology.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Network_Interonnexion.png'></center>
 
 
 
@@ -153,11 +153,11 @@ sudo docker run --net=syntropynet -d -p 9100:9100 --name node-exporter quay.io/p
 
 - Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify IP_SRV_PROMETHEUS
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/Grafana.png'></center>
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/DataSource-Prometheus.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Grafana.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/DataSource-Prometheus.png'></center>
 
 - Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/SnapShot%20Node%20Exporter%20with%20Prometheus%20on%20Grafana.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/SnapShot%20Node%20Exporter%20with%20Prometheus%20on%20Grafana.png'></center>
 
 
 __Congratulations, your architecture is up and running ;-)__
