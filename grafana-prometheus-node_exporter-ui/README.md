@@ -120,13 +120,15 @@ sudo nano prometheus.yml
             - targets: ['DOCKER_IP_EXPORTER:9100']
 ```
 
-- Launch docker (after the third VM)
+- Launch docker (after the third VM) - Do not expose port 9090 to the internet 
 
 ```bash
 sudo docker run --net=syntropynet -d --name prometheus -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:latest
 ```
 
 ## Third VM: 
+
+- Launch docker - Do not expose port 9100 to the internet 
 
 ```bash
 sudo docker run --net=syntropynet -d --name node-exporter quay.io/prometheus/node-exporter
