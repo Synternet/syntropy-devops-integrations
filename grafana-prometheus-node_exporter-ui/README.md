@@ -15,7 +15,7 @@ Description / Requirements :
 - Second VM:  __Prometheus__
 - Third VM:   __Node-Exporter__
 
-## Start Syntropy Agent on every VM with this command (generate a token/api key on the platform):
+## Start Syntropy Agent on every VM with this command (generate a token/api key on the platform https://platform.syntropystack.com ):
 
 ```bash
 sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
@@ -138,7 +138,7 @@ sudo docker run --net=syntropynet -d --name node-exporter quay.io/prometheus/nod
 
 
 
-## Create your Network on https://platform.syntropystack.com/ and Add all End-Point
+## Create your Network and Add all End-Point
 
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Create-Network.png'></center>
 <center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Network%20Syntropy.png'></center>
