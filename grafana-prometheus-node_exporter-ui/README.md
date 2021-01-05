@@ -165,5 +165,3 @@ sudo docker run --net=syntropynet -d --name node-exporter quay.io/prometheus/nod
 
 __Congratulations, your architecture is up and running ;-)__
 
-## Tutorial Video
-https://www.loom.com/share/2b34174b60d84d6eabd80114b6ba1acb
