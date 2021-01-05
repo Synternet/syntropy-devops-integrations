@@ -45,7 +45,7 @@ sudo docker run --detach --net=syntropynet --name nginx nginx
 
 ## Interconnect services
 
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/nginx%20and%20curl%20client_cds1_ui1/images/Syntropy_Topology_Interconnection.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/cds1_ui1/nginx-and-curl-client/images/Syntropy_Topology_Interconnection.png'></center>
 
 ## Since Second VM
 
