@@ -1,0 +1,36 @@
+version: "2"
+services:
+  syntropynet-agent:
+    image: syntropynet/agent:stable
+    hostname: syntropynet-agent
+    container_name: syntropynet-agent
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - SYNTROPY_API_KEY=<YOUR_API_KEY>
+      - SYNTROPY_NETWORK_API=docker
+      - SYNTROPY_AGENT_NAME="mqt_1_subscriber"
+      - SYNTROPY_PROVIDER=1 # AWS
+      - SYNTROPY_TAGS="mqtt"
+      - SYNTROPY_SERVICES_STATUS=false # default is false
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+
+  nodejs-subscriber:
+    container_name: nodejs-subscriber
+    build: .
+    ports:
+      - "1883:1883"
+    depends_on:
+      - syntropynet-agent
+
+# subnet will be 172.21.0.0
+networks:
+  default:
+    external:
+      name: syntropynet

@@ -1,0 +1,43 @@
+version: "2"
+services:
+  syntropynet-agent:
+    image: syntropynet/agent:stable
+    hostname: syntropynet-agent
+    container_name: syntropynet-agent
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - SYNTROPY_API_KEY=<YOUR_API_KEY>
+      - SYNTROPY_NETWORK_API=docker
+      - SYNTROPY_AGENT_NAME="mqt_1_broker"
+      - SYNTROPY_PROVIDER=6 # Digital Ocean
+      - SYNTROPY_TAGS="mqtt"
+      - SYNTROPY_SERVICES_STATUS=false # default is false
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+
+  mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    depends_on:
+      - syntropynet-agent
+
+# subnet will be 172.20.0.0
+networks:
+  default:
+    external:
+      name: syntropynet
