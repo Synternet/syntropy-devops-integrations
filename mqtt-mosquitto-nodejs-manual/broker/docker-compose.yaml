@@ -37,11 +37,6 @@ services:
       - syntropynet-agent
 
 # subnet will be 172.20.0.0
-# networks:
-#   default:
-#     external:
-#       name: syntropynet
-
 networks:
   default:
     driver: bridge
