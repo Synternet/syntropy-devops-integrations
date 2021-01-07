@@ -118,15 +118,28 @@ There are different types of bonus tasks. We will describe them all in these gui
 
 For this task, you will be writing a tutorial for a blog post. The tutorial has to be written in clear and concise English.
 
+It has to be uploaded to medium.com and dev.to. If you wish, you can also upload it to your blog or other sites of your choice (e.g. Hacker News, Hacker Noon, Reddit, etc.). 
+
 Imagine that you are a developer trying to achieve the same result you've just done by completing the main task. Write a tutorial for him/her. Make sure to include all major steps, code snippets, screenshots and whatever information you deem necessary.
 
-It also has to be uploaded to medium.com and dev.to. If you wish, you can also upload it to your blog or other sites of your choice (e.g. Hacker News, Reddit).
+You don't have to detail steps that are highly specific to other tools (e.g. setting up Digital Ocean Droplet). Assume that your reader has some experience in using the tools that you use in your tutorial. However, if it's something more complicated, please include a link to a relevant tutorial. Use common sense and try to strike the right balance. Found something to be more difficult than you expected? You probably read a tutorial on that. Put the link in your own tutorial.
+
+A tutorial is not readme!
+
+Make sure to include a brief introduction of what is the end goal of the tutorial. Also, have a conclusion. Ideally, think about how this can help the average developer. How does this come into play in real-world scenarios, and how do you envision Syntropy Stack being used in these applications?
+
+It's imperative to keep in mind that the broader audience might be unaware of Syntropy Stack. When writing a tutorial, always include a description of what Syntropy Stack is. You can use and expand the description below, but try to explain it in your own words.  
+
+Syntropy Stack is a selection of applications and tools that enables you to set up secure connectivity across all endpoints quickly. You can connect any service and device running on a cloud, on-premise, and edge infrastructure. If you need to connect thousands of endpoints, you can do so using Syntropy software agent in combination with container-orchestration systems like Kubernetes and configuration tools like Ansible. 
+
+If you see fit, try to explain why you use Syntropy Stack to do one thing or another in a tutorial.
 
 Writing a tutorial is a lot easier while you are in the process of doing the main task. That's why we usually make this bonus task required to be completed together with your main task.
 
-Once you are done with the tutorial, it has to be approved by your Group Lead.
+Once you are done with the tutorial, it has to be approved by your Group Lead. 
 
 Also, feel free to share it wherever you like!
+
 
 
 ## Screen Recording
