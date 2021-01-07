@@ -8,10 +8,10 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     environment:
-      - SYNTROPY_API_KEY=<YOUR_API_KEY>
+      - SYNTROPY_API_KEY=<YOUR_API_KEY> # <==== Your token goes here
       - SYNTROPY_NETWORK_API=docker
       - SYNTROPY_AGENT_NAME="mqt_1_subscriber"
-      - SYNTROPY_PROVIDER=1 # AWS
+      - SYNTROPY_PROVIDER=<PROVIDER_VALUE> # <==== change this
       - SYNTROPY_TAGS="mqtt"
       - SYNTROPY_SERVICES_STATUS=false # default is false
     restart: always
@@ -29,8 +29,10 @@ services:
     depends_on:
       - syntropynet-agent
 
-# subnet will be 172.21.0.0
+# subnet will be 172.22.0.0
 networks:
   default:
-    external:
-      name: syntropynet
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24

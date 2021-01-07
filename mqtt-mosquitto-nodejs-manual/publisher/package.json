@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "cron": "^1.8.2",
-    "mqtt": "^4.2.6"
+    "mqtt": "^4.2.6",
+    "moment": "^2.29.1"
   }
 }
