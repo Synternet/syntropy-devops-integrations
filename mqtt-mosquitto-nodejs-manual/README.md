@@ -54,7 +54,7 @@ This example describes how to create an MQTT network with 3 nodes: A Broker, a P
 - Services must run inside docker containers (thus docker needs to be installed on each server)
 - The subnets for the docker networks for each of the nodes must be unique
 - Wireguard must be installed and running on each server
-- No ports (including the MQTT `1883` and `9001`) on the VMs should be open
+- No ports (including the MQTT `1883` and `9001`) on the VMs should be open and exposed to the internet.
 
 # Prepare the docker-compose files
 
