@@ -1,8 +1,8 @@
 # Syntropy Involvement Guidelines
 
-_Version: v.1.0_
+_Version: v.1.1_
 
-_Latest Update: 2020-12-30_
+_Latest Update: 2021-01-07_
 
 Hello, community!
 
