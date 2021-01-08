@@ -2,7 +2,7 @@
 <img src="images/syntropy-header.jpg">
 </p>
 
-This example describes how to create an MQTT network with 3 nodes: A Broker, a Publisher and a Subscriber. It makes use of [Eclipse Mosquitto](https://mosquitto.org) as the MQTT Broker and the Publisher and Subscriber are simple NodeJS apps. You will create the Syntropy network and connections manually using the SyntropyStack UI.
+This example describes how to use the **Syntropy Stack** to create an MQTT network with 3 nodes: A Broker, a Publisher and a Subscriber. It makes use of [Eclipse Mosquitto](https://mosquitto.org) as the MQTT Broker and the Publisher and Subscriber are simple NodeJS apps. Each of the three nodes will run on a separate VM. You will create the Syntropy network and connections manually using the Syntropy UI.
 
 ```
                      BROKER
@@ -49,7 +49,7 @@ This example describes how to create an MQTT network with 3 nodes: A Broker, a P
 
 # Requirements
 
-- SyntropyStack account and an active Agent Token
+- **Syntropy Stack** account and an active Agent Token
 - Three separate servers (preferrably running on separate cloud providers)
 - Services must run inside docker containers (thus docker needs to be installed on each server)
 - The subnets for the docker networks for each of the nodes must be unique
@@ -58,7 +58,7 @@ This example describes how to create an MQTT network with 3 nodes: A Broker, a P
 
 # Prepare the docker-compose files
 
-There's no coding required as all the examples have been prepared for you, you simply need to setup the servers, copy the relevant files, and bring the services online. Finally, you'll connect the endpoints (each node running on its own server is an endpoint in the SyntropyStack).
+After you've cloned this repo, there's no need to write any code as it's been prepared for you. You simply need to setup your VMs, copy the relevant files, and bring the services online. Finally, you'll connect the endpoints (each node running on its own server is an endpoint in the **Syntropy Stack**).
 
 We'll be creating three nodes, which have corresponding folders in this repo: `broker`, `publisher`, and `subscriber`.
 
@@ -191,7 +191,7 @@ Initializing Subscriber
 
 # Create the Syntropy Network
 
-Log into your SyntropyStack Account and navigate to `End-points`, you should see your services online:
+Log into your **Syntropy Stack** Account and navigate to `End-points`, you should see your services online:
 
 ![endpoints](images/syntropy-stack-endpoints.jpg)
 
@@ -209,7 +209,7 @@ Finally, you need to make sure that the services running on each node are connec
 
 # Test your MQTT network
 
-After creating your connections in the SyntropyStack UI, return to your terminal and you'll see that the Subscriber is receiving a timestamped message being sent by the Publisher!
+After creating your connections in the **Syntropy Stack** UI, return to your terminal and you'll see that the Subscriber is receiving a timestamped message being sent by the Publisher!
 
 Publisher:
 
@@ -228,9 +228,9 @@ Initializing Subscriber
 Established connection with Broker
 [subscribed] topic: hello_syntropy
 [subscribed] topic: init
-[received][hello_syntropy] Powered by SyntropyStack: January 7th 2021, 10:53:05 pm
-[received][hello_syntropy] Powered by SyntropyStack: January 7th 2021, 10:54:05 pm
-[received][hello_syntropy] Powered by SyntropyStack: January 7th 2021, 10:55:05 pm
+[received][hello_syntropy] Powered by **Syntropy Stack**: January 7th 2021, 10:53:05 pm
+[received][hello_syntropy] Powered by **Syntropy Stack**: January 7th 2021, 10:54:05 pm
+[received][hello_syntropy] Powered by **Syntropy Stack**: January 7th 2021, 10:55:05 pm
 ```
 
 **Congratulations, your architecture is up and running ;-)**
