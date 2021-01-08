@@ -24,8 +24,6 @@ services:
   nodejs-publisher:
     container_name: nodejs-publisher
     build: .
-    ports:
-      - "1883:1883"
     depends_on:
       - syntropynet-agent
 

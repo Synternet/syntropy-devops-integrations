@@ -15,5 +15,4 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 1883
 CMD [ "node", "publisher.js" ]

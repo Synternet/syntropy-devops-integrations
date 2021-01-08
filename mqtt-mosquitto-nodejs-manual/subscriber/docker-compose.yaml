@@ -24,8 +24,6 @@ services:
   nodejs-subscriber:
     container_name: nodejs-subscriber
     build: .
-    ports:
-      - "1883:1883"
     depends_on:
       - syntropynet-agent
 

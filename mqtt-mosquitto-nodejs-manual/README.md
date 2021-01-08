@@ -209,7 +209,7 @@ Finally, you need to make sure that the services running on each node are connec
 
 # Test your MQTT network
 
-After creating your connections in the **Syntropy Stack** UI, return to your terminal and you'll see that the Subscriber is receiving a timestamped message being sent by the Publisher!
+After creating your connections in the Syntropy UI, return to your terminal and you'll see that the Subscriber is receiving a timestamped message being sent by the Publisher!
 
 Publisher:
 
