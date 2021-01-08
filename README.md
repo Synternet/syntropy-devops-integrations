@@ -166,11 +166,6 @@ We have determined how many people are required to complete each task. If you be
 In the task sheet, you will find a due date for each task. Please stay within deadlines. Deadlines can be discussed and reevaluated before you commit to the task. Some tasks might be missing deadlines, but this does not mean that there is no deadline. In such cases, we will agree on a deadline before you commit to the task. If you feel that you won't be able to finish the task until the deadline, let us know beforehand. In that case, you can find someone from the community to help you, or we can find someone. Each case is different, so most importantly, communicate. 
 
 
-# Task Sheet
-
-[https://docs.google.com/spreadsheets/d/17LkBLbccGLMq5LkBDgxBohNIXTJ-AZlJI8y34AYWBVE/edit?usp=sharing](https://docs.google.com/spreadsheets/d/17LkBLbccGLMq5LkBDgxBohNIXTJ-AZlJI8y34AYWBVE/edit?usp=sharing) 
-
-
 # Application Form
 
 [https://forms.gle/r7sznFvqjp5U7TZT8](https://forms.gle/r7sznFvqjp5U7TZT8) 
