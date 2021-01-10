@@ -1,0 +1,14 @@
+---
+- name: Create Syntropy Network
+  hosts: all
+  collections: all
+
+  tasks:
+    - name: Create a Point to point network
+      syntropy_template:
+        template_path: "networks/mqt2.yaml"
+        template_params:
+          network_name: MQT2
+          network_state: present
+          # root_services:
+          #   - nginx

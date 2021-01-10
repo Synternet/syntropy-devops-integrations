@@ -1,0 +1,26 @@
+---
+- name: Teardown containers
+  hosts: subscriber
+
+  tasks:
+    # Stop thee running containers
+    - name: Get a list of all running containers
+      docker_host_info:
+        containers: True
+      register: docker_info
+    - name: Stop all running containers
+      docker_container:
+        name: '{{ item.Names[0] | regex_replace("^/", "") }}'
+        state: stopped
+      loop: "{{ docker_info.containers }}"
+
+    # Prune it all!
+    - name: Prune everything (including non-dangling images)
+      docker_prune:
+        containers: yes
+        images: yes
+        images_filters:
+          dangling: false
+        networks: yes
+        volumes: yes
+        builder_cache: yes

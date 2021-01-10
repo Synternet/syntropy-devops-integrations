@@ -1,0 +1,64 @@
+---
+- name: Configure Broker
+  hosts: publisher
+  vars:
+    syntropy_api_token: "{{ lookup('env','SYNTROPY_API_TOKEN') }}"
+
+  tasks:
+    ## Create the network
+    - name: Create network
+      docker_network:
+        name: syntropynet
+        driver: bridge
+        ipam_config:
+          - subnet: 172.21.0.0/24
+
+    ## Copy files
+    - name: Copy node files
+      become: true
+      copy:
+        src: publisher/
+        dest: publisher
+
+    ### Run the syntropy agent
+    - name: Run Syntropy Agent
+      docker_container:
+        image: syntropynet/agent:stable
+        name: syntropynet-agent
+        capabilities:
+          - NET_ADMIN
+          - SYS_MODULE
+        env:
+          SYNTROPY_API_KEY: # redacted
+          SYNTROPY_NETWORK_API: "docker"
+          SYNTROPY_AGENT_NAME: "mqt_2_publisher"
+          SYNTROPY_PROVIDER: "1"
+          SYNTROPY_TAGS: "mqtt"
+          SYNTROPY_SERVICES_STATUS: "false" # default is false
+        restart_policy: always
+        network_mode: "host"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+        devices:
+          - "/dev/net/tun:/dev/net/tun"
+
+    - name: build container image
+      docker_image:
+        name: node12
+        path: /home/craigpick/publisher/ # substitute with user
+
+    - name: Run NodeJS
+      docker_container:
+        name: nodejs-publisher
+        image: node12
+        networks:
+          - name: syntropynet
+
+    # - name: get the username running the deploy
+    #   become: false
+    #   command: whoami
+    #   register: host_username
+    #   set_fact:
+    #     string_to_echo: "{{ host_username.stdout }}"
+
+    # - debug: "{{string_to_echo}}"
