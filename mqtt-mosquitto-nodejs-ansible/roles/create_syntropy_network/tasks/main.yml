@@ -5,7 +5,6 @@
     name: "{{network_name}}"
     state: present
     topology: p2m
-    id: "{{network_id}}" # <==== Task fails when this is left out
     connections:
       mqt_2_broker:
         connect_to:
