@@ -6,3 +6,6 @@ secrets.yaml
 
 # NodeJS
 node_modules/*
+
+# Ansible
+syntropyhosts
