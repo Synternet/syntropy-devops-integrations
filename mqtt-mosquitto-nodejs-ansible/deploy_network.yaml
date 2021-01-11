@@ -1,0 +1,9 @@
+---
+- name: Deploy Syntropy Network
+  hosts: localhost
+  collections: all
+  vars:
+    network_name: "MQT2"
+    network_id: 691
+  roles:
+    - create_syntropy_network
