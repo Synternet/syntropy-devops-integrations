@@ -4,28 +4,6 @@
 - debug:
     msg: Launching NodeJS for "{{app_name}}"
 
-# get the host user
-- name: get the username running the deploy
-  become: false
-  command: whoami
-  register: host_username
-
-- debug:
-    msg: User is "{{host_username.stdout}}"
-
-## Copy files
-- name: Copy node files
-  become: true
-  copy:
-    src: "{{app_dir}}/"
-    dest: "{{app_dir}}"
-
-# build the image
-- name: build container image
-  docker_image:
-    name: node12
-    path: "/home/{{host_username.stdout}}/{{app_dir}}/" # substitute with user
-
 # run the container
 - name: Run NodeJS
   docker_container:

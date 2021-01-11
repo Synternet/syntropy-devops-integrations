@@ -109,6 +109,8 @@ Update the `syntropyhosts` file to include information for your hosts.
 
 `ansible_user`: Your host's SSH user
 
+Ensure that you have access to your VMs via SSH and that they've been added to your list of authorized keys so that Ansible has access to the VMS.
+
 Each VM requires Docker, Wireguard and Ansible python dependencies to be installed. This can be done using the `provision_hosts.yaml` playbook.
 
 `ansible-playbook provision_hosts.yaml -i syntropyhosts -vv`
