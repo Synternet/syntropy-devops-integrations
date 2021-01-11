@@ -1,0 +1,16 @@
+---
+- name: Deploy Publisher
+  hosts: publisher
+  vars:
+    subnet: 172.21.0.0/24
+    agent_name: "mqt_2_publisher"
+    agent_tags: "mqtt"
+    agent_provider: "3"
+    app_src: "publisher"
+    app_name: "nodejs-publisher"
+    network_name: "syntropynet"
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - create_app_image
+    - launch_nodejs

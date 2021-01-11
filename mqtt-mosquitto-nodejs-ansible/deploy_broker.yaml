@@ -1,0 +1,12 @@
+---
+- name: Deploy Broker
+  hosts: broker
+  vars:
+    subnet: 172.20.0.0/24
+    agent_name: "mqt_2_broker"
+    agent_tags: "mqtt"
+    agent_provider: "6"
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_mosquitto

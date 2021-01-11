@@ -1,0 +1,24 @@
+---
+# tasks file for launch_mosquitto
+
+- debug:
+    msg: "Launching Mosquito"
+
+    # copy the mosquito config
+- name: Copy Mosquitto conf file
+  copy:
+    src: mosquitto.conf
+    dest: mosquitto.conf
+    mode: "0644"
+
+# launch mosquitto container
+- name: Launch Mosquitto
+  docker_container:
+    name: mosquitto
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    purge_networks: yes
+    volumes:
+      - /mosquitto.conf
+    networks:
+      - name: syntropynet

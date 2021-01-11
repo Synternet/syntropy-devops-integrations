@@ -1,0 +1,11 @@
+[all:vars]
+ansible_ssh_private_key_file=<pem_file_location>
+
+[broker]  
+broker          ansible_host=<broker_vm_ip>     ansible_connection=ssh  ansible_user=<broker_user>
+
+[publisher]
+publisher       ansible_host=<publisher_vm_ip>     ansible_connection=ssh  ansible_user=<publisher_user>
+
+[subscriber]
+subscriber      ansible_host=<subscriber_vm_ip>      ansible_connection=ssh  ansible_user=<subscriber_user>

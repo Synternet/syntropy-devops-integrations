@@ -1,0 +1,16 @@
+---
+- name: Deploy Subscriber
+  hosts: subscriber
+  vars:
+    subnet: 172.22.0.0/24
+    agent_name: "mqt_2_subscriber"
+    agent_tags: "mqtt"
+    agent_provider: "1"
+    app_src: "subscriber"
+    app_name: "nodejs-subscriber"
+    network_name: "syntropynet"
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - create_app_image
+    - launch_nodejs
