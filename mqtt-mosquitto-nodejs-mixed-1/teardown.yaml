@@ -1,9 +1,0 @@
----
-# Deploy the broker
-- name: Teardown
-  hosts: localhost
-  collections: all
-  vars:
-    network_name: MQT3
-  roles:
-    - delete_syntropy_network
