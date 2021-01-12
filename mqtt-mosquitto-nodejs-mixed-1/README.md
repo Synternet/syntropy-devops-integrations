@@ -57,7 +57,7 @@ This example describes how to use the **Syntropy Stack**, Ansible and the Syntro
 - No ports (including the MQTT `1883` and `9001`) on the VMs should be open and exposed to the internet.
 - Ansible needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
 - Python >= 3.6
-- The Syntropy command line
+- The SyntropyCTL (Command Line Tool) and/or The SyntropyNAC (Network As Code) command line utility.
 
 # Installation
 
