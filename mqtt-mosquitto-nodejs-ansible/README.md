@@ -148,12 +148,12 @@ ansible-playbook deploy_network.yaml -i syntropyhosts -vv
 # Confirm your Network is online and functioning
 
 Endpoints
-![endpoints](images/mqt_endpoings.png)
+![endpoints](images/mqt2_endpoints.jpg)
 
 Network:
 ![network](images/mqt_network.png)
 
-Check that the Publisher is online:
+SSH into your Publisher and Subscriber VMs to view the log output from the NodeJS apps to confirm everything is working as expected.
 
 `docker logs --follow nodejs-publisher`
 
@@ -164,8 +164,6 @@ Established connection with Broker
 [sending] January 7th 2021, 10:54:05 pm
 [sending] January 7th 2021, 10:55:05 pm
 ```
-
-Check that the Subsriber is online:
 
 `docker logs --follow nodejs-subscriber`
 
