@@ -90,7 +90,7 @@ Generate an API Token by logging in using the CLI:
 syntropyctl login {syntropy stack user name} { syntropy stack password}
 ```
 
-Copy the API token and add it to your ENV, for example via your `.bashrc` file. You'll need to add the API URL, as well as your username in password.
+Copy the API token that's outputted by the above command and add it to your ENV, for example via your `.bashrc` file. You'll need to add the API URL, as well as your username in password.
 
 ```
 export SYNTROPY_API_SERVER=https://controller-prod-server.syntropystack.com

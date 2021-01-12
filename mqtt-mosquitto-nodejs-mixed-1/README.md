@@ -248,15 +248,21 @@ Output should resemble the following:
 ]
 ```
 
-# Create the network
+At this stage, you have two options for creating your network:
+
+A - Create the network, and connections, using the CLI
+
+B - Create the network and connections simultaneously using `syntropynac` (Syntropy Network As Code) command line utility, where the network is defined in a YAML file
+
+Included are instructions for both
+
+# Option A - Create network and connections using CLI
 
 ```
 syntropyctl create-network MQT3 --topology P2M
 ```
 
 The command will output your network's ID, make a note of this as you'll need it in the upcoming steps.
-
-# Enable services
 
 Enable the each of the services. If you need a reference for the IDs, use:
 
@@ -296,9 +302,7 @@ syntropyctl configure-endpoints --enable-all-services 556
 syntropyctl configure-endpoints --enable-all-services 557
 ```
 
-# Create the connections
-
-Create the connections using the `create-connections` cmd.
+Next, create the connections using the `create-connections` cmd.
 
 ```
 syntropyctl create-connections -j <network_name> <broker_id> <publisher_id> <broker_id> <subscriber_id>
@@ -355,6 +359,38 @@ Your output should resemble this:
         "agent_connection_packet_loss": null
     }
 ]
+```
+
+# Option B - Create network and connections using syntropy nac and YAML template
+
+The template is defined in `networks/MQT3.yaml`. You can first perform a dry run using the `--dry-run` flag.
+
+```
+syntropynac configure-networks --dry-run networks/MQT3.yaml
+```
+
+Which outputs.
+
+```
+Configuring network MQT3
+Would create network MQT3 as P2M
+Would create 2 connections for network MQT3
+Done
+```
+
+Next, create the network.
+
+```
+syntropynac configure-networks networks/MQT3.yaml
+```
+
+The result looks like:
+
+```Configuring network MQT3
+Created network MQT3 with id 276
+Created 2 connections for network MQT3
+Configured 2 connections and 0 subnets for network MQT3
+Done
 ```
 
 # Confirm your Network is online and functioning
