@@ -431,11 +431,9 @@ Which outputs:
 ]
 ```
 
-Endpoints
-![endpoints](images/.jpg)
+You can also confirm that your network is online and the connections are active via the Syntropy UI.
 
-Network:
-![network](images/.png)
+![network](images/mqt3_network.jpg)
 
 SSH into your Publisher and Subscriber VMs to view the log output from the NodeJS apps to confirm everything is working as expected.
 
