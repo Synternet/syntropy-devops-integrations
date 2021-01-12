@@ -254,7 +254,7 @@ A - Create the network, and connections, using the CLI
 
 B - Create the network and connections simultaneously using `syntropynac` (Syntropy Network As Code) command line utility, where the network is defined in a YAML file
 
-Included are instructions for both
+Both options are presented below.
 
 # Option A - Create network and connections using CLI
 
