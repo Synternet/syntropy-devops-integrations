@@ -57,7 +57,7 @@ This example describes how to use the **Syntropy Stack**, Ansible and the Syntro
 - No ports (including the MQTT `1883` and `9001`) on the VMs should be open and exposed to the internet.
 - Ansible needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
 - Python >= 3.6
-- The SyntropyCTL (Command Line Tool) and/or The SyntropyNAC (Network As Code) command line utility.
+- The SyntropyCTL (Computational Topology Library) and/or The SyntropyNAC (Network As Code) command line utilities.
 
 # Installation
 
@@ -124,7 +124,29 @@ Each VM requires Docker, Wireguard and Ansible python dependencies to be install
 
 # Configure your playbooks
 
-Change the `agent_provider` in each of the service's playbook to match each server's cloud provider, a reference to the providers can be found [here](https://docs.syntropystack.com/docs/syntropy-agent-variables).
+Change the `agent_provider` for each service's play (inside the `deploy_services.yaml` playbook) to match each server's cloud provider, a reference to the providers can be found [here](https://docs.syntropystack.com/docs/syntropy-agent-variables).
+
+Eg.
+
+```
+deploy_services.yaml
+
+---
+# Deploy the broker
+- name: Deploy Broker
+  hosts: broker
+  vars:
+    subnet: 172.20.0.0/24
+    agent_name: "mqt_3_broker"
+    agent_tags: "mqtt"
+    agent_provider: "6" # <=== replace this with your cloud provider's ID
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_mosquitto
+
+...
+```
 
 # Deploy services
 
@@ -250,9 +272,9 @@ Output should resemble the following:
 
 At this stage, you have two options for creating your network:
 
-A - Create the network, and connections, using the CLI
+A - Create the network, and connections, using the SyntropyCTL (Computational Topology Library)
 
-B - Create the network and connections simultaneously using `syntropynac` (Syntropy Network As Code) command line utility, where the network is defined in a YAML file
+B - Create the network and connections simultaneously Syntropy NAC ( Network As Code) command line utility, where the network is defined in a YAML file
 
 Both options are presented below.
 
