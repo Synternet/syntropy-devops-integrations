@@ -1,0 +1,58 @@
+---
+# tasks file for launch_nginx_letsencrypt_grafana
+
+- debug:
+    msg: "Launching Nginx + LetsEncrypt + Grafana"
+
+# launch nginx-proxy
+- name: Run nginx-proxy
+  docker_container:
+    name: nginx-proxy
+    image: jwilder/nginx-proxy
+    state: started
+    ports:
+      - '80:80'
+      - '443:443'
+    purge_networks: yes
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - name: syntropynet
+
+# launch nginx-proxy-letsencrypt
+- name: Run nginx-proxy-letsencrypt
+  docker_container:
+    name: nginx-proxy-letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    state: started
+    purge_networks: yes
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/acme.sh
+    env:
+      DEFAULT_EMAIL: '{{email}}'
+    networks:
+      - name: syntropynet
+
+# launch grafana
+- name: Run grafana
+  docker_container:
+    name: grafana
+    image: grafana/grafana
+    state: started
+    purge_networks: yes
+    env:
+      VIRTUAL_HOST: '{{domain_dns}}'
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: '{{domain_dns}}'
+      LETSENCRYPT_EMAIL: '{{email}}'
+      GF_SECURITY_ADMIN_USER: '{{login_grafana}}'
+      GF_SECURITY_ADMIN_PASSWORD: '{{pass_grafana}}'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    networks:
+      - name: syntropynet

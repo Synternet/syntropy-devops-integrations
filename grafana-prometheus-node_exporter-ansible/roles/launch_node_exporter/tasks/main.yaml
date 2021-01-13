@@ -1,0 +1,16 @@
+---
+# tasks file for launch Node_Exporter
+
+- debug:
+    msg: "Launching Node_Exporter"
+
+# launch node-exporter
+- name: 
+  docker_container:
+    name: node-exporter
+    image: quay.io/prometheus/node-exporter
+    hostname: node-exporter
+    purge_networks: yes
+    volumes:
+    networks:
+      - name: syntropynet
