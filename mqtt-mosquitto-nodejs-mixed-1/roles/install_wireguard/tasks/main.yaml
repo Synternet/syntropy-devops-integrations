@@ -1,0 +1,27 @@
+---
+# tasks file for update_cache
+
+# install wireguard
+- name: Install wireguard
+  become: true
+  apt:
+    state: present
+    name:
+      - wireguard
+      - wireguard-tools
+
+# Add wireguard to kernel
+- name: Add Wireguard to kernel
+  become: true
+  command: modprobe wireguard
+
+## Copy files
+- name: Copy Conf
+  become: true
+  copy:
+    src: wireguard.conf
+    dest: /etc/modules-load.d/wireguard.conf
+
+# Check config
+- name: Check Wireguard configuration
+  command: dpkg -s wireguard

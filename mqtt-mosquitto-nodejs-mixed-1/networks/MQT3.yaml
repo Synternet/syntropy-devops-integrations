@@ -1,0 +1,17 @@
+name: MQT3
+state: present
+topology: p2m
+connections:
+  mqt_3_broker:
+    connect_to:
+      mqt_3_publisher:
+        services:
+          - nodejs-publisher
+        type: endpoint
+      mqt_3_subscriber:
+        services:
+          - nodejs-subscriber
+        type: endpoint
+    services:
+      - mosquitto
+    type: endpoint
