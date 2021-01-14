@@ -7,17 +7,14 @@
     topology: p2m
     connections:
       mqt_2_broker:
+        state: present
+        type: endpoint
+        services:
+          - mosquitto
         connect_to:
-          mqt_2_publisher:
+          mqtt:
             state: present
             services:
               - nodejs-publisher
-            type: endpoint
-          mqt_2_subscriber:
-            state: present
-            services:
               - nodejs-subscriber
-            type: endpoint
-        services:
-          - mosquitto
-        type: endpoint
+            type: tag
