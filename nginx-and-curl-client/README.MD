@@ -1,3 +1,6 @@
+<center><img src=images/Logo_cds1.png></center>
+
+
 # Nginx and curl client
 
 Description / Requirements :
