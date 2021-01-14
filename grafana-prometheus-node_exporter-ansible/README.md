@@ -153,10 +153,7 @@ Change value on file `prometheus.yml`:
 
 ## Configuration Grafana
 
-- Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify DOCKER_IP_PROMETHEUS
-
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Grafana.png'></center>
-<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/DataSource-Prometheus.png'></center>
+- Connect to https://DomainDNS address + Add DataSource Prometheus and identify DOCKER_IP_PROMETHEUS
 
 - Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
 
