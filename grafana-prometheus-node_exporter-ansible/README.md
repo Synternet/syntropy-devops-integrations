@@ -153,7 +153,7 @@ Change value on file `prometheus.yml`:
 ```
 
 
-## Configuration Grafana
+# Configuration Grafana
 
 - Connect to https://DomainDNS address + Add DataSource Prometheus and identify DOCKER_IP_PROMETHEUS
 
