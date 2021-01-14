@@ -2,7 +2,7 @@
 
 # Monitoring solution with Grafana, Prometheus, node_exporter and Nginx - ansible
 
-<center><img srv="images/Diagram.png"></center>
+<center><img src="images/Diagram.png"></center>
 
 # Description / Requirements :
 
