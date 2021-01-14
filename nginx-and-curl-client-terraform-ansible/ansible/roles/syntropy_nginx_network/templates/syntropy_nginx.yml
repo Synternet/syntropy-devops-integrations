@@ -1,0 +1,13 @@
+---
+name: syntropy_nginx
+state: present
+topology: p2m
+connections:
+  curl_client:
+    connect_to:
+      nginx:
+        type: tag
+        services:
+          - nginx 
+    state: present
+    type: endpoint 

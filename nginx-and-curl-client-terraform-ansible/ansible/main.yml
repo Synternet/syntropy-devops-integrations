@@ -1,0 +1,47 @@
+- name: bootstrap nodes
+  hosts: common
+  roles:
+    - common_setup
+    - docker
+- name: create NGINX Docker network
+  hosts: nginx
+  roles:
+    - create_docker_network
+  vars:
+    subnet: "10.44.0.0/24"
+- name: launch Syntropy Agent on curl node
+  hosts: curl
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "curl"
+    SYNTROPY_AGENT_NAME: "curl_client"
+    SYNTROPY_PROVIDER: "3"
+  vars_files:
+    - vars/main.yml
+- name: launch Syntropy Agent on NGINX node
+  hosts: nginx 
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "nginx"
+    SYNTROPY_AGENT_NAME: "nginx_server"
+    SYNTROPY_PROVIDER: "16"
+  vars_files:
+    - vars/main.yml
+- name: deploy Nginx
+  hosts: nginx
+  roles:
+    - deploy_nginx
+- name: create Syntropy NGINX network
+  hosts: localhost
+  roles:
+    - syntropy_nginx_network
+  vars:
+    SYNTROPY_CONTROLLER_URL: "{{ SYNTROPY_CONTROLLER_URL }}"
+    SYNTROPY_USERNAME: "{{ SYNTROPY_USERNAME }}"
+    SYNTROPY_PASSWORD: "{{ SYNTROPY_PASSWORD }}"
+  vars_files:
+    - vars/main.yml

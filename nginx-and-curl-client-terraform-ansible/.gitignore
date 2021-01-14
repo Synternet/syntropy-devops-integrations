@@ -1,0 +1,7 @@
+service-key.json
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+**/infra/terraform.tfvars
+**/vars/main.yml
+inventory.yml

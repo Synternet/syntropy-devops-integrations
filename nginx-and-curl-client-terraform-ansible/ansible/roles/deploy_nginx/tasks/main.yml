@@ -1,0 +1,26 @@
+- name: create NGINX config directory
+  file:
+    path: /opt/config/www
+    state: directory
+    recurse: yes
+- name: copy index.html file to NGINX
+  copy:
+    src: files/index.html
+    dest: /opt/config/www/index.html
+- name: deploy NGINX container
+  docker_container:
+    name: nginx 
+    image: linuxserver/nginx:latest 
+    state: started
+    network_mode: "syntropy_network"
+    volumes:
+      - /opt/config:/config 
+    env:
+      PUID: "0"
+      PGID: "0"
+      SYNTROPY_SERVICE_NAME: "nginx"
+    restart: yes
+  retries: 5
+  delay: 5
+  register: result
+  until: result is success
