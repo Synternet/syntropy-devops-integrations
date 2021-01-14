@@ -57,7 +57,27 @@ In the file `secrets.yaml`:
 - add your `api_key`   -> generated via Syntropy UI) - [Syntropy UI](https://docs.syntropystack.com/docs/get-your-agent-token)
 - add your `api_token` -> generated via Syntropyctl  - [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli)
 
+
+# Create the file "prometheus.yml" on VM2 - Prometheus
+
+```
+      global:
+        scrape_interval: 5s
+        external_labels:
+          monitor: 'node'
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['DOCKER_IP_PROMETHEUS:9090']
+        - job_name: 'node-exporter'
+          static_configs:
+            - targets: ['DOCKER_IP_EXPORTER:9100']
+```
+
+
 # Provision your Virtual Machines
+
+- **Generate an SSH key** then copy it to all the servers (Ansible connection)
 
 Edit `/etc/ansible/hosts`
 
@@ -76,7 +96,6 @@ yoursecondippub ansible_python_interpreter=/usr/bin/python3
 localhost ansible_python_interpreter=/usr/bin/python3
 ```
 
-
 Test Connection: `ansible -m ping all`
 
 Output result:
@@ -94,3 +113,54 @@ localhost | SUCCESS => {
     "ping": "pong"
 }
 ```
+
+# Configure your playbooks
+
+In this file: `deploy_agent_and_service.yaml`, change:
+- `agent_provider` in each of the service's playbook to match each server's cloud provider, a reference to the providers can be found [here](https://docs.syntropystack.com/docs/syntropy-agent-variables).
+- `domain_dns` <-- For your SSL connection
+- `Email`
+- `login_grafana` <-- Access to Grafana UI
+- `pass_grafana`
+
+
+# Deploy Agent / Services / Network
+
+Deploy the Syntropy Agent + Services:
+```
+ansible-playbook deploy_agent_and_service.yaml
+```
+<center><img src="images/endpoints_services_mon2.png"></center>
+
+
+Deploy the Network:
+```
+ansible-playbook deploy_network.yaml
+```
+<center><img src="images/network_mon2.png"></center>
+<center><img src="images/network_connexion_topology_mon2.png"></center>
+<center><img src="images/network_connexion_mon2.png"></center>
+
+
+# Node_Exporter <-> Prometheus
+
+Change value on file `prometheus.yml`:
+```
+- targets: ['DOCKER_IP_PROMETHEUS:9090']
+- targets: ['DOCKER_IP_EXPORTER:9100']
+```
+
+
+## Configuration Grafana
+
+- Connect to https://DuckerDNSDomain address + Add DataSource Prometheus and identify DOCKER_IP_PROMETHEUS
+
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/Grafana.png'></center>
+<center><img src='https://github.com/lorenzo8769/syntropynet-use-cases/blob/mon-1-ui-1/grafana-prometheus-node_exporter-ui/images/DataSource-Prometheus.png'></center>
+
+- Import (Create > Import) this Dashboard: https://grafana.com/grafana/dashboards/11074
+
+<center><img src="images/grafana_mon2.png"></center>
+
+
+**Congratulations, your architecture is up and running ;-)**

@@ -11,5 +11,7 @@
     image: prom/prometheus:latest
     hostname: prometheus
     purge_networks: yes
+    volumes:
+      - $PWD/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - name: syntropynet
