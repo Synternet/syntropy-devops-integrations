@@ -56,7 +56,7 @@ syntropyctl login {syntropy stack user name} { syntropy stack password}
 ```
 
 In the file `secrets.yaml`:
-- add your `api_key`   -> generated via Syntropy UI) - [Syntropy UI](https://docs.syntropystack.com/docs/get-your-agent-token)
+- add your `api_key`   -> generated via Syntropy UI - [Syntropy UI](https://docs.syntropystack.com/docs/get-your-agent-token)
 - add your `api_token` -> generated via Syntropyctl  - [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli)
 
 
