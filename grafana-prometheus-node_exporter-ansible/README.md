@@ -27,6 +27,8 @@
 
 # Installation
 
+Copy the entire **roles directory** to your controller server
+
 Install the Syntropy Ansible Galaxy Collection.
 
 ```
