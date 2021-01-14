@@ -81,16 +81,16 @@ In the file `secrets.yaml`:
 
 Edit `/etc/ansible/hosts`
 
-* Info:
+Info:
 For Python >= 2.7 [servers:vars] ansible_python_interpreter=/usr/bin/python3
 For Python <= 2.7 [servers:vars] ansible_python_interpreter=/usr/bin/python
 
 ```
 [nginx]
-yourfirstippub ansible_python_interpreter=/usr/bin/python3
+yourfirstpubip ansible_python_interpreter=/usr/bin/python3
 
 [prometheus]
-yoursecondippub ansible_python_interpreter=/usr/bin/python3
+yoursecondpubip ansible_python_interpreter=/usr/bin/python3
 
 [node-exporter]
 localhost ansible_python_interpreter=/usr/bin/python3
