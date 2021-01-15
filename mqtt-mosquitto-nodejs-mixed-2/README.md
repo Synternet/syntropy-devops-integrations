@@ -276,8 +276,8 @@ syntropynac configure-networks --dry-run networks/MQT4.yaml
 Which outputs.
 
 ```
-Configuring network MQT3
-Would create network MQT3 as P2M
+Configuring network MQT4
+Would create network MQT4 as P2M
 Would create 2 connections for network MQT3
 Done
 ```
