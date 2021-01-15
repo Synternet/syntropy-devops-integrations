@@ -1,5 +1,5 @@
 <p align="center">
-<img src="images/syntropy_header.jpg">
+<img src="images/syntropy_hero.jpg">
 </p>
 
 This example describes how to use the **Syntropy Stack**, Ansible and the Syntropy CLI to create an MQTT network with 3 nodes: A Broker, a Publisher and a Subscriber. It makes use of [Eclipse Mosquitto](https://mosquitto.org) as the MQTT Broker and the Publisher and Subscriber are simple NodeJS apps. Each of the three nodes will run on a separate VM. Dedicated Ansible playbooks will be used to provision each Endpoint. The network and connections can be created using the CLI or from a YAML template using the SyntropyNAC (Network As Code) command line utility.
@@ -65,6 +65,12 @@ Install the Syntropy CLI.
 
 ```
 pip3 install syntropycli
+```
+
+Install Syntropy NAC.
+
+```
+pip3 install syntropynac
 ```
 
 Install the Syntropy Ansible Galaxy Collection.
