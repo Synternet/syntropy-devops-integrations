@@ -1,0 +1,17 @@
+---
+# tasks file for launch_prometheus
+
+- debug:
+    msg: "Launching Prometheus"
+
+# launch prometheus
+- name: prometheus
+  docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    hostname: prometheus
+    purge_networks: yes
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - name: syntropynet
