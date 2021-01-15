@@ -1,0 +1,17 @@
+name: MQT4
+state: present
+topology: p2m
+connections:
+  mqt_4_broker:
+    connect_to:
+      mqt_4_publisher:
+        services:
+          - nodejs-publisher
+        type: endpoint
+      mqt_4_subscriber:
+        services:
+          - nodejs-subscriber
+        type: endpoint
+    services:
+      - mosquitto
+    type: endpoint
