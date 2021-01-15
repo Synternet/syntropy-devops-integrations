@@ -56,8 +56,8 @@ syntropyctl login {syntropy stack user name} { syntropy stack password}
 ```
 
 In the file `secrets.yaml`:
-- add your `api_key`   -> generated via Syntropy UI - [Syntropy UI](https://docs.syntropystack.com/docs/get-your-agent-token)
-- add your `api_token` -> generated via Syntropyctl  - [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli)
+- add your `agent_token`   -> generated via SyntropyUI - [SyntropyUI](https://docs.syntropystack.com/docs/get-your-agent-token)
+- add your `api_token` -> generated via SyntropyCTL  - [SyntropyCLI](https://github.com/SyntropyNet/syntropy-cli)
 
 
 # Create the file "prometheus.yml" on VM2 - Prometheus
