@@ -88,7 +88,7 @@ scp -r /path/to/local/broker <user_name>@<remote_ip>:/broker
 
 # Launch the Syntropy Agent on each VM
 
-Perform these tasks on each VM. Remember to substitute the values between the `{ }` with your own.
+Perform these tasks on each VM. Remember to substitute the values between the `{ }` with your own. Reference to the docs for the Syntropy provider IDs can be found [here](https://docs.syntropystack.com/docs/syntropy-agent-variables).
 
 Launch the syntropy agent.
 
@@ -212,6 +212,8 @@ You can also confirm they're online using the Syntropy CLI. But before we can do
 
 # Install Syntropy CLI
 
+Documentation can be found [here](https://docs.syntropystack.com/docs/syntropyctl).
+
 Install the Syntropy CLI.
 
 ```
@@ -222,24 +224,6 @@ Install Syntropy NAC.
 
 ```
 pip3 install syntropynac
-```
-
-Install the Syntropy Ansible Galaxy Collection.
-
-```
-ansible-galaxy collection install git@github.com:SyntropyNet/syntropy-ansible-collection.git
-```
-
-Navigate to your local ansible directory, for example on Mac OS:
-
-```
-cd /Users/{user}/.ansible/collections/ansible_collections/syntropynet/syntropy
-```
-
-Install the Python dependencies.
-
-```
-pip3 install -U -r requirements.txt
 ```
 
 # Authentication
