@@ -1,0 +1,12 @@
+{
+  "name": "mqt_1_subscriber",
+  "version": "1.0.0",
+  "main": "subscriber.js",
+  "author": "Craig Pickard",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "cron": "^1.8.2",
+    "mqtt": "^4.2.6"
+  }
+}
