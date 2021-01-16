@@ -90,7 +90,11 @@ scp -r /path/to/local/broker <user_name>@<remote_ip>:/broker
 
 Perform these tasks on each VM. Remember to substitute the values between the `{ }` with your own. Reference to the docs for the Syntropy provider IDs can be found [here](https://docs.syntropystack.com/docs/syntropy-agent-variables).
 
-Launch the syntropy agent.
+**Important note**: For the Publisher and Subscriber, you'll need to add a `client`.
+
+Eg. `-e SYNTROPY_TAGS=mqtt,client`
+
+Launch the syntropy agents.
 
 ```
 sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
