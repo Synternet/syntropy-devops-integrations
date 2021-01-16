@@ -130,6 +130,46 @@ sudo docker run --net=syntropynet -d --name prometheus -v $PWD/prometheus.yml:/e
 ```
 sudo docker run --net=syntropynet -d --name node-exporter quay.io/prometheus/node-exporter
 ```
+# Installation SyntropyCTL
+
+Copy the entire **roles directory** to your controller server
+
+Install the Syntropy Ansible Galaxy Collection.
+
+```
+ansible-galaxy collection install git@github.com:SyntropyNet/syntropy-ansible-collection.git
+```
+
+Navigate to your local ansible directory:
+
+```
+cd /root/.ansible/collections/ansible_collections/syntropynet/syntropy
+```
+
+Install the Python dependencies.
+
+```
+pip3 install -U -r requirements.txt
+```
+
+
+
+# Authentication
+
+Next, we need to generate an API Token (not to be confused with your Agent Token). To generate an API Token, install the [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli).
+
+Generate an API Token by logging in using the CLI:
+
+```
+syntropyctl login {syntropy stack user name} { syntropy stack password}
+```
+
+Copy the API token and add it to your ENV:
+
+```
+export SYNTROPY_API_SERVER=https://controller-prod-server.syntropystack.com
+export SYNTROPY_API_TOKEN="your_syntropy_api_token"
+```
 
 
 # Deploy the Network - with SyntropyCLI - there are many ways:
