@@ -255,7 +255,7 @@ Next, create the connections using the `create-connections` command.
 
 Example:
 ```
-syntropyctl create-connections -j <network_name> <broker_id> <publisher_id> <broker_id> <subscriber_id>
+syntropyctl create-connections -j <network_name> <VM1_id> <VM2_id> <VM2_id> <VM3_id>
 ```
 
 Launch this:
