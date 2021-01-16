@@ -1,0 +1,17 @@
+connections:
+  VM2:
+    connect_to:
+      Nginx:
+        services:
+          - grafana
+        type: tag
+      Node-Exporter:
+        services:
+          - node-exporter
+        type: tag
+    services:
+      - prometheus
+    type: endpoint
+name: MON4
+state: present
+topology: P2M
