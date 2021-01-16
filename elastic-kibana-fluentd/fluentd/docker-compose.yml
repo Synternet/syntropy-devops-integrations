@@ -1,0 +1,34 @@
+version: '2.2'
+services:
+  syntropynet-agent:
+    image: syntropynet/agent:stable
+    hostname: syntropynet-agent
+    container_name: syntropynet-agent
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - SYNTROPY_API_KEY=xxx # <==== Your token goes here
+      - SYNTROPY_NETWORK_API=docker
+      - SYNTROPY_AGENT_NAME="fluentd"
+      - SYNTROPY_PROVIDER=6 # <==== change this
+      - SYNTROPY_TAGS="fluentd"
+      - SYNTROPY_SERVICES_STATUS=false # default is false
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+  fluentd:
+    build: .
+    container_name: fluentd
+    volumes:
+      - ./conf:/fluentd/etc
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
