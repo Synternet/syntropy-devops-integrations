@@ -3,15 +3,14 @@ state: present
 topology: p2m
 connections:
   mqt_4_broker:
-    connect_to:
-      mqt_4_publisher:
-        services:
-          - nodejs-publisher
-        type: endpoint
-      mqt_4_subscriber:
-        services:
-          - nodejs-subscriber
-        type: endpoint
+    state: present
+    type: endpoint
     services:
       - mosquitto
-    type: endpoint
+    connect_to:
+      client:
+        state: present
+        services:
+          - nodejs-publisher
+          - nodejs-subscriber
+        type: tag
