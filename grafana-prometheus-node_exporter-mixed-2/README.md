@@ -27,9 +27,6 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -d syntropynet/agent:stable
 ```
 
-<center><img src=""></center>
-
-
 ## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
 
 First VM:
@@ -342,6 +339,8 @@ Created 2 connections for network MON4
 Configured 2 connections and 2 subnets for network MON4
 Done
 ```
+
+<center><img src="images/topology_mon4.png"></center>
 
 
 # Node_Exporter <-> Prometheus
