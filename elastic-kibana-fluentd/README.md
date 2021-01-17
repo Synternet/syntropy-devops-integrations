@@ -36,8 +36,6 @@ If wireguard is running and syntropystack agent is configured then you are ready
 
 #### Kibana+Nginx
 
-* Check `nginx-conf/kibana.conf` kibana IP. It should be same as in Syntropystack UI
-![same](images/same.png)
 * Copy kibana folder to the second VM.
 * Run `docker-compose up -d`
 

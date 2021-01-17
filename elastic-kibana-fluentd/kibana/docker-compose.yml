@@ -7,8 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx-auth:/etc/nginx/htpasswd
-      - ./nginx-conf:/etc/nginx/conf.d
+      - ./auth:/etc/nginx/htpasswd
       - /etc/nginx/vhost.d
       - /etc/nginx/certs
       - /usr/share/nginx/html
@@ -44,8 +43,10 @@ services:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
       discovery.type: "single-node"
-      LETSENCRYPT_HOST: kibanatesting.duckdns.org
-      LETSENCRYPT_EMAIL: mart.madisson@gmail.com
+      VIRTUAL_HOST: DuckDns # <==== change this
+      VIRTUAL_PORT: 5601
+      LETSENCRYPT_HOST: DuckDns <==== change this
+      LETSENCRYPT_EMAIL: your_valid_email <==== change this
     depends_on:
       - syntropynet-agent
 
