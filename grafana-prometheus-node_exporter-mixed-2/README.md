@@ -27,9 +27,6 @@ sudo docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --c
 -d syntropynet/agent:stable
 ```
 
-<center><img src=""></center>
-
-
 ## Launch services on each dedicated VM. Be careful by launching them on a different subnet:
 
 First VM:
@@ -258,7 +255,7 @@ Next, create the connections using the `create-connections` command.
 
 Example:
 ```
-syntropyctl create-connections -j <network_name> <broker_id> <publisher_id> <broker_id> <subscriber_id>
+syntropyctl create-connections -j <network_name> <VM1_id> <VM2_id> <VM2_id> <VM3_id>
 ```
 
 Launch this:
@@ -342,6 +339,8 @@ Created 2 connections for network MON4
 Configured 2 connections and 2 subnets for network MON4
 Done
 ```
+
+<center><img src="images/topology_mon4.png"></center>
 
 
 # Node_Exporter <-> Prometheus
