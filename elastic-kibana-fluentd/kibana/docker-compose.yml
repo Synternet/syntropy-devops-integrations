@@ -43,9 +43,9 @@ services:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
       discovery.type: "single-node"
-      VIRTUAL_HOST: DuckDns # <==== change this
+      VIRTUAL_HOST: DuckerDNSDomain # <==== change this
       VIRTUAL_PORT: 5601
-      LETSENCRYPT_HOST: DuckDns <==== change this
+      LETSENCRYPT_HOST: DuckerDNSDomain <==== change this
       LETSENCRYPT_EMAIL: your_valid_email <==== change this
     depends_on:
       - syntropynet-agent
