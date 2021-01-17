@@ -21,4 +21,8 @@
       - /etc/machine-id:/etc/machine-id:ro
     devices:
       - "/dev/net/tun:/dev/net/tun"
+  register: result
+  until: result is success
+  retries: 5
+  delay: 30
     
