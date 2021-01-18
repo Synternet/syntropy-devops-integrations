@@ -1,0 +1,39 @@
+version: '2.2'
+services:
+  syntropynet-agent:
+    image: syntropynet/agent:stable
+    hostname: syntropynet-agent
+    container_name: syntropynet-agent
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - SYNTROPY_API_KEY=xxx # <==== Your token goes here
+      - SYNTROPY_NETWORK_API=docker
+      - SYNTROPY_AGENT_NAME="elasticsearch"
+      - SYNTROPY_PROVIDER=5 # <==== change this
+      - SYNTROPY_LOG_LEVEL=10
+      - SYNTROPY_TAGS="elasticsearch"
+      - SYNTROPY_SERVICES_STATUS=false # default is false
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      discovery.type: "single-node"
+      node.store.allow_mmap: "false"
+    depends_on:
+      - syntropynet-agent
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
