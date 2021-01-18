@@ -1,0 +1,15 @@
+- name: Login to the Platform API
+  syntropynet.syntropy.syntropy_login:
+    api_url: "{{ SYNTROPY_CONTROLLER_URL }}"
+    username: "{{ SYNTROPY_USERNAME }}"
+    password: "{{ SYNTROPY_PASSWORD }}"
+  register: api_key
+- name: Create Syntropy NGINX network
+  syntropynet.syntropy.syntropy_template:
+    api_url: "{{ SYNTROPY_CONTROLLER_URL }}"
+    api_token: "{{ api_key.token }}"
+    template_path: "{{ playbook_dir }}/roles/syntropy_nginx_network/templates/syntropy_nginx.yml"
+  register: result
+  retries: 3
+  until: result is success
+  delay: 10

@@ -1,0 +1,7 @@
+ssh_public_key_file  = "~/.ssh/id_rsa.pub"
+linode_region        = "eu-central"
+linode_token         = "<YOUR_LINODE_PERSONAL_ACCESS_TOKEN>"
+gcp_project_id       = "<YOUR_GCP_PROJECT_ID>"
+gcp_credentials_file = "../service-key.json"
+gcp_region           = "europe-west3"
+gcp_zone             = "europe-west3-b"

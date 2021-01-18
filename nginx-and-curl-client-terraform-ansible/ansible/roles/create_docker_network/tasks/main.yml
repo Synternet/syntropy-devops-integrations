@@ -1,0 +1,10 @@
+- name: create Docker network
+  docker_network:
+    name: syntropy_network
+    ipam_config:
+      - subnet: "{{ subnet }}"
+  ignore_errors: true
+  retries: 5
+  delay: 5
+  until: result is success
+  register: result
