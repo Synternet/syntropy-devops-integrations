@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "linode" {
-  token = "cd5ec50c2f292298f4958fef5742e7d53c49a493e196cd2a7e3d3d47c20b1b1a"
+  token = var.linode_token
 }
 
 provider "google" {
