@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           echo "---" > ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
-          echo "api_key:${{secrets.SYNTROPY_API_KEY}}" >> ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
+          echo 'api_key: "${{secrets.SYNTROPY_API_KEY}}"' >> ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
 
       - name: ls
         run: |
