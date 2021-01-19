@@ -74,6 +74,9 @@ jobs:
       - name: Install python requirements
         run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
 
+      - name: Install Docker
+        run: pip3 install docker docker-compose
+
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.2.0
         with:
