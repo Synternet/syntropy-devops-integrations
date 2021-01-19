@@ -48,13 +48,19 @@ jobs:
       - name: which ansible-galaxy
         run: which ansible-galaxy
 
+      - name: which python
+        run: which python
+
+      - name: python version
+        run: python --version
+
       - name: Install Python 3.6
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
 
       - name: Install Syntropy Galaxy Collection
-        run: ansible-galaxy collection install git@github.com:SyntropyNet/syntropy-ansible-collection.git
+        run: ansible-galaxy collection install syntropynet.syntropy
       # - name: Run Ansible playbook
       #   uses: dawidd6/action-ansible-playbook@v2.2.0
       #   with:
