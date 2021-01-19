@@ -21,7 +21,6 @@
               - kibana
               - nginx-proxy
             type: tag
-        id: 733
         services:
           - elasticsearch
         type: endpoint
