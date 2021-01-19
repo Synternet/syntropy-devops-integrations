@@ -62,6 +62,9 @@ jobs:
       - name: python version
         run: python --version
 
+      - name: which python3
+        run: which python3
+
       - name: python3 version
         run: python3 --version
 
