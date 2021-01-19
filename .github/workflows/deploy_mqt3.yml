@@ -68,6 +68,11 @@ jobs:
       - name: pip3 version
         run: pip3 --version
 
+      - name: install ansible python3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
       - name: Install Syntropy Galaxy Collection
         run: ansible-galaxy collection install syntropynet.syntropy
 
