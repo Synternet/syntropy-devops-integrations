@@ -45,6 +45,9 @@ jobs:
           ls -lah ./
           cat ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
 
+      - name: cat secrets
+        run: cat ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
+
       - name: which ansible-galaxy
         run: which ansible-galaxy
 
@@ -64,6 +67,9 @@ jobs:
 
       - name: which python3
         run: which python3
+
+      # - name: Add python interpreter
+      #   run: which python3 >> ./mqtt-mosquitto-nodejs-mixed-1/.ansible.config
 
       - name: python3 version
         run: python3 --version
