@@ -40,44 +40,15 @@ jobs:
           echo "---" > ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
           echo 'api_key: "${{secrets.SYNTROPY_API_KEY}}"' >> ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
 
-      - name: ls
-        run: |
-          ls -lah ./
-          cat ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
-
-      - name: cat secrets
-        run: cat ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
-
-      - name: which ansible-galaxy
-        run: which ansible-galaxy
-
-      - name: which python
-        run: which python
-
-      - name: python version
-        run: python --version
-
-      - name: Install Python 3.6
+      - name: Install Python 3.7
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
 
-      - name: python version
-        run: python --version
-
-      - name: which python3
-        run: which python3
-
-      # - name: Add python interpreter
-      #   run: which python3 >> ./mqtt-mosquitto-nodejs-mixed-1/.ansible.config
-
-      - name: python3 version
+      - name: check python3 version
         run: python3 --version
 
-      - name: pip3 version
-        run: pip3 --version
-
-      - name: install ansible python3
+      - name: install ansible with pip3
         run: |
           pip3 install ansible
           ansible --version | grep "python version"
@@ -88,23 +59,28 @@ jobs:
       - name: Install python requirements
         run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
 
-      - name: Install Docker
-        run: pip3 install docker docker-compose
+      - name: Install Syntropy CLI and Syntropy NAC
+        run: |
+          pip3 install syntropycli
+          pip3 install syntropynac
 
-      - name: Run Ansible playbook
-        uses: dawidd6/action-ansible-playbook@v2.2.0
-        with:
-          playbook: deploy_services.yaml
-          directory: ./mqtt-mosquitto-nodejs-mixed-1/
-          key: ${{secrets.SSH_PRIVATE_KEY}}
-          inventory: |
-            [broker]
-            broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
+      # - name: Run deploy_services playbook
+      #   uses: dawidd6/action-ansible-playbook@v2.2.0
+      #   with:
+      #     playbook: deploy_services.yaml
+      #     directory: ./mqtt-mosquitto-nodejs-mixed-1/
+      #     key: ${{secrets.SSH_PRIVATE_KEY}}
+      #     inventory: |
+      #       [broker]
+      #       broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
 
-            [publisher]
-            publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
+      #       [publisher]
+      #       publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
 
-            [subscriber]
-            subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
-          options: |
-            --verbose
+      #       [subscriber]
+      #       subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
+      #     options: |
+      #       --verbose
+
+      - name: Create Syntropy Network with NAC
+        run: syntropynac configure-networks ./mqtt-mosquitto-nodejs-mixed-1/networks/MQT3.yaml
