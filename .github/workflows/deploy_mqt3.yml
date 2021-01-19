@@ -59,8 +59,20 @@ jobs:
         with:
           python-version: "3.7"
 
+      - name: python version
+        run: python --version
+
+      - name: python3 version
+        run: python3 --version
+
+      - name: pip3 version
+        run: pip3 --version
+
       - name: Install Syntropy Galaxy Collection
         run: ansible-galaxy collection install syntropynet.syntropy
+
+      - name: Install python requirements
+        run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
       # - name: Run Ansible playbook
       #   uses: dawidd6/action-ansible-playbook@v2.2.0
       #   with:
