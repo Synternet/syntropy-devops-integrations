@@ -1,0 +1,39 @@
+---
+- name: Deploy Kibana
+  hosts: kibana
+  vars:
+    subnet: 172.20.0.0/24
+    agent_name: "VM1"
+    agent_tags: "Kibana"
+    agent_provider: "13" # <----Choose your Provider - https://docs.syntropystack.com/docs/syntropy-agent-variables
+    port_kibana: "5601"
+    domain_dns: "DomainDNS" # <----Your Domain DNS
+    email: "Email" # <----Your EMail
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_kibana
+
+- name: Deploy Elasticsearch
+  hosts: elasticsearch
+  vars:
+    subnet: 172.21.0.0/24
+    agent_name: "VM2"
+    agent_tags: "Elasticsearch"
+    agent_provider: "5" # <----Choose your Provider - https://docs.syntropystack.com/docs/syntropy-agent-variables
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_elasticsearch
+
+- name: Deploy Fluentd
+  hosts: fluentd
+  vars:
+    subnet: 172.22.0.0/24
+    agent_name: "VM3"
+    agent_tags: "Fluentd"
+    agent_provider: "1" # <----Choose your Provider - https://docs.syntropystack.com/docs/syntropy-agent-variables
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_fluentd

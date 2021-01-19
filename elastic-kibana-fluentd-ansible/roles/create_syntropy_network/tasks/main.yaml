@@ -1,0 +1,27 @@
+---
+# tasks file for create_syntropy_network
+- include_vars: ../../../secrets.yaml
+- name: Create Syntropy Network
+  syntropynet.syntropy.syntropy_network:
+     api_url: "{{api_url}}"
+     api_token: "{{api_token}}"
+     name: "{{network_name}}"
+     state: present
+     topology: p2m
+     connections:
+      VM2:
+        connect_to:
+          Fluentd:
+            services:
+              - fluentd
+            type: tag
+          Kibana:
+            services:
+              - nginx-proxy-letsencrypt
+              - kibana
+              - nginx-proxy
+            type: tag
+        id: 733
+        services:
+          - elasticsearch
+        type: endpoint

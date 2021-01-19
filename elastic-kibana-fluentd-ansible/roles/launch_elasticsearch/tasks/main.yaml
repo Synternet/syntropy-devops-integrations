@@ -1,0 +1,15 @@
+---
+# tasks file for launch_elasticsearch
+
+# launch Elasticsearch
+- name: Elasticsearch
+  docker_container:
+    name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    purge_networks: yes
+    env:
+      node.store.allow_mmap: "false"
+      discovery.type: "single-node"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    networks:
+      - name: syntropynet
