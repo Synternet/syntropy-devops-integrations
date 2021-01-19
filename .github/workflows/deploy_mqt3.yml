@@ -24,25 +24,25 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Configure SSH
-        shell: bash
-        run: |
-          mkdir ~/.ssh
-          sudo chmod 700 ~/.ssh
-          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          sudo chmod 600 ~/.ssh/id_rsa
-          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
-          sudo chmod 644 ~/.ssh/known_hosts
+#       - name: Configure SSH
+#         shell: bash
+#         run: |
+#           mkdir ~/.ssh
+#           sudo chmod 700 ~/.ssh
+#           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+#           sudo chmod 600 ~/.ssh/id_rsa
+#           echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+#           sudo chmod 644 ~/.ssh/known_hosts
 
-      - name: Create the secrets file
-        run: |
-          echo "---" > ./secrets.yaml
-          echo "api_key:${{secrets.SYNTROPY_API_KEY}}" >> ./secrets.yaml
+#       - name: Create the secrets file
+#         run: |
+#           echo "---" > ./secrets.yaml
+#           echo "api_key:${{secrets.SYNTROPY_API_KEY}}" >> ./secrets.yaml
 
-      - name: ls
-      - run: |
-          ls -lah ~/
-          cat ~/secrets.yaml
+#       - name: ls
+#       - run: |
+#           ls -lah ~/
+#           cat ~/secrets.yaml
 
       # - name: Run Ansible playbook
       #   uses: dawidd6/action-ansible-playbook@v2.2.0
