@@ -42,8 +42,8 @@ jobs:
 
       - name: ls
         run: |
-          ls -lah ~/
-          cat ~/mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
+          ls -lah ./
+          cat ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
 
       # - name: Run Ansible playbook
       #   uses: dawidd6/action-ansible-playbook@v2.2.0
