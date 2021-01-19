@@ -73,20 +73,21 @@ jobs:
 
       - name: Install python requirements
         run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
-      # - name: Run Ansible playbook
-      #   uses: dawidd6/action-ansible-playbook@v2.2.0
-      #   with:
-      #     playbook: deploy_services.yaml
-      #     directory: ./mqtt-mosquitto-nodejs-mixed-1/
-      #     key: ${{secrets.SSH_PRIVATE_KEY}}
-      #     inventory: |
-      #       [broker]
-      #       broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
 
-      #       [publisher]
-      #       publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
+      - name: Run Ansible playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: deploy_services.yaml
+          directory: ./mqtt-mosquitto-nodejs-mixed-1/
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [broker]
+            broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
 
-      #       [subscriber]
-      #       subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
-      #     options: |
-      #       --verbose
+            [publisher]
+            publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
+
+            [subscriber]
+            subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
+          options: |
+            --verbose
