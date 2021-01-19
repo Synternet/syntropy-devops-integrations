@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - mqt3-actions
 
 env:
   SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}
@@ -34,7 +33,7 @@ jobs:
           echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
           sudo chmod 644 ~/.ssh/known_hosts
 
-      - name: Create the secrets file
+      - name: Create the Ansible secrets.yaml file
         shell: bash
         run: |
           echo "---" > ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
@@ -45,10 +44,10 @@ jobs:
         with:
           python-version: "3.7"
 
-      - name: check python3 version
+      - name: Check python3 version
         run: python3 --version
 
-      - name: install ansible with pip3
+      - name: Install ansible with pip3
         run: |
           pip3 install ansible
           ansible --version | grep "python version"
@@ -64,23 +63,23 @@ jobs:
           pip3 install syntropycli
           pip3 install syntropynac
 
-      # - name: Run deploy_services playbook
-      #   uses: dawidd6/action-ansible-playbook@v2.2.0
-      #   with:
-      #     playbook: deploy_services.yaml
-      #     directory: ./mqtt-mosquitto-nodejs-mixed-1/
-      #     key: ${{secrets.SSH_PRIVATE_KEY}}
-      #     inventory: |
-      #       [broker]
-      #       broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
+      - name: Run deploy_services playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: deploy_services.yaml
+          directory: ./mqtt-mosquitto-nodejs-mixed-1/
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [broker]
+            broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
 
-      #       [publisher]
-      #       publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
+            [publisher]
+            publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
 
-      #       [subscriber]
-      #       subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
-      #     options: |
-      #       --verbose
+            [subscriber]
+            subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
+          options: |
+            --verbose
 
       - name: Create Syntropy Network with NAC
         run: syntropynac configure-networks ./mqtt-mosquitto-nodejs-mixed-1/networks/MQT3.yaml
