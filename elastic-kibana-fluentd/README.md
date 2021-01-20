@@ -25,6 +25,10 @@ Wireguard installation: https://www.wireguard.com/install
 Every service is installed with separate syntropystack agent(docker service). You can find it from docker-compose files. There are some `SYNTROPY_` environment variables that you need to fill before running agents.
 Please check [syntropystack documentation](https://docs.syntropystack.com/docs).
 
+## Install DuckDns
+
+We use [DuckDns](https://duckdns.org) which is a free dynamic DNS service that allows you to point a subdomain under duckdns.org at your computer.
+
 ## Run services
 
 If wireguard is running and syntropystack agent is configured then you are ready to run services.
@@ -36,7 +40,9 @@ If wireguard is running and syntropystack agent is configured then you are ready
 
 #### Kibana+Nginx
 
-* Copy kibana folder to the second VM.
+* Copy kibana folder to the second VM. 
+* Configure `docker-compose.yml` to use DuckDns url. 
+* Rename file `/auth/VIRTUAL_HOST`(basic auth) to DuckDns domain
 * Run `docker-compose up -d`
 
 #### Fluentd
