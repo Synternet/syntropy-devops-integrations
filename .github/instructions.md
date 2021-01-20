@@ -6,7 +6,7 @@ In order to achieve this, the workflow's execution environment inside the runner
 
 ## Generate a new SSH key-pair
 
-We'll create a new SSH keypair that we'll use exclusively for the Github Actions as you should not be using you primary key-pair. Call the new key-pair something like `github_action_rsa` to make it easy to identify.
+We'll create a new SSH keypair that we'll use exclusively for the Github Actions as you should not be using you primary key-pair. Call the new key-pair something like `github_action_rsa` to make it easy to identify. The `-N` flag creates a keypair without a passphrase.
 
 ```
 ssh-keygen -t rsa -b 4096 -C "user@host" -q -N ""
