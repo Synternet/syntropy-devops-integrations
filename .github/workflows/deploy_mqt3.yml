@@ -1,4 +1,4 @@
-name: Deploy Moquitto Broker
+name: Deploy MQT example
 
 on:
   push:
