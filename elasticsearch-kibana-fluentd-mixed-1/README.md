@@ -92,6 +92,10 @@ This example describes how to use the **Syntropy Stack** to create a logging net
 - Ansible needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
 - Python >= 3.6
 
+# Create the network
+
+`syntropynac configure-networks networks/LOG3.yml`
+
 # NOTES
 
 If you don’t want to expose port 9200 and instead use a reverse proxy, replace 9200:9200 with 127.0.0.1:9200:9200 in the docker-compose.yml file. Elasticsearch will then only be accessible from the host machine itself.

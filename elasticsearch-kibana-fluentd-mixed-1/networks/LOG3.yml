@@ -1,0 +1,18 @@
+name: LOG3
+state: present
+topology: p2m
+connections:
+  log_3_elasticsearch:
+    state: present
+    type: endpoint
+    services:
+      - elasticsearch
+    connect_to:
+      logger: # <==== tag we want to connect to
+        state: present
+        services:
+          - kibana
+          - nginx-proxy
+          - letsencrypt-nginx
+          - fluentd
+        type: tag

@@ -1,35 +1,35 @@
 ---
-# Deploy Elastic Search
-# - name: Deploy ElasticSearch
-#   hosts: elasticsearch
-#   vars:
-#     agent_name: "log_3_elasticsearch"
-#     agent_tags: "log3"
-#     agent_provider: "3" # <=== replace this
-#     network_name: "syntropynet"
-#     service_name: "elasticsearch"
-#     subnet: 172.21.0.0/24
-#   roles:
-#     - create_docker_network
-#     - launch_syntropy_agent
-#     - launch_elasticsearch
+Deploy Elastic Search
+- name: Deploy ElasticSearch
+  hosts: elasticsearch
+  vars:
+    agent_name: "log_3_elasticsearch"
+    agent_tags: "log3"
+    agent_provider: "3" # <=== replace this
+    network_name: "syntropynet"
+    service_name: "elasticsearch"
+    subnet: 172.21.0.0/24
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_elasticsearch
 
-# # Deploy Kibana and Nginx
-# - name: Deploy Kibana & Nginx
-#   hosts: kibana-nginx
-#   vars:
-#     subnet: 172.22.0.0/24
-#     agent_name: "log_3_kibana_nginx"
-#     agent_tags: "log3"
-#     agent_provider: "1" # <=== replace this
-#     service_name: "kibana-nginx"
-#     network_name: "syntropynet"
-#   roles:
-#     - create_docker_network
-#     - launch_nginx_proxy
-#     - launch_letsencrypt_companion
-#     - launch_syntropy_agent
-#     - launch_kibana
+# Deploy Kibana and Nginx
+- name: Deploy Kibana & Nginx
+  hosts: kibana-nginx
+  vars:
+    subnet: 172.22.0.0/24
+    agent_name: "log_3_kibana_nginx"
+    agent_tags: "log3,logger"
+    agent_provider: "1" # <=== replace this
+    service_name: "kibana-nginx"
+    network_name: "syntropynet"
+  roles:
+    - create_docker_network
+    - launch_nginx_proxy
+    - launch_letsencrypt_companion
+    - launch_syntropy_agent
+    - launch_kibana
 
 # Deploy FluentD Service
 - name: Deploy FluentD
@@ -37,7 +37,7 @@
   vars:
     subnet: 172.20.0.0/24
     agent_name: "log_3_fluentd"
-    agent_tags: "log3"
+    agent_tags: "log3,logger"
     agent_provider: "6" # <=== replace this
     service_name: "fluentd"
     network_name: "syntropynet"
