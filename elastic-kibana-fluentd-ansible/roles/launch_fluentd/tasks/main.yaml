@@ -1,0 +1,18 @@
+---
+# tasks file for launch fluentd
+
+# launch node-exporter
+- name: Fluentd-Image
+  docker_image:
+     path: .
+     name: fluentd
+
+- name: Fluentd-Container
+  docker_container:
+    name: fluentd
+    image: fluentd
+    purge_networks: yes
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    networks:
+      - name: syntropynet

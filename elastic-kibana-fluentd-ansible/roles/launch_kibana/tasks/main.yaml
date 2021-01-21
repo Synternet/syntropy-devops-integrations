@@ -1,0 +1,55 @@
+---
+# tasks file for launch_Kibana
+
+# launch nginx-proxy
+- name: Run nginx-proxy
+  docker_container:
+    name: nginx-proxy
+    image: jwilder/nginx-proxy
+    state: started
+    ports:
+      - '80:80'
+      - '443:443'
+    purge_networks: yes
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - name: syntropynet
+
+# launch nginx-proxy-letsencrypt
+- name: Run nginx-proxy-letsencrypt
+  docker_container:
+    name: nginx-proxy-letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    state: started
+    purge_networks: yes
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/acme.sh
+    env:
+      DEFAULT_EMAIL: "laurent.coglitore@outlook.fr"
+    networks:
+      - name: syntropynet
+
+# launch Kibana
+- name: Run Kibana
+  docker_container:
+    name: kibana
+    image: docker.elastic.co/kibana/kibana:7.6.2
+    state: started
+    purge_networks: yes
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    env:
+      discovery.type: "single-node"
+      VIRTUAL_HOST: '{{domain_dns}}'
+      VIRTUAL_PORT: "5601"
+      LETSENCRYPT_HOST: '{{domain_dns}}'
+      LETSENCRYPT_EMAIL: '{{email}}'
+    networks:
+      - name: syntropynet
