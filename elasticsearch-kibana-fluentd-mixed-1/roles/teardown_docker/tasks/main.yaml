@@ -30,4 +30,4 @@
 
 - name: Remove Docker images
   become: yes
-  command: docker rmi "{{images}}"
+  command: "docker rmi $(docker images -a -q)"

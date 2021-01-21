@@ -1,7 +1,7 @@
 ---
 # Deploy the broker
 - name: Teardown
-  hosts: all
+  hosts: aws
   collections: all
   vars:
     network_name: MQT3

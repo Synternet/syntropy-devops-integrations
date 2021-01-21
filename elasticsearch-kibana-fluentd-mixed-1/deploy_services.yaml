@@ -1,49 +1,50 @@
 ---
-# Deploy the broker
-# - name: Deploy FluentD
-#   hosts: fluentd
+# Deploy Elastic Search
+# - name: Deploy ElasticSearch
+#   hosts: elasticsearch
 #   vars:
-#     subnet: 172.20.0.0/24
-#     agent_name: "log_3_fluentd"
+#     agent_name: "log_3_elasticsearch"
 #     agent_tags: "log3"
-#     agent_provider: "6" # <=== replace this
-#     service_name: "fluentd"
+#     agent_provider: "3" # <=== replace this
 #     network_name: "syntropynet"
-#     image_src: "fluentd"
-#     image_name: "fluentd"
+#     service_name: "elasticsearch"
+#     subnet: 172.21.0.0/24
 #   roles:
 #     - create_docker_network
 #     - launch_syntropy_agent
-#     - build_docker_image
-#     - launch_fluentd
+#     - launch_elasticsearch
 
-# Deploy the Publisher
-- name: Deploy ElasticSearch
-  hosts: elasticsearch
+# # Deploy Kibana and Nginx
+# - name: Deploy Kibana & Nginx
+#   hosts: kibana-nginx
+#   vars:
+#     subnet: 172.22.0.0/24
+#     agent_name: "log_3_kibana_nginx"
+#     agent_tags: "log3"
+#     agent_provider: "1" # <=== replace this
+#     service_name: "kibana-nginx"
+#     network_name: "syntropynet"
+#   roles:
+#     - create_docker_network
+#     - launch_nginx_proxy
+#     - launch_letsencrypt_companion
+#     - launch_syntropy_agent
+#     - launch_kibana
+
+# Deploy FluentD Service
+- name: Deploy FluentD
+  hosts: fluentd
   vars:
-    agent_name: "log_3_elasticsearch"
-    agent_tags: "logs3"
-    agent_provider: "3" # <=== replace this
+    subnet: 172.20.0.0/24
+    agent_name: "log_3_fluentd"
+    agent_tags: "log3"
+    agent_provider: "6" # <=== replace this
+    service_name: "fluentd"
     network_name: "syntropynet"
-    service_name: "elasticsearch"
-    subnet: 172.21.0.0/24
+    image_src: "fluentd"
+    image_name: "fluentd"
   roles:
     - create_docker_network
     - launch_syntropy_agent
-    - launch_elasticsearch
-# # Deploy the Subscriber
-# - name: Deploy Subscriber
-#   hosts: subscriber
-#   vars:
-#     subnet: 172.22.0.0/24
-#     agent_name: "mqt_3_subscriber"
-#     agent_tags: "mqtt"
-#     agent_provider: "1" # <=== replace this
-#     app_src: "subscriber"
-#     app_name: "nodejs-subscriber"
-#     network_name: "syntropynet"
-#   roles:
-#     - create_docker_network
-#     - launch_syntropy_agent
-#     - create_app_image
-#     - launch_nodejs
+    - build_docker_image
+    - launch_fluentd

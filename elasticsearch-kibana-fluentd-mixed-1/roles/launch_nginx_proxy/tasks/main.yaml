@@ -1,0 +1,24 @@
+---
+- name: Copy DuckDNS htpasswd credentials
+  copy:
+    src: syntropylog3.duckdns.org # <====== REPLACE THIS WITH YOUR OWN
+    dest: ~/syntropylog3.duckdns.org # <====== REPLACE THIS WITH YOUR OWN
+    mode: "0644"
+
+- name: Launch Nginx proxy
+  docker_container:
+    image: jwilder/nginx-proxy
+    name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/syntropylog3.duckdns.org:/etc/nginx/htpasswd/syntropylog3.duckdns.org # <====== USES YOUR HTPASSWD CREDENTIALS
+      - /etc/nginx/vhost.d
+      - /etc/nginx/certs
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: true
+    purge_networks: yes
+    networks:
+      - name: "{{network_name}}"

@@ -13,7 +13,7 @@
     image: fluentd # gets built by build_docker_image role
     name: "{{service_name}}"
     volumes:
-      - ~/fluent.conf:/fluentd/etc/fluentd.conf
+      - ~/fluent.conf:/fluentd/etc/fluent.conf
     purge_networks: yes
     networks:
       - name: "{{network_name}}"
