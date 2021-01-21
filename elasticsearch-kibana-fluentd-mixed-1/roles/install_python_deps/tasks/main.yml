@@ -12,3 +12,4 @@
     name:
       - docker
       - docker-compose
+      - docker-python

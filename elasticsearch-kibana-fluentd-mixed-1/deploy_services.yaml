@@ -1,38 +1,36 @@
 ---
 # Deploy the broker
-- name: Deploy FluentD
-  hosts: fluentd
-  vars:
-    subnet: 172.20.0.0/24
-    agent_name: "log_3_fluentd"
-    agent_tags: "log3"
-    agent_provider: "6" # <=== replace this
-    service_name: "fluentd"
-    network_name: "syntropynet"
-    image_src: "fluentd"
-    image_name: "fluentd"
-  roles:
-    - create_docker_network
-    # - launch_syntropy_agent
-    - build_docker_image
-    - launch_fluentd
-# # Deploy the Publisher
-# - name: Deploy Publisher
-#   hosts: publisher
+# - name: Deploy FluentD
+#   hosts: fluentd
 #   vars:
-#     subnet: 172.21.0.0/24
-#     agent_name: "mqt_3_publisher"
-#     agent_tags: "mqtt"
-#     agent_provider: "3" # <=== replace this
-#     app_src: "publisher"
-#     app_name: "nodejs-publisher"
+#     subnet: 172.20.0.0/24
+#     agent_name: "log_3_fluentd"
+#     agent_tags: "log3"
+#     agent_provider: "6" # <=== replace this
+#     service_name: "fluentd"
 #     network_name: "syntropynet"
+#     image_src: "fluentd"
+#     image_name: "fluentd"
 #   roles:
 #     - create_docker_network
 #     - launch_syntropy_agent
-#     - create_app_image
-#     - launch_nodejs
+#     - build_docker_image
+#     - launch_fluentd
 
+# Deploy the Publisher
+- name: Deploy ElasticSearch
+  hosts: elasticsearch
+  vars:
+    agent_name: "log_3_elasticsearch"
+    agent_tags: "logs3"
+    agent_provider: "3" # <=== replace this
+    network_name: "syntropynet"
+    service_name: "elasticsearch"
+    subnet: 172.21.0.0/24
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_elasticsearch
 # # Deploy the Subscriber
 # - name: Deploy Subscriber
 #   hosts: subscriber

@@ -10,8 +10,9 @@
 
 - name: add user to group
   become: true
+  become_user: root
   user:
-    name: "{{ansible_user}}"
+    name: "{{ansible_user_id}}"
     groups: docker
     append: true
 
