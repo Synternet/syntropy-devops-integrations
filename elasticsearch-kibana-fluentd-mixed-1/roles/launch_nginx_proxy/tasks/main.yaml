@@ -1,8 +1,10 @@
 ---
+- include_vars: ../../../secrets.yaml
+
 - name: Copy DuckDNS htpasswd credentials
   copy:
-    src: syntropylog3.duckdns.org # <====== REPLACE THIS WITH YOUR OWN
-    dest: ~/syntropylog3.duckdns.org # <====== REPLACE THIS WITH YOUR OWN
+    content: "{{htpasswd_credentials}}" # <====== from your secrets.yml
+    dest: "~/{{duck_dns_domain}}" # <====== from your secrets.yml
     mode: "0644"
 
 - name: Launch Nginx proxy

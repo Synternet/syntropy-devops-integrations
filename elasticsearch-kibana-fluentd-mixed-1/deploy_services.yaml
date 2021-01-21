@@ -30,7 +30,7 @@ Deploy Elastic Search
     - launch_letsencrypt_companion
     - launch_syntropy_agent
     - launch_kibana
-
+    
 # Deploy FluentD Service
 - name: Deploy FluentD
   hosts: fluentd

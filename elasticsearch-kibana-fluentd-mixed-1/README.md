@@ -123,3 +123,5 @@ Order of the services matters.
 Experienced some memory issues with GCP
 
 EFK Stack: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes
+
+htpasswd is stored in secrets.
