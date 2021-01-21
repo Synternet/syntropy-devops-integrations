@@ -1,0 +1,23 @@
+---
+- name: remove network
+  syntropynet.syntropy.syntropy_network:
+    name: "{{network_name}}"
+    state: absent
+    topology: p2m
+    connections:
+      mqt_2_broker:
+        connect_to:
+          mqt_2_publisher:
+            state: absent
+            services:
+              - nodejs-publisher
+            type: endpoint
+          mqt_2_subscriber:
+            state: absent
+            services:
+              - nodejs-subscriber
+            type: endpoint
+        state: absent
+        services:
+          - mosquitto
+        type: endpoint

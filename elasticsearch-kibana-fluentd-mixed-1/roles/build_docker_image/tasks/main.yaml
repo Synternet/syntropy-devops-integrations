@@ -1,0 +1,24 @@
+---
+# create an app image using a Dockerfile
+
+# get the host user
+- name: get the username running the deploy
+  become: false
+  command: whoami
+  register: host_username
+
+- debug:
+    msg: User is "{{host_username.stdout}}"
+
+## Copy files
+- name: Copy node files from src
+  become: true
+  copy:
+    src: "src/{{image_src}}/"
+    dest: "{{image_src}}"
+
+# build the image
+- name: build container image
+  docker_image:
+    name: "{{image_name}}"
+    path: "~/{{image_src}}/" # substitute with user

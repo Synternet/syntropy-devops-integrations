@@ -1,0 +1,19 @@
+---
+- debug:
+    msg: Creating FluentD
+
+- name: Copy FluentD conf file
+  copy:
+    src: fluent.conf
+    dest: ~/fluent.conf
+    mode: "0644"
+
+- name: Launch FluentD
+  docker_container:
+    image: fluentd # gets built by build_docker_image role
+    name: "{{service_name}}"
+    volumes:
+      - ~/fluent.conf:/fluentd/etc/fluentd.conf
+    purge_networks: yes
+    networks:
+      - name: "{{network_name}}"

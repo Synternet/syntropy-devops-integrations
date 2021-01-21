@@ -1,0 +1,51 @@
+---
+# Deploy the broker
+- name: Deploy FluentD
+  hosts: fluentd
+  vars:
+    subnet: 172.20.0.0/24
+    agent_name: "log_3_fluentd"
+    agent_tags: "log3"
+    agent_provider: "6" # <=== replace this
+    service_name: "fluentd"
+    network_name: "syntropynet"
+    image_src: "fluentd"
+    image_name: "fluentd"
+  roles:
+    - create_docker_network
+    # - launch_syntropy_agent
+    - build_docker_image
+    - launch_fluentd
+# # Deploy the Publisher
+# - name: Deploy Publisher
+#   hosts: publisher
+#   vars:
+#     subnet: 172.21.0.0/24
+#     agent_name: "mqt_3_publisher"
+#     agent_tags: "mqtt"
+#     agent_provider: "3" # <=== replace this
+#     app_src: "publisher"
+#     app_name: "nodejs-publisher"
+#     network_name: "syntropynet"
+#   roles:
+#     - create_docker_network
+#     - launch_syntropy_agent
+#     - create_app_image
+#     - launch_nodejs
+
+# # Deploy the Subscriber
+# - name: Deploy Subscriber
+#   hosts: subscriber
+#   vars:
+#     subnet: 172.22.0.0/24
+#     agent_name: "mqt_3_subscriber"
+#     agent_tags: "mqtt"
+#     agent_provider: "1" # <=== replace this
+#     app_src: "subscriber"
+#     app_name: "nodejs-subscriber"
+#     network_name: "syntropynet"
+#   roles:
+#     - create_docker_network
+#     - launch_syntropy_agent
+#     - create_app_image
+#     - launch_nodejs
