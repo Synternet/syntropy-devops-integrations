@@ -1,0 +1,35 @@
+connections:
+  exporter1:
+    connect_to:
+      prometheus1:
+        id: 625
+        services: [prometheus1]
+        type: endpoint
+    id: 624
+    services: [node_exporter]
+    state: present
+    type: endpoint
+  grafana1:
+    connect_to:
+      prometheus1:
+        id: 625
+        services: [prometheus1]
+        type: endpoint
+    id: 623
+    services: [grafana]
+    state: present
+    type: endpoint
+  prometheus1:
+    connect_to:
+      exporter2:
+        id: 676
+        services: [node_exporter]
+        type: endpoint
+    id: 625
+    services: [prometheus1]
+    state: present
+    type: endpoint
+id: 366
+name: new1
+state: present
+topology: P2P

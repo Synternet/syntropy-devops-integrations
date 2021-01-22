@@ -1,0 +1,115 @@
+---
+# - hosts: all
+#   become: true
+#   tasks:
+     - name: Install aptitude using apt
+       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+ 
+     - name: Install required system packages
+       apt: name={{ item }} state=latest update_cache=yes
+       loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+ 
+     - name: Add Docker GPG apt Key
+       apt_key:
+         url: https://download.docker.com/linux/ubuntu/gpg
+         state: present
+ 
+     - name: Add Docker Repository
+       apt_repository:
+         repo: deb https://download.docker.com/linux/ubuntu focal stable
+         state: present
+ 
+     - name: Update apt and install docker-ce
+       apt: update_cache=yes name=docker-ce state=latest
+ 
+     - name: Install Docker Module for Python
+       pip:
+         name: docker
+
+     - name: Create a network with custom IPAM config
+       docker_network:
+         name: syntropynet 
+         ipam_options:
+           subnet: '{{subnet}}'
+
+     - name: Generate datasources config
+       template:
+         src: templates/datasources.j2
+         dest: /etc/grafana/provisioning/datasources/datasources.yml
+         owner: root
+         group: root
+         mode: '0644'
+ 
+     - copy:
+         src: files/node-exporter.json
+         dest: /etc/grafana/provisioning/dashboards/
+         owner: root
+         group: root
+         mode: 0644
+
+     - copy:
+         src: files/dashboards.yml
+         dest: /etc/grafana/provisioning/dashboards/
+         owner: root
+         group: root
+         mode: 0644
+
+     - name: Deploy Nginx container
+       docker_container:
+         name: nginx-proxy
+         image: jwilder/nginx-proxy
+         state: started
+         purge_networks: yes
+         networks:
+           - name: syntropynet
+         restart: yes
+         volumes:
+           - /etc/nginx/certs
+           - /etc/nginx/vhost.d
+           - /usr/share/nginx/html
+           - /var/run/docker.sock:/tmp/docker.sock:ro
+         ports:
+           - 80:80
+           - 443:443
+         env:
+             SYNTROPY_TAGS: nginx
+
+     - name: Deploy Nginx-Letsencrypt container
+       docker_container:
+         name: nginx-proxy-letsencrypt
+         image: jrcs/letsencrypt-nginx-proxy-companion
+         state: started
+         restart: yes
+         purge_networks: yes
+         networks:
+           - name: syntropynet
+         volumes_from:
+           - nginx-proxy
+         volumes:
+           - /var/run/docker.sock:/var/run/docker.sock:ro
+           - /etc/acme.sh
+         env:
+             DEFAULT_EMAIL: '{{ email }}'
+             SYNTROPY_TAGS: letsencrypt
+
+
+     - name: Deploy Grafana container
+       docker_container:
+         name: grafana
+         image: grafana/grafana
+         state: started
+         restart: yes
+         volumes: /etc/grafana/provisioning:/etc/grafana/provisioning
+         purge_networks: yes
+         networks:
+           - name: syntropynet
+         env:
+             VIRTUAL_HOST: '{{ domain }}'
+             VIRTUAL_PORT: '3000'
+             LETSENCRYPT_HOST: '{{ domain }}'
+             LETSENCRYPT_EMAIL: '{{ email }}'
+             GF_SECURITY_ADMIN_USER: '{{ admin_user }}'
+             GF_SECURITY_ADMIN_PASSWORD: '{{ admin_password }}'
+             GF_USERS_ALLOW_SIGN_UP: false
+             SYNTROPY_TAGS: grafana
+
