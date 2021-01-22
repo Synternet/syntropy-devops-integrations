@@ -15,7 +15,7 @@
       - "80:80"
       - "443:443"
     volumes:
-      - ~/syntropylog3.duckdns.org:/etc/nginx/htpasswd/syntropylog3.duckdns.org # <====== USES YOUR HTPASSWD CREDENTIALS
+      - "~/{{duck_dns_domain}}:/etc/nginx/htpasswd/{{duck_dns_domain}}" # <====== USES YOUR HTPASSWD CREDENTIALS
       - /etc/nginx/vhost.d
       - /etc/nginx/certs
       - /usr/share/nginx/html

@@ -15,4 +15,5 @@ connections:
           - nginx-proxy
           - letsencrypt-nginx
           - fluentd
+          - joke-logger
         type: tag

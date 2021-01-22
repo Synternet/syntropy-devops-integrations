@@ -1,5 +1,5 @@
 ---
-Deploy Elastic Search
+# Deploy Elastic Search
 - name: Deploy ElasticSearch
   hosts: elasticsearch
   vars:
@@ -30,7 +30,7 @@ Deploy Elastic Search
     - launch_letsencrypt_companion
     - launch_syntropy_agent
     - launch_kibana
-    
+
 # Deploy FluentD Service
 - name: Deploy FluentD
   hosts: fluentd
@@ -48,3 +48,15 @@ Deploy Elastic Search
     - launch_syntropy_agent
     - build_docker_image
     - launch_fluentd
+
+# Deploy a demo app that sends logs to FluentD
+- name: Deploy Demo Logger
+  hosts: fluentd
+  vars:
+    image_src: "joke_logger"
+    image_name: "node12"
+    app_name: "joke-logger"
+    network_name: "syntropynet"
+  roles:
+    - build_docker_image
+    - launch_nodejs

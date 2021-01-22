@@ -4,6 +4,7 @@
 # Create docker group
 - name: create docker group
   become: true
+  become_user: root
   group:
     name: docker
     state: present

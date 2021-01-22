@@ -4,7 +4,7 @@
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     name: "{{service_name}}"
     env:
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m" # <==== sets the heap size
       discovery.type: "single-node"
       node.store.allow_mmap: "false"
     purge_networks: yes
