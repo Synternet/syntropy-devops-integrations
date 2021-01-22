@@ -1,0 +1,85 @@
+name: Deploy MQT example
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}
+  SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
+  SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
+  SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
+  SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+
+jobs:
+  deploy-services:
+    name: Deploy Services
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Create the Ansible secrets.yaml file
+        shell: bash
+        run: |
+          echo "---" > ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
+          echo 'api_key: "${{secrets.SYNTROPY_API_KEY}}"' >> ./mqtt-mosquitto-nodejs-mixed-1/secrets.yaml
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Check python3 version
+        run: python3 --version
+
+      - name: Install ansible with pip3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
+      - name: Install Syntropy Galaxy Collection
+        run: ansible-galaxy collection install syntropynet.syntropy
+
+      - name: Install python requirements
+        run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
+
+      - name: Install Syntropy CLI and Syntropy NAC
+        run: |
+          pip3 install syntropycli
+          pip3 install syntropynac
+
+      - name: Run deploy_services playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: deploy_services.yaml
+          directory: ./mqtt-mosquitto-nodejs-mixed-1/
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [broker]
+            broker          ansible_host=${{secrets.BROKER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.BROKER_USER}}
+
+            [publisher]
+            publisher       ansible_host=${{secrets.PUBLISHER_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.PUBLISHER_USER}}
+
+            [subscriber]
+            subscriber      ansible_host=${{secrets.SUBSCRIBER_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.SUBSCRIBER_USER}}
+          options: |
+            --verbose
+
+      - name: Create Syntropy Network with NAC
+        run: syntropynac configure-networks ./mqtt-mosquitto-nodejs-mixed-1/networks/MQT3.yaml
