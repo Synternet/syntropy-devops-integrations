@@ -11,14 +11,14 @@
     msg: User is "{{host_username.stdout}}"
 
 ## Copy files
-- name: Copy node files from src
+- name: Copy files from src
   become: true
   copy:
     src: "src/{{image_src}}/"
     dest: "{{image_src}}"
 
 # build the image
-- name: build container image
+- name: build container image # <==== Builds the container Image
   docker_image:
     name: "{{image_name}}"
     path: "~/{{image_src}}/" # substitute with user
