@@ -1,0 +1,278 @@
+name: Deploy MQT4 example
+
+on:
+  push:
+    branches:
+      - mqt4-workflow
+
+# we don't use all the variables as ENV vars, this is just a list of what's available as secrets
+env:
+  SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}
+  SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
+  SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
+  SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
+  SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+  BROKER_USER: ${{secrets.BROKER_USER}}
+  BROKER_HOST: ${{secrets.BROKER_HOST}}
+  SUBSCRIBER_HOST: ${{secrets.SUBSCRIBER_HOST}}
+  SUBSCRIBER_USER: ${{secrets.SUBSCRIBER_USER}}
+
+jobs:
+  deploy-broker:
+    name: Deploy Broker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy source files
+        run: scp -r ./mqtt-mosquitto-nodejs-mixed-2/broker ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}}:~/
+
+      - name: Stop running containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker stop $(docker ps -a -q)
+
+      - name: Stop Mosquitto container
+        continue-on-error: true # continue even if the container isn't running and the cmd fails
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker stop mosquitto
+
+      - name: Stop Agent container
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker stop syntropynet-agent
+
+      - name: Prune the system
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker system prune -f
+
+      - name: Remove all containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker rm $(docker ps -a -q)
+
+      - name: Launch Syntropy Agent
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
+          -v /var/run/docker.sock:/var/run/docker.sock:ro \
+          --device /dev/net/tun:/dev/net/tun --name=syntropynet-agent \
+          -e SYNTROPY_API_KEY=${{secrets.SYNTROPY_API_KEY}} \
+          -e SYNTROPY_TAGS=mqtt \
+          -e SYNTROPY_PROVIDER=6 \
+          -e SYNTROPY_AGENT_NAME=mqt_4_broker \
+          -e SYNTROPY_NETWORK_API='docker' \
+          -d syntropynet/agent:stable
+
+      - name: Create syntropynet Docker network
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker network create --subnet 172.20.0.0/24 syntropynet
+
+      # You may need to change the absolute path of your mosquitto.conf file
+      - name: Launch mosquitto broker service
+        shell: sh
+        run: |
+          ssh ${{secrets.BROKER_USER}}@${{secrets.BROKER_HOST}} \
+          docker run -d --net="syntropynet" --name="mosquitto" -v "/root/broker/mosquitto.conf:/mosquitto/config/mosquitto.conf" -v /mosquitto/data -v /mosquitto/log eclipse-mosquitto
+
+  deploy-publisher:
+    name: Deploy Publisher
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy source files
+        run: scp -r ./mqtt-mosquitto-nodejs-mixed-2/publisher ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}}:~/
+
+      - name: Stop running containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker stop $(docker ps -a -q)
+
+      - name: Stop Publisher container
+        continue-on-error: true # continue even if the container isn't running and the cmd fails
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker stop nodejs-publisher
+
+      - name: Stop Agent container
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker stop syntropynet-agent
+
+      - name: Prune the system
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker system prune -f
+
+      - name: Remove all containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker rm $(docker ps -a -q)
+
+      - name: Launch Syntropy Agent
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
+          -v /var/run/docker.sock:/var/run/docker.sock:ro \
+          --device /dev/net/tun:/dev/net/tun --name=syntropynet-agent \
+          -e SYNTROPY_API_KEY=${{secrets.SYNTROPY_API_KEY}} \
+          -e SYNTROPY_TAGS=mqtt,client \
+          -e SYNTROPY_PROVIDER=3 \
+          -e SYNTROPY_AGENT_NAME=mqt_4_publisher \
+          -e SYNTROPY_NETWORK_API='docker' \
+          -d syntropynet/agent:stable
+
+      - name: Create syntropynet Docker network
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker network create --subnet 172.21.0.0/24 syntropynet
+
+      - name: Build the docker image
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker image build publisher/. -t node12
+
+      - name: Run the Publisher  container
+        run: |
+          ssh ${{secrets.PUBLISHER_USER}}@${{secrets.PUBLISHER_HOST}} \
+          docker run --detach --net="syntropynet" --name="nodejs-publisher" node12
+
+  deploy-subscriber:
+    name: Deploy Subscriber
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy source files
+        run: scp -r ./mqtt-mosquitto-nodejs-mixed-2/subscriber ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}}:~/
+
+      - name: Stop running containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker stop $(docker ps -a -q)
+
+      - name: Stop Subcriber container
+        continue-on-error: true # continue even if the container isn't running and the cmd fails
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker stop nodejs-subscriber
+
+      - name: Stop Agent container
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker stop syntropynet-agent
+
+      - name: Prune the system
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker system prune -f
+
+      - name: Remove all containers
+        continue-on-error: true
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker rm $(docker ps -a -q)
+
+      - name: Launch Syntropy Agent
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
+          -v /var/run/docker.sock:/var/run/docker.sock:ro \
+          --device /dev/net/tun:/dev/net/tun --name=syntropynet-agent \
+          -e SYNTROPY_API_KEY=${{secrets.SYNTROPY_API_KEY}} \
+          -e SYNTROPY_TAGS=mqtt,client \
+          -e SYNTROPY_PROVIDER=1 \
+          -e SYNTROPY_AGENT_NAME=mqt_4_subscriber \
+          -e SYNTROPY_NETWORK_API='docker' \
+          -d syntropynet/agent:stable
+
+      - name: Create syntropynet Docker network
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker network create --subnet 172.22.0.0/24 syntropynet
+
+      - name: Build the docker image
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker image build subscriber/. -t node12
+
+      - name: Run the Subscriber container
+        run: |
+          ssh ${{secrets.SUBSCRIBER_USER}}@${{secrets.SUBSCRIBER_HOST}} \
+          docker run --detach --net="syntropynet" --name="nodejs-subscriber" node12
+
+  create-network:
+    name: Create Network with SyntropyNAC
+    runs-on: ubuntu-latest
+    needs: [deploy-broker, deploy-publisher, deploy-subscriber]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Check python3 version
+        run: python3 --version
+
+      - name: install SyntropyNAC
+        run: pip3 install syntropynac
+
+      - name: Create network with SyntropyNAC
+        run: syntropynac configure-networks ./mqtt-mosquitto-nodejs-mixed-2/networks/MQT4.yaml
