@@ -77,11 +77,10 @@ This example describes how to use the **Syntropy Stack** to create an EFK (Elasi
 - All services must run in Docker containers.
 - All connections between services must be created using Syntropy Stack.
 - Each endpoint must be on a unique subnet.
-- Ansible needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
+- Ansible >= 2.9.17 needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
 - Python >= 3.6
 
 # Authentication
-
 
 Install the Syntropy CLI. Docs can be found [here](https://docs.syntropystack.com/docs/syntropy-ctl-installation).
 
@@ -110,6 +109,11 @@ export SYNTROPY_USERNAME="your_syntropy_username"
 
 # Installation
 
+If Ansible is not already installed, you can do so using pip3. Make sure it installs version >= 2.9.17
+
+```
+pip3 install ansible
+```
 
 Install Syntropy NAC.
 
@@ -134,8 +138,6 @@ Install the Python dependencies.
 ```
 pip3 install -U -r requirements.txt
 ```
-
-
 
 # Provision your Virtual Machines
 

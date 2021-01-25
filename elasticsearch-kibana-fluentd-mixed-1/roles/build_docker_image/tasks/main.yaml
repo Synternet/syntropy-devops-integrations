@@ -15,10 +15,11 @@
   become: true
   copy:
     src: "src/{{image_src}}/"
-    dest: "{{image_src}}"
+    dest: "~/{{image_src}}"
 
 # build the image
 - name: build container image # <==== Builds the container Image
+  become: true
   docker_image:
     name: "{{image_name}}"
     path: "~/{{image_src}}/" # substitute with user
