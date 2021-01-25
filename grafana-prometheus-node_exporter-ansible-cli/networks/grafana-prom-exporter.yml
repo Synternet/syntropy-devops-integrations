@@ -1,0 +1,34 @@
+connections:
+  exporter1:
+    connect_to:
+      prometheus1:
+        id: <Prometheus Agent ID>
+        services: [prometheus1]
+        type: endpoint
+    id: <Exporter1 Agent ID>
+    services: [node_exporter]
+    state: present
+    type: endpoint
+  grafana1:
+    connect_to:
+      prometheus1:
+        id: <Prometheus Agent ID>
+        services: [prometheus1]
+        type: endpoint
+    id: <Grafana Agent ID>
+    services: [grafana]
+    state: present
+    type: endpoint
+  prometheus1:
+    connect_to:
+      exporter2:
+        id: <Exporter2 Agent ID>
+        services: [node_exporter]
+        type: endpoint
+    id: <Prometheus Agent ID>
+    services: [prometheus1]
+    state: present
+    type: endpoint
+name: monitoring
+state: present
+topology: P2P

@@ -1,0 +1,42 @@
+---
+- name: Deploy Grafana
+  become: true
+  hosts: web_nodes
+  vars:
+    subnet: 172.1.0.0/24
+    prometheus_ip: 172.2.0.2
+    cloud_provider: '1' ## Set your clpud provider, more info at https://docs.syntropystack.com/docs/syntropy-agent-variables
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ## Your Syntropy API token
+    domain: 'grafana.mydomain.com' ## Set to your domain
+    email: 'my@email.com'
+    agent_name: 'grafana'
+    admin_user: 'admin'
+    admin_password: 'P4$$worD!#$%'
+  roles:
+    - grafana
+    - syntropy-agent
+
+- name: Deploy Prometheus
+  become: true
+  hosts: prometheus_nodes
+  vars:
+    subnet: 172.2.0.0/24
+    cloud_provider: "1" ## Set your clpud provider, more info at https://docs.syntropystack.com/docs/syntropy-agent-variables
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ## Your Syntropy API token
+    agent_name: "prometheus"
+    exporters: "{{ groups['exporter_nodes'] }}"
+  roles:
+    - prometheus
+    - syntropy-agent
+
+- name: Deploy Node Exporter
+  become: true
+  hosts: exporter_nodes
+  vars:
+    subnet: 172.3.{{ play_hosts.index(inventory_hostname) | int + 1 }}.0/24 ##if you want to change the begging of node-exporter subnet, then change it in roles/prometheus/templates/prometheus.j2 as well
+    cloud_provider: "1" ## Set your clpud provider, more info at https://docs.syntropystack.com/docs/syntropy-agent-variables
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXa ## Your Syntropy API token
+    agent_name: "exporter"
+  roles:
+    - node-exporter
+    - syntropy-agent
