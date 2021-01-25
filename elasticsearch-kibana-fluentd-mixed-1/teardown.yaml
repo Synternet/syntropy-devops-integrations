@@ -1,0 +1,10 @@
+---
+# Deploy the broker
+- name: Teardown
+  hosts: aws
+  collections: all
+  vars:
+    network_name: MQT3
+  roles:
+    - teardown_docker
+    # - delete_syntropy_network

@@ -1,0 +1,62 @@
+---
+# Deploy Elastic Search
+- name: Deploy ElasticSearch
+  hosts: elasticsearch
+  vars:
+    agent_name: "log_3_elasticsearch"
+    agent_tags: "log3"
+    agent_provider: "3" # <=== replace this
+    network_name: "syntropynet"
+    service_name: "elasticsearch"
+    subnet: 172.21.0.0/24
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_elasticsearch
+
+# Deploy Kibana and Nginx
+- name: Deploy Kibana & Nginx
+  hosts: kibana-nginx
+  vars:
+    subnet: 172.22.0.0/24
+    agent_name: "log_3_kibana_nginx"
+    agent_tags: "log3,logger"
+    agent_provider: "1" # <=== replace this
+    service_name: "kibana-nginx"
+    network_name: "syntropynet"
+  roles:
+    - create_docker_network
+    - launch_nginx_proxy
+    - launch_letsencrypt_companion
+    - launch_syntropy_agent
+    - launch_kibana
+
+# Deploy FluentD Service
+- name: Deploy FluentD
+  hosts: fluentd
+  vars:
+    subnet: 172.20.0.0/24
+    agent_name: "log_3_fluentd"
+    agent_tags: "log3,logger"
+    agent_provider: "6" # <=== replace this
+    service_name: "fluentd"
+    network_name: "syntropynet"
+    image_src: "fluentd"
+    image_name: "fluentd"
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - build_docker_image
+    - launch_fluentd
+
+# Deploy a demo app that sends logs to FluentD
+- name: Deploy Demo Logger
+  hosts: fluentd
+  vars:
+    image_src: "joke_logger"
+    image_name: "node12"
+    app_name: "joke-logger"
+    network_name: "syntropynet"
+  roles:
+    - build_docker_image
+    - launch_nodejs

@@ -1,0 +1,11 @@
+[all:vars]
+ansible_ssh_private_key_file=<pem_file_location>
+
+[fluentd]  
+fluentd          ansible_host=<fluentd_vm_ip>     ansible_connection=ssh  ansible_user=<fluentd_user>
+
+[elasticsearch]
+elasticsearch       ansible_host=<elasticsearch_vm_ip>     ansible_connection=ssh  ansible_user=<elasticsearch_user>
+
+[kibana]
+kibana-nginx      ansible_host=<kibana_vm_ip>      ansible_connection=ssh  ansible_user=<kibana_user>

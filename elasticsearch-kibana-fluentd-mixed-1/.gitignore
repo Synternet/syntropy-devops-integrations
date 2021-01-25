@@ -1,0 +1,12 @@
+# Mac Os
+.DS_Store
+
+# Secrets
+secrets.yaml
+
+# NodeJS
+node_modules/*
+
+# Ansible
+syntropyhosts
+teardown.yaml
