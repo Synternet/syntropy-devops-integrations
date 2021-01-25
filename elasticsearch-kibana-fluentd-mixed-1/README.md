@@ -80,13 +80,36 @@ This example describes how to use the **Syntropy Stack** to create an EFK (Elasi
 - Ansible needs to be installed on your Control node (your local machine or whatever machine you will run the playbooks on)
 - Python >= 3.6
 
-# Installation
+# Authentication
+
 
 Install the Syntropy CLI. Docs can be found [here](https://docs.syntropystack.com/docs/syntropy-ctl-installation).
 
 ```
 pip3 install syntropycli
 ```
+
+Rename the `sample.secrets.yaml` file to `secrets.yaml` and add your Agent Token (generated via Syntropy UI) to the `api_key` variable.
+
+Next, we need to generate an API Token (not to be confused with your Agent Token). To generate an API Token, install the [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli).
+
+Generate an API Token by logging in using the CLI:
+
+```
+syntropyctl login {syntropy stack user name} { syntropy stack password}
+```
+
+Copy the API token and add it to your ENV, for example via your `.bashrc` file. You'll need to add the API URL, as well as your username in password.
+
+```
+export SYNTROPY_API_SERVER=https://controller-prod-server.syntropystack.com
+export SYNTROPY_API_TOKEN="your_syntropy_api_token"
+export SYNTROPY_PASSWORD="your_syntropy_password"
+export SYNTROPY_USERNAME="your_syntropy_username"
+```
+
+# Installation
+
 
 Install Syntropy NAC.
 
@@ -112,26 +135,7 @@ Install the Python dependencies.
 pip3 install -U -r requirements.txt
 ```
 
-# Authentication
 
-Rename the `sample.secrets.yaml` file to `secrets.yaml` and add your Agent Token (generated via Syntropy UI) to the `api_key` variable.
-
-Next, we need to generate an API Token (not to be confused with your Agent Token). To generate an API Token, install the [Syntropy CLI](https://github.com/SyntropyNet/syntropy-cli).
-
-Generate an API Token by logging in using the CLI:
-
-```
-syntropyctl login {syntropy stack user name} { syntropy stack password}
-```
-
-Copy the API token and add it to your ENV, for example via your `.bashrc` file. You'll need to add the API URL, as well as your username in password.
-
-```
-export SYNTROPY_API_SERVER=https://controller-prod-server.syntropystack.com
-export SYNTROPY_API_TOKEN="your_syntropy_api_token"
-export SYNTROPY_PASSWORD="your_syntropy_password"
-export SYNTROPY_USERNAME="your_syntropy_username"
-```
 
 # Provision your Virtual Machines
 
