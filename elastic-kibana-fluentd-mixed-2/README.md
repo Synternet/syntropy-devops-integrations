@@ -55,7 +55,7 @@ If wireguard is running and syntropystack agent is configured then you are ready
 
 You should see all the endpoints in Syntropy UI.
 
-![add-endpoints](images/endpoints.png)
+![add-endpoints](images/endpointsUI.png)
 
 # Install Syntropy CLI
 
