@@ -3,7 +3,7 @@ name: Deploy MQT example
 on:
   push:
     branches:
-      - main
+      - mqt3-workflow
 
 env:
   SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}
