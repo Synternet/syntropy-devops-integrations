@@ -1,0 +1,19 @@
+name: LOG4
+state: present
+topology: p2m
+connections:
+  elasticsearch:
+    connect_to:
+      fluentd:
+        services:
+          - fluentd
+        type: tag
+      kibana+ngnix:
+        services:
+          - kibana
+          - nginx-proxy-le
+          - nginx-proxy
+        type: tag
+    services:
+      - elasticsearch
+    type: endpoint
