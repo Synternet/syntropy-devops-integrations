@@ -1,0 +1,8 @@
+[DigitalOcean]  
+fluentd          ansible_host=134.209.171.54     ansible_connection=ssh  ansible_user=root
+
+[GCP]
+elasticsearch       ansible_host=34.121.37.161     ansible_connection=ssh  ansible_user=craigpick
+
+[AWS]
+kibana-nginx      ansible_host=52.5.209.197     ansible_connection=ssh  ansible_user=ubuntu

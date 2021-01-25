@@ -12,7 +12,7 @@
         services:
           - mosquitto
         connect_to:
-          mqtt:
+          client:
             state: present
             services:
               - nodejs-publisher
