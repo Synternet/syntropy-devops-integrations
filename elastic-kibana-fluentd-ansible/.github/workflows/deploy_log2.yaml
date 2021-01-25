@@ -1,0 +1,160 @@
+name: Deploy LOG2 example
+
+on:
+  push:
+    branches:
+      - main
+
+# We don't use these all as ENV vars, instead we just list them so we know what's available
+env:
+  SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}
+  SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
+  SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
+  SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
+  SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+  FLUENTD_USER: ${{secrets.FLUENTD_USER}}
+  FLUENTD_HOST: ${{secrets.FLUENTD_HOST}}
+  KIBANA_HOST: ${{secrets.KIBANA_HOST}}
+  KIBANA_USER: ${{secrets.KIBANA_USER}}
+  ELASTICSEARCH_HOST: ${{secrets.ELASTICSEARCH_HOST}}
+  ELASTICSEARCH_USER: ${{secrets.ELASTICSEARCH_USER}}
+
+jobs:
+  deploy-services:
+    name: Deploy Services for LOG2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy Kibana.yaml
+        run: scp ./roles/launch_kibana/tasks/kibana.yml ${{secrets.KIBANA_USER}}@${{secrets.KIBANA_HOST}}:~/
+
+      - name: Copy FluentD Docker file
+        run: scp ./roles/launch_fluentd/tasks/Dockerfile ${{secrets.FLUENTD_USER}}@${{secrets.FLUENTD_HOST}}:~/
+
+      - name: Copy FluentD Docker file
+        run: scp ./roles/launch_fluentd/tasks/conf/fluent.conf ${{secrets.FLUENTD_USER}}@${{secrets.FLUENTD_HOST}}:~/
+
+      - name: LS
+        run: ls -lah
+
+      - name: Create the Ansible secrets.yaml file
+        shell: bash
+        run: |
+          echo "---" > ./secrets.yaml
+          echo 'api_key: "${{secrets.SYNTROPY_API_KEY}}"' >> ./secrets.yaml
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Check python3 version
+        run: python3 --version
+
+      - name: Install ansible with pip3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
+      - name: Install Syntropy Galaxy Collection
+        run: ansible-galaxy collection install syntropynet.syntropy
+
+      - name: Install python requirements
+        run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
+
+      - name: Run deploy_agent_and_services playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: deploy_agent_and_service.yaml
+          directory: ./
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [fluentd]
+            fluentd          ansible_host=${{secrets.FLUENTD_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.FLUENTD_USER}}
+
+            [elasticsearch]
+            elasticsearch       ansible_host=${{secrets.ELASTICSEARCH_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.ELASTICSEARCH_USER}}
+
+            [kibana]
+            kibana        ansible_host=${{secrets.KIBANA_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.KIBANA_USER}}
+          options: |
+            --verbose
+
+  deploy-network:
+    name: Deploy Network for LOG2
+    runs-on: ubuntu-latest
+    needs: [deploy-services]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Create the Ansible secrets.yaml file
+        shell: bash
+        run: |
+          echo "---" > ./secrets.yaml
+          echo 'api_token: "${{secrets.SYNTROPY_API_TOKEN}}"' >> ./secrets.yaml
+          echo 'api_url: "https://controller-prod-server.syntropystack.com"' >> ./secrets.yaml
+          echo 'agent_token: "${{secrets.SYNTROPY_API_KEY}}"' >> ./secrets.yaml
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Check python3 version
+        run: python3 --version
+
+      - name: Install ansible with pip3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
+      - name: Install Syntropy Galaxy Collection
+        run: ansible-galaxy collection install syntropynet.syntropy
+
+      - name: Install python requirements
+        run: pip3 install -U -r /home/runner/.ansible/collections/ansible_collections/syntropynet/syntropy/requirements.txt
+
+      - name: Run deploy_network playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: deploy_network.yaml
+          directory: ./
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [fluentd]
+            fluentd          ansible_host=${{secrets.FLUENTD_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.FLUENTD_USER}}
+
+            [elasticsearch]
+            elasticsearch       ansible_host=${{secrets.ELASTICSEARCH_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.ELASTICSEARCH_USER}}
+
+            [kibana]
+            kibana        ansible_host=${{secrets.KIBANA_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.KIBANA_USER}}
+          options: |
+            --verbose
