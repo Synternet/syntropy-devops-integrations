@@ -4,7 +4,7 @@
   vars:
     subnet: 172.21.0.0/24
     agent_name: "mqt_2_publisher"
-    agent_tags: "mqtt"
+    agent_tags: "mqtt,client"
     agent_provider: "3"
     app_src: "publisher"
     app_name: "nodejs-publisher"
