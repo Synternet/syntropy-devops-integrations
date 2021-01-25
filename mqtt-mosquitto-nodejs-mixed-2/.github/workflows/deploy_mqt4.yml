@@ -3,7 +3,7 @@ name: Deploy MQT4 example
 on:
   push:
     branches:
-      - mqt4-workflow
+      - main
 
 # we don't use all the variables as ENV vars, this is just a list of what's available as secrets
 env:
