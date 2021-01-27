@@ -2,10 +2,21 @@
 # tasks file for launch_syntropy_agent
 - include_vars: ../../../secrets.yaml
 
+- name: Create data directory if it doesn't exist
+  command: mkdir -p ./data/{{ipfs_name}}
+
+- name: Copy swarm key
+  copy:
+    src: swarm.key
+    dest: ./data/{{ipfs_name}}
+    mode: "0644"
+
 - name: Launch IPFS
   docker_container:
     image: ipfs/go-ipfs:latest
     name: "{{ipfs_name}}"
+    env:
+      LIBP2P_FORCE_PNET: "1" # need to add swarm key
     # ports:
     #   - "4001:4001" # ipfs swarm - expose if needed/wanted
     # - "5001:5001" # ipfs api - expose if needed/wanted

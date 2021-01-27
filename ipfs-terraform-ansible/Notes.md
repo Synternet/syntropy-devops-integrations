@@ -10,6 +10,12 @@ https://gitlab.com/rahasak-labs/ipfs-ops/-/blob/master/ipfs-cluster-ops/docker-c
 
 https://labs.eleks.com/2019/03/ipfs-network-data-replication.html
 
+https://blog.ipfs.io/1-run-ipfs-on-docker/
+
+https://discuss.ipfs.io/t/can-i-make-a-private-ipfs-network-of-public-external-ips-this-would-require-my-own-gateway-as-well/5509
+
+https://github.com/subhodi/ipfs-cluster-private
+
 The Cluster peer communicates with the IPFS daemon using the HTTP API (localhost:5001). Therefore, the IPFS daemon must be launched and running separately.
 
 Gateway
@@ -64,7 +70,13 @@ IPFS API: tcp:5001 is the API of the IPFS daemon and should not be exposed to ot
 
 IPFS Proxy endpoint: tcp:9095 should not be exposed without an authentication mechanism on top (nginx etc…). By default it provides no authentication nor encryption (similar to IPFS’s tcp:5001)
 
-Creating the client secret:
-If you have hexdump then:
+# Creating the client secret:
 
 `od -vN 32 -An -tx1 /dev/urandom | tr -d ' \n' ; echo`
+
+Authentication
+The IPFS Cluster API can be configured with Basic Authentication support.
+
+ipfs-cluster-ctl --basic-auth <username:password> will use the given credentials to perform the request.
+
+Note that unless --force-http is passed, using basic-auth is only supported on HTTPS requests or using the libp2p API endpoint (which uses an encrypted channel).

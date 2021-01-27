@@ -8,12 +8,12 @@
     name: "{{cluster_name}}"
     env:
       CLUSTER_PEERNAME: "{{cluster_name}}"
-      CLUSTER_SECRET: "{{client_secret}}" # From secrets
-      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: "/dns/{{ipfs_node_multiaddress}}/tcp/5001" # IP of the IPFS container on this VM (0.0.0.0 does not work)
+      CLUSTER_SECRET: "{{cluster_secret}}" # From secrets
+      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: "/dns/{{ipfs_name}}/tcp/5001" # IP of the IPFS container on this VM (0.0.0.0 does not work)
       CLUSTER_CRDT_TRUSTEDPEERS: "*" # Trust all peers in Cluster
       CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS: "/ip4/0.0.0.0/tcp/9094" # Expose API
       CLUSTER_MONITORPINGINTERVAL: 2s # Speed up peer discovery
-      # BOOTSTRAP_PEER_ID: 12D3KooWNjaeBo6sSGX67NbEm9qKJNQ8HqPv3oPRRyLrBts4P7BE
+      IPFS_BOOTSTRAP_RM_ALL: "true"
     restart_policy: always
     volumes:
       - "./data/{{cluster_name}}:/data/ipfs-cluster"
