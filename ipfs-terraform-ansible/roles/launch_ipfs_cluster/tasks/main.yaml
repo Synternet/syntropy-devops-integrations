@@ -1,0 +1,29 @@
+---
+# tasks file for launch_syntropy_agent
+- include_vars: ../../../secrets.yaml
+
+- name: Launch IPFS Cluster
+  docker_container:
+    image: ipfs/ipfs-cluster:latest
+    name: "{{cluster_name}}"
+    env:
+      CLUSTER_PEERNAME: "{{cluster_name}}"
+      CLUSTER_SECRET: "{{client_secret}}" # From secrets
+      CLUSTER_IPFSHTTP_NODEMULTIADDRESS: "/dns/{{ipfs_node_multiaddress}}/tcp/5001" # IP of the IPFS container on this VM (0.0.0.0 does not work)
+      CLUSTER_CRDT_TRUSTEDPEERS: "*" # Trust all peers in Cluster
+      CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS: "/ip4/0.0.0.0/tcp/9094" # Expose API
+      CLUSTER_MONITORPINGINTERVAL: 2s # Speed up peer discovery
+      # BOOTSTRAP_PEER_ID: 12D3KooWNjaeBo6sSGX67NbEm9qKJNQ8HqPv3oPRRyLrBts4P7BE
+    restart_policy: always
+    volumes:
+      - "./data/{{cluster_name}}:/data/ipfs-cluster"
+    purge_networks: yes
+    networks:
+      - name: syntropynet
+    # ports:
+    #   # Open API port (allows ipfs-cluster-ctl usage on host)
+    #   - "127.0.0.1:9094:9094"
+    #   # The cluster swarm port would need  to be exposed if this container
+    #   # was to connect to cluster peers on other hosts.
+    #   # But this is just a testing cluster.
+    #   # - "9096:9096" # Cluster IPFS Proxy endpoint

@@ -1,0 +1,17 @@
+---
+# tasks file for launch_syntropy_agent
+- include_vars: ../../../secrets.yaml
+
+- name: Launch IPFS
+  docker_container:
+    image: ipfs/go-ipfs:latest
+    name: "{{ipfs_name}}"
+    # ports:
+    #   - "4001:4001" # ipfs swarm - expose if needed/wanted
+    # - "5001:5001" # ipfs api - expose if needed/wanted
+    #   - "8080:8080" # ipfs gateway - expose if needed/wanted
+    volumes:
+      - "./data/{{ipfs_name}}:/data/ipfs"
+    purge_networks: yes
+    networks:
+      - name: syntropynet

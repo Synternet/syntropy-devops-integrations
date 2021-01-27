@@ -1,0 +1,27 @@
+---
+# tasks file for launch_syntropy_agent
+- include_vars: ../../../secrets.yaml
+
+- debug:
+    msg: creating "{{agent_name}}"
+
+- name: Launch Syntropy Agent
+  docker_container:
+    image: syntropynet/agent:stable
+    name: syntropynet-agent
+    capabilities:
+      - NET_ADMIN
+      - SYS_MODULE
+    env:
+      SYNTROPY_API_KEY: "{{api_key}}"
+      SYNTROPY_NETWORK_API: "docker"
+      SYNTROPY_AGENT_NAME: "{{agent_name}}"
+      SYNTROPY_PROVIDER: "{{agent_provider}}"
+      SYNTROPY_TAGS: "{{agent_tags}}"
+      SYNTROPY_SERVICES_STATUS: "false" # default is false
+    restart_policy: always
+    network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    devices:
+      - "/dev/net/tun:/dev/net/tun"

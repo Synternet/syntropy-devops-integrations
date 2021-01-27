@@ -1,0 +1,4 @@
+*.retry
+host_vars/*
+
+secrets.yaml

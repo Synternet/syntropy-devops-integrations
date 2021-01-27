@@ -1,0 +1,38 @@
+---
+# Deploy Elastic Search
+- name: Deploy IPFS Cluster
+  hosts: [DigitalOcean]
+  vars:
+    agent_name: "cluster0_bootstrap"
+    agent_tags: "cluster0"
+    agent_provider: "6" # <=== replace this
+    network_name: "syntropynet"
+    subnet: 172.20.0.0/24
+    ipfs_node_multiaddress: 172.20.0.2
+    ipfs_listen_multiaddress: 172.20.0.3
+    ipfs_name: ipfs0
+    cluster_name: cluster0
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_ipfs
+    - launch_ipfs_cluster
+
+# Deploy Elastic Search
+- name: Deploy IPFS Cluster
+  hosts: [GCP]
+  vars:
+    agent_name: "cluster1_bootstrap"
+    agent_tags: "cluster1"
+    agent_provider: "3" # <=== replace this
+    network_name: "syntropynet"
+    subnet: 172.21.0.0/24
+    ipfs_node_multiaddress: 172.21.0.2
+    ipfs_listen_multiaddress: 172.21.0.3
+    ipfs_name: ipfs1
+    cluster_name: cluster1
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_ipfs
+    - launch_ipfs_cluster
