@@ -1,0 +1,78 @@
+{
+  "name": "jvs_1",
+  "version": "1.0.0",
+  "description": "Syntropy builders - jvs_1",
+  "scripts": {
+    "start": "node dist",
+    "prestart": "yarn build",
+    "lint": "eslint src test",
+    "lint:fix": "eslint src test --fix",
+    "codecov": "cat coverage/*/lcov.info | codecov",
+    "prettier": "prettier --write **/*.{js,json,yml,md}",
+    "build": "rimraf dist && babel src --copy-files --out-dir dist --source-maps",
+    "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
+    "test": "cross-env NODE_ENV=test mocha --exit --recursive --require @babel/register test",
+    "test:coverage": "cross-env NODE_ENV=test nyc --require @babel/register --reporter lcov --reporter text mocha --exit --recursive test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,yml,yml,json}": [
+      "prettier --write"
+    ]
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "express",
+    "es6",
+    "api"
+  ],
+  "private": true,
+  "author": "Petter Skog <petter@skogdev.no>",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/boom": "^9.1.1",
+    "@sentry/node": "^5.29.2",
+    "amqplib": "0.6.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "is-docker": "^2.1.1",
+    "lodash": "^4.17.20",
+    "mongoose": "5.11.13",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "chai": "^4.2.0",
+    "codecov": "^3.8.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.16.0",
+    "eslint-config-leapfrog": "^3.0.0",
+    "eslint-config-prettier": "^7.1.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
+    "mongoose": "5.11.13"
+  },
+  "engines": {
+    "node": ">= 12.13.0",
+    "npm": ">= 6.12.0",
+    "yarn": ">= 1.20.0"
+  }
+}
