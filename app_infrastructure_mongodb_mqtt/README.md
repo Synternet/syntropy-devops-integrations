@@ -61,6 +61,6 @@ Bring down stack,
 
     $ docker-compose down
 
-The api contains a single endpoint, and is reachable at http://localhost:8848/api/1, where 1 is the number to be calculated
+The api contains a single endpoint, and is reachable at http://localhost:8848/api/fib/1, where 1 is the number to be calculated
 
 
