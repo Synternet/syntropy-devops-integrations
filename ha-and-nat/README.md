@@ -33,6 +33,8 @@ sudo docker network create --subnet 10.44.0.0/16 syntropynet
 ## Launch Home Assistant on VM using Docker
 Home Assistant service can be launched following the tutorial below from the official Home Assistant website.
 
+<a href="https://www.home-assistant.io/docs/installation/docker/">Installation on Docker</a>
+
 One thing to notice is that we must specify that Home Assistant container must operate in the previously created network. The final command will be:
 ```
 docker run -d --name="home-assistant" --network=syntropynet --restart on-failure -v CHANGEME:/config -e "TZ=CHANGE ME" homeassistant/home-assistant
@@ -73,7 +75,8 @@ SyntropyStack UI allows us to connect these devices with one click. An encrypted
 Now that all services are communicating with each other, we should be able to access Home Assistant main page by typing the address of our domain name and specifying the default port of Home Assistant
 ```http://domain_name:8123/```
 
-##Video tutorial
+<center><img src="https://github.com/Paulius0112/syntropy-devops-integrations/blob/master/ha-and-nat/images/ha.png"></center>
+
 
 
 
