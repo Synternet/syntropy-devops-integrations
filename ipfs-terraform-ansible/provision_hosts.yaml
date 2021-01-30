@@ -1,8 +1,8 @@
 ---
 - name: Configure Hosts
-  hosts: all
+  hosts: digital_ocean
   roles:
     - update_cache
     - install_wireguard
     - install_docker
-    - install_python_deps
+    # - install_python_deps

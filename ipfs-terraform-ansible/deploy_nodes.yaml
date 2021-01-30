@@ -1,0 +1,13 @@
+---
+# Deploy Elastic Search
+- name: Deploy IPFS Node
+  hosts: [all]
+  vars:
+    agent_name: "{{inventory_hostname}}"
+    agent_tags: "ipfs"
+    network_name: "syntropynet"
+    ipfs_name: "{{inventory_hostname}}" # take the name from the inventory file
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_ipfs

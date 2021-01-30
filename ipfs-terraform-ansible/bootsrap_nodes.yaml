@@ -1,0 +1,54 @@
+---
+# Deploy Elastic Search
+- name: Collect PeerIDs
+  hosts: [DigitalOcean, AWS]
+  tasks:
+    - name: Print the gateway for each host when defined
+      ansible.builtin.debug:
+        msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
+      when: ansible_default_ipv4.gateway is defined
+
+    - name: Check ID
+      command: 'docker exec -it {{ inventory_hostname }} ipfs id -f="<id>\n"'
+      register: ipfs_peer_id
+
+    - name: print id
+      debug:
+        var: ipfs_peer_id.stdout
+        verbosity: 2
+
+    # - name: Get docker container name
+    #   docker_container:
+
+    - name: Set bootstrap node1 Peer ID
+      set_fact:
+        { "{{ inventory_hostname }}_peer_id": "{{ipfs_peer_id.stdout}}" }
+
+    - name: it would be...
+      debug:
+        msg: "peer ID is: {{ipfs_peer_id.stdout}}"
+
+- name: Use facts
+  hosts: [DigitalOcean, AWS]
+  tasks:
+    - name: print ipfs0 peer id
+      debug:
+        msg: "{{ hostvars['ipfs0']['ipfs0_peer_id'] }}"
+
+    - name: print ipfs1 peer id
+      debug:
+        msg: "{{ hostvars['ipfs2']['ipfs2_peer_id'] }}"
+#   # vars:
+#   agent_name: "cluster0_bootstrap"
+#   agent_tags: "cluster0"
+#   agent_provider: "6" # <=== replace this
+#   network_name: "syntropynet"
+#   subnet: 172.20.0.0/24
+#   ipfs_node_multiaddress: 172.20.0.2
+#   ipfs_listen_multiaddress: 172.20.0.3
+#   ipfs_name: ipfs0
+#   cluster_name: cluster0
+# roles:
+#   - create_docker_network
+#   - launch_syntropy_agent
+#   - launch_ipfs

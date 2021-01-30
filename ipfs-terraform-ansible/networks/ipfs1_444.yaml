@@ -1,0 +1,73 @@
+connections:
+  gateway:
+    connect_to:
+      ipfs0:
+        id: 918
+        services: []
+        type: endpoint
+      ipfs11:
+        id: 916
+        services: []
+        type: endpoint
+      ipfs6:
+        id: 917
+        services: []
+        type: endpoint
+    id: 919
+    services: []
+    type: endpoint
+  ipfs0:
+    connect_to:
+      gateway:
+        id: 919
+        services: []
+        type: endpoint
+      ipfs11:
+        id: 916
+        services: []
+        type: endpoint
+      ipfs6:
+        id: 917
+        services: []
+        type: endpoint
+    id: 918
+    services: []
+    type: endpoint
+  ipfs11:
+    connect_to:
+      gateway:
+        id: 919
+        services: []
+        type: endpoint
+      ipfs0:
+        id: 918
+        services: []
+        type: endpoint
+      ipfs6:
+        id: 917
+        services: []
+        type: endpoint
+    id: 916
+    services: []
+    type: endpoint
+  ipfs6:
+    connect_to:
+      gateway:
+        id: 919
+        services: []
+        type: endpoint
+      ipfs0:
+        id: 918
+        services: []
+        type: endpoint
+      ipfs11:
+        id: 916
+        services: []
+        type: endpoint
+    id: 917
+    services: []
+    type: endpoint
+id: 444
+name: ipfs1
+state: present
+topology: P2M

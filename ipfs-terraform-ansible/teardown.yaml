@@ -24,3 +24,23 @@
         networks: yes
         volumes: yes
         builder_cache: yes
+
+    - name: remove data directory
+      become: yes
+      become_user: root
+      command: rm -rf ~/data
+
+    - name: get the username running the deploy
+      become: false
+      command: whoami
+      register: host_username
+
+    - name: rm with file
+      become: yes
+      become_user: root
+      ansible.builtin.file:
+        path: ~/data
+        state: directory
+        recurse: yes
+        owner: "{{host_username.stdout}}"
+        group: "{{host_username.stdout}}"

@@ -9,9 +9,8 @@
     network_name: "syntropynet"
     subnet: 172.20.0.0/24
     ipfs_node_multiaddress: 172.20.0.2
-    ipfs_listen_multiaddress: 172.20.0.3
-    ipfs_name: ipfs0
-    cluster_name: cluster0
+    ipfs_listen_multiaddress: 172.20.0.3 # TODO: remove this
+    ipfs_name: { { inventory_hostname } } # take the name from the inventory file
   roles:
     - create_docker_network
     - launch_syntropy_agent
@@ -28,8 +27,7 @@
     subnet: 172.21.0.0/24
     ipfs_node_multiaddress: 172.21.0.2
     ipfs_listen_multiaddress: 172.21.0.3
-    ipfs_name: ipfs1
-    cluster_name: cluster1
+    ipfs_name: { { inventory_hostname } } # take the name from the inventory file
   roles:
     - create_docker_network
     - launch_syntropy_agent
@@ -45,39 +43,8 @@
     subnet: 172.22.0.0/24
     ipfs_node_multiaddress: 172.22.0.2
     ipfs_listen_multiaddress: 172.22.0.3
-    ipfs_name: ipfs2
-    cluster_name: cluster2
+    ipfs_name: { { inventory_hostname } } # take the name from the inventory file
   roles:
     - create_docker_network
     - launch_syntropy_agent
     - launch_ipfs
-# # Deploy Elastic Search
-# - name: Deploy IPFS Cluster
-#   hosts: [DigitalOcean]
-#   vars:
-#     ipfs_node_multiaddress: 172.21.0.2
-#     ipfs_listen_multiaddress: 172.21.0.3
-#     ipfs_name: ipfs1
-#     cluster_name: cluster1
-#   roles:
-#     - launch_ipfs
-#     - launch_ipfs_cluster
-
-# Deploy Elastic Search
-# - name: Deploy IPFS Cluster
-#   hosts: [GCP]
-#   vars:
-#     agent_name: "cluster2_bootstrap"
-#     agent_tags: "cluster2"
-#     agent_provider: "3" # <=== replace this
-#     network_name: "syntropynet"
-#     subnet: 172.21.0.0/24
-#     ipfs_node_multiaddress: 172.21.0.2
-#     ipfs_listen_multiaddress: 172.21.0.3
-#     ipfs_name: ipfs2
-#     cluster_name: cluster2
-#   roles:
-#     - create_docker_network
-#     - launch_syntropy_agent
-#     - launch_ipfs
-#     - launch_ipfs_cluster
