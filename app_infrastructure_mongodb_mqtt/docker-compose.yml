@@ -16,8 +16,6 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-    expose: 
-      - 5672
   jvs_1_api:
     build:
       context: ./jvs_1_api
