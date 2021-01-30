@@ -5,8 +5,7 @@ connections:
   ipfs:
     state: present
     services:
-      - gateway
-      - ipfs0
+      - ipfs0_gateway
       - ipfs1
       - ipfs2
       - ipfs3

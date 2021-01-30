@@ -1,0 +1,26 @@
+---
+- name: Collect IPFS Node Peer IDs
+  hosts: [all]
+  roles:
+    - remove_bootstrap_peers
+    - collect_ipfs_peer_ids
+
+- name: Read back Peer IDs
+  hosts: all
+  tasks:
+    - name: print ipfs1 peer id
+      debug:
+        msg: "{{peer_id}}"
+# - name: Bootstrap gateway
+#   hosts: gateway
+#   tasks:
+#     # - debug:
+#     #     msg: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs0']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs0']['peer_id']}}"
+#     - name: Add DigitalOcean Bootstrap peer
+#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs0']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs0']['peer_id']}}"
+
+#     - name: Add GCP Bootstrap peer
+#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs5']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs5']['peer_id']}}"
+
+#     - name: Add AWS Bootstrap peer
+#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs10']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs10']['peer_id']}}"

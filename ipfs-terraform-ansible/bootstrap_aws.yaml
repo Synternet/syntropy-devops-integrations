@@ -1,0 +1,42 @@
+- name: Bootstrap AWS Node
+  hosts: ipfs11
+  tasks:
+    - include_role:
+        name: bootstrap_add_peers
+      vars:
+        container: ipfs11
+        node_host_ip: "{{data.node_host_ip}}"
+        node_peer_id: "{{data.node_peer_id}}"
+      loop:
+        - {
+            node_host_ip: "{{hostvars['ipfs12']['ipfs_host']}}",
+            node_peer_id: "{{hostvars['ipfs12']['peer_id']}}",
+          }
+        - {
+            node_host_ip: "{{hostvars['ipfs13']['ipfs_host']}}",
+            node_peer_id: "{{hostvars['ipfs13']['peer_id']}}",
+          }
+        - {
+            node_host_ip: "{{hostvars['ipfs14']['ipfs_host']}}",
+            node_peer_id: "{{hostvars['ipfs14']['peer_id']}}",
+          }
+        - {
+            node_host_ip: "{{hostvars['ipfs15']['ipfs_host']}}",
+            node_peer_id: "{{hostvars['ipfs15']['peer_id']}}",
+          }
+      loop_control:
+        loop_var: data
+
+  #   - name: loop over nodes and add bootstrap peer
+  #     include_role:
+  #       name: bootstrap_add_peers
+  #     vars:
+  #       container: ipfs10
+  #       node_host_ip: "{{hostvars[item]}}.peer_Id"
+  #       node_peer_id: "hostvars.{{item}}.peer_id"
+  #     with_items:
+  #       - ipfs11
+  #       - ipfs12
+  #       - ipfs13
+  #       - ipfs14
+  #       - ipfs15

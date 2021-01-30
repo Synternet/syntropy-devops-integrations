@@ -28,7 +28,7 @@
     - name: remove data directory
       become: yes
       become_user: root
-      command: rm -rf ~/data
+      command: sudo rm -rf ~/data
 
     - name: get the username running the deploy
       become: false

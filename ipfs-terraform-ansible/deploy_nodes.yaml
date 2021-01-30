@@ -1,7 +1,7 @@
 ---
 # Deploy Elastic Search
 - name: Deploy IPFS Node
-  hosts: [all]
+  hosts: [digital_ocean, google_cloud, aws]
   vars:
     agent_name: "{{inventory_hostname}}"
     agent_tags: "ipfs"
@@ -10,4 +10,20 @@
   roles:
     - create_docker_network
     - launch_syntropy_agent
-    - launch_ipfs
+    - launch_ipfs_node
+
+# Deploy Gateway IPFS Node
+- name: Deplog Gaeway IPFS node with Nginx
+  hosts: gateway
+  vars:
+    agent_name: "{{inventory_hostname}}"
+    agent_tags: "ipfs, gateway"
+    network_name: "syntropynet"
+    ipfs_name: "{{inventory_hostname}}" # take the name from the inventory file
+    network_name: "syntropynet"
+  roles:
+    - create_docker_network
+    - launch_syntropy_agent
+    - launch_gateway_ipfs_node
+    - launch_nginx_proxy
+    - launch_letsencrypt_companion

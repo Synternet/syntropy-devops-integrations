@@ -1,16 +1,21 @@
 ---
 all:
   children:
-    digital_ocean:
+    gateway:
       hosts:
-        gateway:
+        ipfs0_gateway:
           ansible_connection: ssh
           ansible_host: "104.248.119.80"
           ansible_user: root
           subnet: "172.100.0.0/24"
           ipfs_host: "172.100.0.2"
+      vars:
+        agent_provider: "6"
+        agent_tags: digitalocean
 
-        ipfs0:
+    digital_ocean:
+      hosts:
+        ipfs1:
           ansible_connection: ssh
           ansible_host: "134.209.171.54"
           ansible_user: root

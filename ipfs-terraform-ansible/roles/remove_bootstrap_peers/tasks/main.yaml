@@ -1,0 +1,3 @@
+---
+- name: Remove all peers in Bootstrap list
+  command: "docker exec -it {{inventory_hostname}} ipfs bootstrap rm --all"
