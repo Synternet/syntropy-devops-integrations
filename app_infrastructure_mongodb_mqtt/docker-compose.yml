@@ -6,7 +6,6 @@ services:
     environment:
       - MONGO_INITDB_DATABASE=jvs_1_api
     volumes:
-      - ./jvs_1_api/init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js:ro
       - ./mongo-volume:/data/db
     ports:
       - "27017:27017"
