@@ -5,6 +5,7 @@ secrets.yaml
 
 # Move this file
 roles/launch_ipfs/files/swarm.key
+roles/launch_gateway_ipfs_node/files/swarm.key
 
 NOTES.md
 
