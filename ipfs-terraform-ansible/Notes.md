@@ -1,6 +1,6 @@
 https://medium.com/@s_van_laar/deploy-a-private-ipfs-network-on-ubuntu-in-5-steps-5aad95f7261b
 
-https://medium.com/rahasak/ipfs-cluster-with-docker-db2ec20a6cc1
+https://medium.com/rahasak/ipfs-cluster-with-docker-db2ec20a6cc1 # <===
 
 https://github.com/ipfs/ipfs-cluster/issues/612
 
@@ -15,6 +15,9 @@ https://blog.ipfs.io/1-run-ipfs-on-docker/
 https://discuss.ipfs.io/t/can-i-make-a-private-ipfs-network-of-public-external-ips-this-would-require-my-own-gateway-as-well/5509
 
 https://github.com/subhodi/ipfs-cluster-private
+
+https://mrh.io/mrhio-ipfs-hosting/
+
 
 The Cluster peer communicates with the IPFS daemon using the HTTP API (localhost:5001). Therefore, the IPFS daemon must be launched and running separately.
 
@@ -80,3 +83,19 @@ The IPFS Cluster API can be configured with Basic Authentication support.
 ipfs-cluster-ctl --basic-auth <username:password> will use the given credentials to perform the request.
 
 Note that unless --force-http is passed, using basic-auth is only supported on HTTPS requests or using the libp2p API endpoint (which uses an encrypted channel).
+
+Configuring IP for communication
+
+Inside the .ipfs folder, there is a “config” file. It contains a lot of settings including the network details on which our IPFS nodes will work on. Open this config file and find “Addresses”. It will look like this:
+
+"Addresses": {
+"API": "/ip4/192.168.10.1/tcp/5001",
+"Announce": [],
+"Gateway": "/ip4/192.168.10.1/tcp/8080",
+"NoAnnounce": [],
+"Swarm": [
+"/ip4/0.0.0.0/tcp/4001",
+"/ip6/::/tcp/4001"
+]
+},
+The IP mentioned in the API is the one on which IPFS will bind on for communication. By default, it’s localhost (127.0.0.1), so to enable our nodes to “see” each other we need to set this parameter accordingly to each node’s IP. Gateway parameter is for access from the browser.

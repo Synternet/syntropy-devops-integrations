@@ -7,3 +7,5 @@ secrets.yaml
 roles/launch_ipfs/files/swarm.key
 
 NOTES.md
+
+sample.config.json

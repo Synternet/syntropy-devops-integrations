@@ -2,6 +2,15 @@
 # tasks file for launch_syntropy_agent
 - include_vars: ../../../secrets.yaml
 
+- name: Create data directory if it doesn't exist
+  command: mkdir -p ./data/{{cluster_name}}
+
+- name: Copy swarm key
+  copy:
+    src: swarm.key
+    dest: ./data/{{cluster_name}}
+    mode: "0644"
+
 - name: Launch IPFS Cluster
   docker_container:
     image: ipfs/ipfs-cluster:latest
