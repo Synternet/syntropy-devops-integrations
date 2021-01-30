@@ -29,7 +29,7 @@ Providers' ids can be found [here](https://docs.syntropystack.com/docs/syntropy-
 
 Next, you have to create a Docker network
 ```
-sudo docker network create --subnet 172.10.0.0 syntropynet
+sudo docker network create --subnet 172.10.0.0/24 syntropynet
 ```
 and start Nginx container
 ```
