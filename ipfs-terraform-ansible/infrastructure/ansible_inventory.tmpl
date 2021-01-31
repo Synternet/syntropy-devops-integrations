@@ -1,4 +1,8 @@
 [aws]
 %{ for index, ip in ec2_instance_ips ~}
-${ec2_hostnames[index]["Name"]} ansible_host=${ip} ansible_connection=ssh ansible_user=ubuntu 
+${ec2_tags[index]["Hostname"]} ansible_host=${ip} ansible_connection=ssh ansible_user=ubuntu subnet=${ec2_tags[index]["Subnet"]} ipfs_host=${ec2_tags[index]["IPFS_host"]}
 %{ endfor ~}
+
+[aws:vars]
+agent_provider="1"
+agent_tags="aws"

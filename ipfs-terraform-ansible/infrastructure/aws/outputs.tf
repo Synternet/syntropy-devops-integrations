@@ -1,4 +1,4 @@
-output "hostnames" {
+output "tags" {
   value = aws_instance.dev_ipfs.*.tags
 }
 

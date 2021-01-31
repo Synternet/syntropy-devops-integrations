@@ -27,7 +27,9 @@ resource "aws_instance" "dev_ipfs" {
   }
 
   tags = {
-    Name = "${element(var.instance_tags, count.index)}"
+    Hostname  = element(var.instance_tags_hostname, count.index)
+    Subnet    = element(var.instance_tags_subnets, count.index)
+    IPFS_host = element(var.instance_tags_ipfs_hosts, count.index)
     "Terraform" : "true"
   }
 }
