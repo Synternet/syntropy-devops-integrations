@@ -18,6 +18,11 @@ https://github.com/subhodi/ipfs-cluster-private
 
 https://mrh.io/mrhio-ipfs-hosting/
 
+https://www.youtube.com/watch?v=kaueUSiDrc0
+
+https://willschenk.com/articles/2019/setting_up_an_ipfs_node/
+
+CLI documentation: https://docs.ipfs.io/reference/cli/#ipfs-bootstrap-rm
 
 The Cluster peer communicates with the IPFS daemon using the HTTP API (localhost:5001). Therefore, the IPFS daemon must be launched and running separately.
 
@@ -28,7 +33,7 @@ The Gateway address is the address that the daemon will serve the gateway interf
 
 Cluster peers form an separate, isolated libp2p [private] network, which uses the cluster_secret (a 32-bit hex-encoded passphrase present in the configuration of every peer).
 
-This means that Cluster peers will normally need their own bootstrappers (it can be any peer in the Cluster), although sometimes they can rely on mDNS discovery.
+**_This means that Cluster peers will normally need their own bootstrappers (it can be any peer in the Cluster), although sometimes they can rely on mDNS discovery._**
 
 This also means that Cluster peers operate separately from IPFS with regards to NAT hole punching, ports etc.
 
@@ -99,3 +104,46 @@ Inside the .ipfs folder, there is a “config” file. It contains a lot of sett
 ]
 },
 The IP mentioned in the API is the one on which IPFS will bind on for communication. By default, it’s localhost (127.0.0.1), so to enable our nodes to “see” each other we need to set this parameter accordingly to each node’s IP. Gateway parameter is for access from the browser.
+
+## Source env vars in container
+
+$MYVAR in the command
+
+docker exec -i "$MYCONTNAME" /bin/bash -c "source /etc/profile.d/custom.sh; echo $MYVAR"
+will be expanded before /bin/bash -c is executed (since it's in double quotes).
+
+Instead, use single quotes:
+
+docker exec -i "$MYCONTNAME" /bin/bash -c 'source /etc/profile.d/custom.sh; echo $MYVAR'
+Alternatively (untested),
+
+docker exec -i "$MYCONTNAME" /usr/bin/env BASH_ENV=/etc/profile.d/custom.sh /bin/bash -c 'echo $MYVAR'
+If BASH_ENV is set when a non-interactive shell is started (with e.g. bash -c), the file that the variable points to will be sourced before the shell runs its commands.
+
+# New
+
+# Terraform
+
+https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean
+
+https://learn.hashicorp.com/collections/terraform/aws-get-started
+
+https://learn.hashicorp.com/collections/terraform/azure-get-started
+
+https://learn.hashicorp.com/collections/terraform/gcp-get-started
+
+Need to have Google Cloud Shell installed
+Service account key
+
+Doesn't matter what order terraform reads the files in
+
+To start by installing plugins: ` cd infrastructure && terraform init`
+
+To check: `terraform plan`
+
+To deploy: `terraform apply`
+
+# AWS
+
+Create a separate keypair (for all)
+Have credentials in [default] at ~/.aws/credentials

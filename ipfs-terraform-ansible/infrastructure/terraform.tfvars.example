@@ -1,0 +1,3 @@
+ec2_ssh_public_key_file = "~/.ssh/id_rsa.pub"
+ec2_keypair_name       = "syntropy"
+ec2_image_id           = "ami-0885b1f6bd170450c" // ubuntu 20.04 LTS

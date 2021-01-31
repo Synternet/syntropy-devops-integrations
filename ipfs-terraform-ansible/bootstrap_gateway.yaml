@@ -6,9 +6,8 @@
         name: bootstrap_add_peers
       vars:
         container: ipfs0_gateway
-        node_host_ip: "{{data.node_host_ip}} | default({})"
-        node_peer_id: "{{data.node_peer_id}} | default({}) "
-      when: "{{data.node_host_ip}}" is defined
+        node_host_ip: "{{data.node_host_ip}}"
+        node_peer_id: "{{data.node_peer_id}}"
       loop:
         - {
             node_host_ip: "{{hostvars['ipfs1']['ipfs_host']}}",
@@ -16,7 +15,7 @@
           }
         - {
             node_host_ip: "{{hostvars['ipfs6']['ipfs_host']}}",
-            node_peer_id: "{{hostvars['ipfs6]['peer_id']}}",
+            node_peer_id: "{{hostvars['ipfs6']['peer_id']}}",
           }
         - {
             node_host_ip: "{{hostvars['ipfs11']['ipfs_host']}}",

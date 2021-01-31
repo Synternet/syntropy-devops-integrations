@@ -1,0 +1,4 @@
+[aws]
+%{ for index, ip in ec2_instance_ips ~}
+${ec2_hostnames[index]["Name"]} ansible_host=${ip} ansible_connection=ssh ansible_user=ubuntu 
+%{ endfor ~}
