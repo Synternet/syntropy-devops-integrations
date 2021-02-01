@@ -1,0 +1,16 @@
+---
+- include_vars: ../../../secrets.yaml
+
+- name: Launch letsencrypt
+  docker_container:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    name: letsencrypt-nginx
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env:
+      DEFAULT_EMAIL: "{{letsencrypt_email}}"
+    purge_networks: yes
+    networks:
+      - name: "{{network_name}}"

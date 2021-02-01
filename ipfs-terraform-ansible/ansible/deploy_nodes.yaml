@@ -1,0 +1,38 @@
+---
+# # Deploy Elastic Search
+# - name: Deploy IPFS Node
+#   hosts: [digitalocean, gcp, aws]
+#   vars:
+#     agent_name: "{{inventory_hostname}}"
+#     agent_tags: "ipfs"
+#     network_name: "syntropynet"
+#     ipfs_name: "{{inventory_hostname}}" # take the name from the inventory file
+#   roles:
+#     - create_docker_network
+#     - launch_syntropy_agent
+#     - launch_ipfs_node
+
+# # Deploy Gateway IPFS Node
+# - name: Deplog Gateway IPFS node with Nginx
+#   hosts: gateway
+#   vars:
+#     agent_name: "{{inventory_hostname}}"
+#     agent_tags: "ipfs, gateway"
+#     network_name: "syntropynet"
+#     ipfs_name: "{{inventory_hostname}}" # take the name from the inventory file
+#     network_name: "syntropynet"
+#   roles:
+#     - create_docker_network
+#     - launch_syntropy_agent
+#     - launch_gateway_ipfs_node
+#     - launch_nginx_proxy
+#     - launch_letsencrypt_companion
+
+- name: Configure Peers
+  import_playbook: configure_peers.yaml
+
+- name: Bootstrap Gateway
+  import_playbook: bootstrap_gateway.yaml
+
+- name: Bootstrap AWS
+  import_playbook: bootstrap_aws.yaml

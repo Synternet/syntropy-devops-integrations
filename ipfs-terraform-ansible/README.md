@@ -70,3 +70,15 @@ If you need more information about how to create the JSON file for authenticatio
 Enable the following APIs on the project where your VPC resides:
 Compute Engine API → https://console.cloud.google.com/apis/library/compute.googleapis.com
 Cloud Resource Manager API → https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com
+
+# sequeencee
+
+- run `terraform plan`
+- run `terraform apply`
+- run `ansible-playbook provision_hosts.yaml -i inventory -vv`
+- copy swarm.key into roles
+- run `ansible-playbook deploy_nodes.yaml -i inventory -vv`
+
+- run `syntropynac configure-networks networks/ipfs.yml`
+
+**We add the ansible cfg file to prevent host key checking**

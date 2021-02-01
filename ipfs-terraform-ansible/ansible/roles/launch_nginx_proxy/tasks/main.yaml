@@ -1,0 +1,26 @@
+---
+- include_vars: ../../../secrets.yaml
+
+- name: Copy DuckDNS htpasswd credentials
+  copy:
+    content: "{{htpasswd_credentials}}" # <====== from your secrets.yml
+    dest: "~/{{duck_dns_domain}}" # <====== from your secrets.yml
+    mode: "0644"
+
+- name: Launch Nginx proxy
+  docker_container:
+    image: jwilder/nginx-proxy
+    name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "~/{{duck_dns_domain}}:/etc/nginx/htpasswd/{{duck_dns_domain}}" # <====== USES YOUR HTPASSWD CREDENTIALS
+      - /etc/nginx/vhost.d
+      - /etc/nginx/certs
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: true
+    purge_networks: yes
+    networks:
+      - name: "{{network_name}}"

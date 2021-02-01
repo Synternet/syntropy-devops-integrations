@@ -1,0 +1,3 @@
+---
+- name: Bootstrap Peer
+  command: "docker exec -it {{container}} ipfs bootstrap add /ip4/{{node_host_ip}}/tcp/4001/p2p/{{node_peer_id}}"

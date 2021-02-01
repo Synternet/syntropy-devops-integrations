@@ -1,0 +1,41 @@
+---
+# tasks file for launch_syntropy_agent
+- include_vars: ../../../secrets.yaml
+
+- name: Create data directory if it doesn't exist
+  command: mkdir -p ./data/{{ipfs_name}}
+
+- name: Create data directory if it doesn't exist
+  command: mkdir -p /tmp/ipfs-docker-staging
+
+# - name: Create a directory if it does not exist
+#   file:
+#     path: "./data/{{ipfs_name}}"
+#     state: directory
+#     mode: "0755"
+
+- name: Copy swarm key
+  copy:
+    src: swarm.key
+    dest: ./data/{{ipfs_name}}
+    mode: "0644"
+
+- name: Launch IPFS
+  docker_container:
+    image: ipfs/go-ipfs:latest
+    name: "{{ipfs_name}}"
+    env:
+      LIBP2P_FORCE_PNET: "1" # need to add swarm key (might not need this)
+      # IPFS_SWARM_KEY_FILE: /path/to/file # could use this instead
+      # IPFS_SWARM_KEY: "{{swarm_key}}"
+    ports:
+      #   - "4001:4001" # ipfs swarm - expose if needed/wanted
+      # - "5001:5001" # ipfs api - expose if needed/wanted
+      - "8080:8080" # ipfs gateway - expose if needed/wanted
+      - "127.0.0.1:5001:5001"
+    volumes:
+      - "./data/{{ipfs_name}}:/data/ipfs"
+      - /tmp/ipfs-docker-staging:/export
+    purge_networks: yes
+    networks:
+      - name: syntropynet

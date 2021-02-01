@@ -30,7 +30,7 @@ resource "aws_instance" "dev_ipfs" {
     Hostname  = element(var.instance_tags_hostname, count.index)
     Subnet    = element(var.instance_tags_subnets, count.index)
     IPFS_host = element(var.instance_tags_ipfs_hosts, count.index)
-    "Terraform" : "true"
+    Name      = "ipfs${count.index + 11}"
   }
 }
 
@@ -46,10 +46,10 @@ resource "aws_security_group" "ipfs_sec" {
     cidr_blocks = ["0.0.0.0/0"] //var.whitelisted_deploy_ids // 123.4.5.6/32 the "/32" means only 1 IP address
   }
 
-  egress { // todo: block this
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+  egress { // we need to fetch packages etc
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"] // 123.4.5.6/32 the "/32" means only 1 IP address
   }
 
