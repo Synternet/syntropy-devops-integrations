@@ -1,6 +1,0 @@
-[aws]
-ipfs11 ansible_host=35.173.180.220 ansible_connection=ssh ansible_user=ubuntu 
-ipfs12 ansible_host=54.237.212.93 ansible_connection=ssh ansible_user=ubuntu 
-ipfs13 ansible_host=18.209.34.56 ansible_connection=ssh ansible_user=ubuntu 
-ipfs14 ansible_host=54.159.82.136 ansible_connection=ssh ansible_user=ubuntu 
-ipfs15 ansible_host=18.232.131.24 ansible_connection=ssh ansible_user=ubuntu 

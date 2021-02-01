@@ -145,5 +145,5 @@ To deploy: `terraform apply`
 
 # AWS
 
+create AIM users and put it at [syntropy] at ~/.aws/credentials
 Create a separate keypair (for all)
-Have credentials in [default] at ~/.aws/credentials

@@ -1,11 +1,11 @@
 ---
 - name: Bootstrap gateway Node
-  hosts: ipfs0_gateway
+  hosts: ipfs0-gateway
   tasks:
     - include_role:
         name: bootstrap_add_peers
       vars:
-        container: ipfs0_gateway
+        container: ipfs0-gateway
         node_host_ip: "{{data.node_host_ip}}"
         node_peer_id: "{{data.node_peer_id}}"
       loop:

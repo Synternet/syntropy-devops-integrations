@@ -58,3 +58,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# AUTH
+auth/*.json
+auth/*.key
+
+ansible/inventory
