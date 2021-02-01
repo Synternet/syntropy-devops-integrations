@@ -1,0 +1,11 @@
+name: CDS4
+state: present
+topology: p2m
+connections:
+    curl-client:
+        type: endpoint
+        connect_to:
+            nginx-server:
+                type: endpoint
+                services:
+                    - nginx
