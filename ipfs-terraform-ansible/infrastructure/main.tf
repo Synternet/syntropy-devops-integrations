@@ -11,3 +11,13 @@ module "digitalocean_cluster" {
   do_token = var.do_token
   pvt_key  = var.pvt_key
 }
+
+module "gcp_cluster" {
+  source        = "./gcp"
+  gcp_region_1  = var.gcp_region_1
+  gcp_zone_1    = var.gcp_zone_1
+  gcp_auth_file = var.gcp_auth_file
+  app_project   = var.app_project
+  # GCP Netwok
+  public_subnet_cidr_1 = var.public_subnet_cidr_1
+}

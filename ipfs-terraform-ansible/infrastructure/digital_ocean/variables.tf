@@ -18,14 +18,3 @@ variable "droplet_host_number" {
   default = ["101", "102", "103", "105", "105"]
 }
 
-
-# variable "instance_tags_subnets" {
-#   type    = list(string)
-#   default = ["172.101.0.0/24", "172.102.0.0/24", "172.103.0.0/24", "172.104.0.0/24", "172.105.0.0/24"]
-# }
-
-
-# variable "instance_tags_ipfs_hosts" {
-#   type    = list(string)
-#   default = ["172.101.0.2", "172.102.0.2", "172.103.0.2", "172.104.0.2", "172.105.0.2"]
-# }

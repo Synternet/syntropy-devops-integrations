@@ -16,7 +16,7 @@ terraform {
     }
 
   }
-  required_version = ">= 0.13"
+  required_version = ">= 0.13, < 0.14"
 }
 
 provider "aws" {
@@ -28,5 +28,12 @@ provider "aws" {
 
 provider "digitalocean" {
   token = var.do_token
+}
+
+provider "google" {
+  project     = var.app_project
+  credentials = file(var.gcp_auth_file)
+  region      = var.gcp_region_1
+  zone        = var.gcp_zone_1
 }
 

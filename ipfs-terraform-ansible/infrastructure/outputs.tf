@@ -6,6 +6,8 @@ resource "local_file" "ansible_inventory" {
     droplet_ips          = module.digitalocean_cluster.droplet_ip_addresses
     droplet_host_numbers = module.digitalocean_cluster.host_numbers
     droplet_names        = module.digitalocean_cluster.droplet_names
+    gcp_metadata         = module.gcp_cluster.metadata
+    gcp_ips              = module.gcp_cluster.vm_ips
   })
   filename = "../ansible/inventory_terra"
 }

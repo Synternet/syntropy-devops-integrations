@@ -14,6 +14,15 @@ ${droplet_names[index]} ansible_host=${ip} ansible_connection=ssh ansible_user=r
 agent_provider="6"
 agent_tags="digitalocean"
 
+[gcp]
+%{ for index, ip in gcp_ips ~}
+${gcp_metadata[index]["hostname"]} ansible_host=${ip} ansible_connection=ssh ansible_user=craigpick subnet=172.${gcp_metadata[index]["host_number"]}.0.0/24 ipfs_host=172.${gcp_metadata[index]["host_number"]}.0.2
+%{ endfor ~}
+
+[gcp:vars]
+agent_provider="3"
+agent_tags="gcp"
+
 [aws]
 %{ for index, ip in ec2_instance_ips ~}
 ${ec2_tags[index]["Hostname"]} ansible_host=${ip} ansible_connection=ssh ansible_user=ubuntu subnet=${ec2_tags[index]["Subnet"]} ipfs_host=${ec2_tags[index]["IPFS_host"]}
@@ -22,3 +31,6 @@ ${ec2_tags[index]["Hostname"]} ansible_host=${ip} ansible_connection=ssh ansible
 [aws:vars]
 agent_provider="1"
 agent_tags="aws"
+
+
+
