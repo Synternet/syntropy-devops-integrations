@@ -1,0 +1,9 @@
+---
+name: { { network_name } }
+state: { { network_state } }
+topology: mesh
+connections:
+  ipfs:
+    state: present
+    services: { { root_services } }
+    type: tag

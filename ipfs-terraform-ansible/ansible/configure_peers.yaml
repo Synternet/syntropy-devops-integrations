@@ -1,26 +1,48 @@
 ---
-- name: Collect IPFS Node Peer IDs
-  hosts: [all]
-  roles:
-    - remove_bootstrap_peers
-    - collect_ipfs_peer_ids
+# - name: Collect IPFS Node Peer IDs
+#   hosts: [all]
+#   roles:
+#     - remove_bootstrap_peers
+#     - collect_ipfs_peer_ids
 
-- name: Read back Peer IDs
-  hosts: all
+- name: Add Group Peer IDs to config file
+  hosts: localhost
+  vars:
+    my_group: "gcp"
+    config_file: "./config/gcp"
   tasks:
-    - name: print ipfs1 peer id
-      debug:
-        msg: "{{peer_id}}"
-# - name: Bootstrap gateway
-#   hosts: gateway
-#   tasks:
-#     # - debug:
-#     #     msg: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs0']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs0']['peer_id']}}"
-#     - name: Add DigitalOcean Bootstrap peer
-#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs0']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs0']['peer_id']}}"
+    - set_fact:
+        my_hosts: "{{ groups|
+          dict2items|
+          selectattr('key', 'match', my_group)|
+          map(attribute='value')|
+          list|
+          flatten }}"
+    - debug:
+        msg: "{{item}}: {{hostvars[item].peer_id}}"
+      loop: "{{ my_hosts }}"
+    - name: Save Peer IDs to config file
+      ansible.builtin.lineinfile:
+        path: "{{config_file}}"
+        line: "{{hostvars[item].ipfs_host}},{{hostvars[item].peer_id}}"
+        create: yes
+      loop: "{{ my_hosts }}"
 
-#     - name: Add GCP Bootstrap peer
-#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs5']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs5']['peer_id']}}"
-
-#     - name: Add AWS Bootstrap peer
-#       command: "docker exec -it gateway ipfs bootstrap add /ip4/{{hostvars['ipfs10']['ipfs_host']}}/tcp/4001/p2p/{{hostvars['ipfs10']['peer_id']}}"
+# Copy the file to the bootstrap host
+- name: Copy peerconfig to host
+  hosts: ["ipfs6"]
+  vars:
+    src: ./config/gcp
+    dest: ~/gcp
+  tasks:
+    - name: Copy config to host
+      ansible.builtin.copy:
+        src: ./config/gcp
+        dest: ~/gcp
+        mode: "0644"
+    - name: Bootsrap Peers
+      command: "docker exec -it {{inventory_hostname}} ipfs bootstrap add /ip4/{{host}}/tcp/4001/p2p/{{id}}"
+      vars:
+        host: "{{ item.split(',')[0] }}"
+        id: "{{ item.split(',')[1] }}"
+      with_lines: cat "./config/gcp"

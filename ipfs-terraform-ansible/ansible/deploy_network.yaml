@@ -1,0 +1,25 @@
+---
+- name: Deploy IPFS network
+  hosts: localhost
+  vars:
+    tag: "ipfs"
+    network_name: "ipfs-mesh"
+    network_services:
+      - ipfs0-gateway
+      - ipfs1
+      - ipfs2
+      - ipfs3
+      - ipfs4
+      - ipfs5
+      - ipfs6
+      - ipfs7
+      - ipfs8
+      - ipfs9
+      - ipfs10
+      - ipfs11
+      - ipfs12
+      - ipfs13
+      - ipfs14
+      - ipfs15
+  roles:
+    - create_syntropy_p2p_network
