@@ -9,5 +9,5 @@ resource "local_file" "ansible_inventory" {
     gcp_metadata         = module.gcp_cluster.metadata
     gcp_ips              = module.gcp_cluster.vm_ips
   })
-  filename = "../ansible/inventory_terra"
+  filename = "../ansible/inventory"
 }

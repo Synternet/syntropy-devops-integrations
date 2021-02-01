@@ -1,3 +1,18 @@
-ec2_ssh_public_key_file = "~/.ssh/id_rsa.pub"
-ec2_keypair_name       = "syntropy"
-ec2_image_id           = "ami-0885b1f6bd170450c" // ubuntu 20.04 LTS
+#AWS
+ssh_public_key_file      =  "~/.ssh/syntropy_rsa.pub"
+ec2_keypair_name        =  "syntropy_rsa"
+ec2_image_id            =  "ami-0885b1f6bd170450c" // ubuntu 20.04 LTS
+
+# Digital Ocean
+do_token                = ""
+pvt_key                 = "~/.ssh/syntropy_rsa"
+
+# GCP Settings
+app_project   = "syntropy-examples"
+gcp_region_1  = "us-central1"
+gcp_zone_1    = "us-central1-a"
+gcp_auth_file  = "../auth/syntropy-terraform.json"
+
+public_subnet_cidr_1  = "10.10.1.0/24"
+app_name              = "ipfs"
+app_domain            = "syntropy"
