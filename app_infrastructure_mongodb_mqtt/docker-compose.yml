@@ -1,0 +1,46 @@
+version: '3.4'
+services:
+  mongo:
+    image: 'mongo:latest'
+    hostname: "mongo"
+    environment:
+      - MONGO_INITDB_DATABASE=jvs_1_api
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - "27017:27017"
+  rabbit:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  jvs_1_api:
+    build:
+      context: ./jvs_1_api
+      target: dev
+    volumes:
+      - ./jvs_1_api/.env:/app/.env
+    ports:
+      - '8848:8848'
+    command: sh -c "/wait && yarn start:dev"
+    environment:
+    - WAIT_HOSTS=mongo:27017
+    - WAIT_HOSTS_TIMEOUT=300
+    - WAIT_SLEEP_INTERVAL=5
+    - WAIT_HOST_CONNECT_TIMEOUT=30
+  jvs_1_calc:
+    build:
+      context: ./jvs_1_calc
+      target: dev
+    volumes:
+      - ./jvs_1_calc/.env:/app/.env
+    ports:
+      - '8849:8849'
+    command: sh -c "/wait && yarn start:dev"
+    environment:
+      - WAIT_HOSTS=rabbit:5672
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=5
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+      

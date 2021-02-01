@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  jvs_1_api:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .env:/app/.env
+    ports:
+      - '8848:8848'
