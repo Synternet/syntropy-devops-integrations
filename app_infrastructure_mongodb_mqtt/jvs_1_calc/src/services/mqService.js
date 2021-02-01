@@ -31,7 +31,6 @@ export async function setupMqListener() {
     logger.info(`Awaiting RPC requests ..`);
 
     channel.consume(q, msg => {
-        console.log(msg.content.toString())
         const n = parseInt(msg.content.toString());
         logger.info(`Calculating fibonacci for ${n}`);
         const fib = fibonacci(n);
