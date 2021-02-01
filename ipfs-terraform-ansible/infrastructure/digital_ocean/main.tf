@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "syntropy_ipfs_gateway" {
 }
 
 resource "digitalocean_droplet" "syntropy_ipfs" {
-  count              = 2
+  count              = 5
   image              = "ubuntu-20-04-x64"
   name               = "ipfs${count.index + 1}"
   region             = "nyc1"
@@ -53,22 +53,20 @@ resource "digitalocean_droplet" "syntropy_ipfs" {
     create_before_destroy = true // TODO: dont destrop becaue of IP
   }
 
-  # tags = [
-  #   element(var.instance_tags_hostname, count.index),
-  #   element(var.instance_tags_subnets, count.index),
-  #   element(var.instance_tags_ipfs_hosts, count.index)
-  # ]
-
+  tags = [element(var.droplet_host_number, count.index)]
 }
 
 output "droplet_ip_addresses" {
   value = digitalocean_droplet.syntropy_ipfs.*.ipv4_address
-  #   value = {
-  #     for droplet in digitalocean_droplet.syntropy_ipfs:
-  #     droplet.name => droplet.ipv4_address
-  #   }
 }
 
 output "droplet_gateway_address" {
   value = digitalocean_droplet.syntropy_ipfs_gateway.ipv4_address
+}
+output "host_numbers" {
+  value = digitalocean_droplet.syntropy_ipfs[*].tags
+}
+
+output "droplet_names" {
+  value = digitalocean_droplet.syntropy_ipfs.*.name
 }
