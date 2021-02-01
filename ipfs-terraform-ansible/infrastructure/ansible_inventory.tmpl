@@ -1,3 +1,19 @@
+[gateway]
+ipfs0_gateway ansible_host=${gateway_ip} ansible_connection=ssh ansible_user=root 
+
+[gateway:vars]
+agent_provider="6"
+agent_tags="digitalocean"
+
+[digitalocean]
+%{ for index, ip in droplet_ips ~}
+ansible_host=${ip} ansible_connection=ssh ansible_user=root 
+%{ endfor ~}
+
+[digitalocean:vars]
+agent_provider="6"
+agent_tags="digitalocean"
+
 [aws]
 %{ for index, ip in ec2_instance_ips ~}
 ${ec2_tags[index]["Hostname"]} ansible_host=${ip} ansible_connection=ssh ansible_user=ubuntu subnet=${ec2_tags[index]["Subnet"]} ipfs_host=${ec2_tags[index]["IPFS_host"]}

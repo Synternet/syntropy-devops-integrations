@@ -2,7 +2,7 @@ terraform {
   required_providers {
     digitalocean = {
       source  = "digitalocean/digitalocean"
-      version = "~> 1.22.2"
+      version = ">= 2.4.0"
     }
 
     aws = {
@@ -16,6 +16,7 @@ terraform {
     }
 
   }
+  required_version = ">= 0.13"
 }
 
 provider "aws" {
@@ -23,5 +24,9 @@ provider "aws" {
   region                  = "us-east-1"
   shared_credentials_file = "~/.aws/credentials"
   # alias   = "aws-east"
+}
+
+provider "digitalocean" {
+  token = var.do_token
 }
 

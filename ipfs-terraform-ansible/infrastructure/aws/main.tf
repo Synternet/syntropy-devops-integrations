@@ -62,5 +62,5 @@ resource "aws_security_group" "ipfs_sec" {
 
 resource "aws_key_pair" "deployer" {
   key_name   = var.ec2_keypair_name
-  public_key = file("${var.ssh_public_key_file}")
+  public_key = file(var.ssh_public_key_file)
 }

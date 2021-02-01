@@ -12,3 +12,13 @@ variable "ec2_image_id" {
   type        = string
   description = "ID of EC2 Ubuntu AMI" // stored in terraform.tfvars
 }
+
+variable "do_token" {
+  type        = string
+  description = "Digital Ocean personal access token"
+}
+
+variable "pvt_key" {
+  type        = string
+  description = "Location of SSH private key"
+}
