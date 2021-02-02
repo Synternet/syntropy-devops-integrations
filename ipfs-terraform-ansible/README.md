@@ -2,7 +2,7 @@
 <img src="images/header.jpg">
 </p>
 
-This examples describes how to use the **Syntropy Stack** to create a private IPFS swarm network with 16 nodes. Terraform is used to create the cloud infrastructure across three separate cloud providers. The virtual machines are then configured using Ansible. Ansible is also used to creat the Syntropy Network and the connections between the Nodes.
+This examples describes how to use the **Syntropy Stack** to create a private IPFS swarm network with 16 nodes. Terraform is used to create the cloud infrastructure across three separate cloud providers. Three nodes will be used to bootstrap the swarm network by adding lists of peers. Ansible is used to provision the Virtual Machines (VMs) by installing the required dependencies, to deploy the applications, create the Syntropy Network , and to create the connections between the Nodes.
 
 ![system](images/system_diagram.png)
 
@@ -205,7 +205,7 @@ Check the Syntropy UI's `End-points` section to ensure your nodes are all online
 
 # Bootstrap the IPFS nodes
 
-A private IPFS swarm network needs to provide a list of peers to bootstrapping nodes. Run the `configure_peers.yaml` playbook to add the peers to the bootstrap lists of the bootstrap nodes.
+A private IPFS swarm network needs to provide a list of peers to the bootstrap nodes (`ipfs1`, `ipfs6`, and `ipfs11`). Run the `configure_peers.yaml` playbook to add the peers to the bootstrap lists of the bootstrap nodes.
 
 ```
 ansible-playbook configure_peers.yaml -i inventory -vv
@@ -213,10 +213,10 @@ ansible-playbook configure_peers.yaml -i inventory -vv
 
 # Create the Syntropy network
 
-Create the Syntropy Network using the SyntropyNAC command line utility.
+Create the Syntropy Network using the `deploy_network.yaml` playbook.
 
 ```
-syntropynac configure-networks networks/ipfs.yml
+ansible-playbook deploy_network.yaml -i inventory -vv
 ```
 
 Confirm your network is online via Syntropy UI and that the connections have been made.
@@ -301,7 +301,7 @@ Testing my interplanetary filesystem
 
 So, we can see that our file is accessible from a different IPFS, and thus across the entire swarm. The final step is to access the file in a browser via our gateway.
 
-# Access the gateway
+# Access the private IPFS gateway
 
 Be aware, you will be prompted for a username and password when entering your gateway URL as the Gateway's Nginx proxy has been configured for basic authentication. Use the values stored in your `ansible/secrets.yaml` file. Your DuckDNS domain will be followed by `/ipfs/your_cid`.
 
