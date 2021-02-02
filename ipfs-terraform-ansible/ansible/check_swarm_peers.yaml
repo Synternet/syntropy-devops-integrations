@@ -1,0 +1,10 @@
+---
+- name: Check swarm peers
+  hosts: [all]
+  tasks:
+    - name: Swarm peers command
+      command: "docker exec -it {{inventory_hostname}} ipfs swarm peers"
+      register: result
+
+    - debug:
+        msg: "{{result.stdout}}"

@@ -32,3 +32,12 @@
     line: "{{hostvars[item].ipfs_host}},{{hostvars[item].peer_id}}"
     create: yes
   loop: "{{ my_hosts }}"
+
+- name: Add Gateway Peer
+  vars:
+    config_file: "config/{{group}}"
+  ansible.builtin.lineinfile:
+    path: "{{config_file}}"
+    line: "{{hostvars['ipfs0-gateway'].ipfs_host}},{{hostvars['ipfs0-gateway'].peer_id}}"
+    create: yes
+  when: add_gateway

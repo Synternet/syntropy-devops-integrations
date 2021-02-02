@@ -4,7 +4,7 @@
   vars:
     host: "{{ item.split(',')[0] }}"
     id: "{{ item.split(',')[1] }}"
-  with_lines: "cat ./config/{{group}}"
+  with_lines: "cat ./config/{{group_config_file}}"
 
-- name: List bootsrap Peers
+- name: List bootstrap Peers
   command: "docker exec -it {{inventory_hostname}} ipfs bootstrap list"

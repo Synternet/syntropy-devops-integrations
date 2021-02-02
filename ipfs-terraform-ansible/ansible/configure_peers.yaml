@@ -6,18 +6,49 @@
     - collect_ipfs_peer_ids
 
 ## Collect Peer IDs and store them in a file
-- name: Create Peer config file
+- name: Create Peer config file for Digital Ocean
   hosts: [localhost]
   vars:
-    group: "all"
+    group: "digitalocean"
+    add_gateway: true
+  roles:
+    - create_peer_config_file
+
+- name: Create Peer config file for GCP
+  hosts: [localhost]
+  vars:
+    group: "gcp"
+    add_gateway: true
+  roles:
+    - create_peer_config_file
+
+- name: Create Peer config file for AWS
+  hosts: [localhost]
+  vars:
+    group: "aws"
+    add_gateway: true
   roles:
     - create_peer_config_file
 
 ##### BOOOTSTRAP NODES #########
 
-- name: Bootstrap Gateway
-  hosts: [all]
+- name: Bootstrap DigitalOcean
+  hosts: [digitalocean]
   vars:
-    group: "all"
+    group_config_file: "digitalocean"
+  roles:
+    - bootstrap_add_peers
+
+- name: Bootstrap aws
+  hosts: [aws]
+  vars:
+    group_config_file: "aws"
+  roles:
+    - bootstrap_add_peers
+
+- name: Bootstrap gcp
+  hosts: [gcp]
+  vars:
+    group_config_file: "gcp"
   roles:
     - bootstrap_add_peers
