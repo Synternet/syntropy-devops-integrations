@@ -147,3 +147,30 @@ To deploy: `terraform apply`
 
 create AIM users and put it at [syntropy] at ~/.aws/credentials
 Create a separate keypair (for all)
+
+## Digital ocean terraform
+
+````
+❯ terraform init
+Initializing modules...
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Using previously-installed hashicorp/google v3.5.0
+- Using previously-installed hashicorp/local v2.0.0
+- Using previously-installed digitalocean/digitalocean v2.4.0
+- Using previously-installed hashicorp/aws v2.70.0
+- Finding latest version of hashicorp/digitalocean...
+
+Error: Failed to install providers
+
+Could not find required providers, but found possible alternatives:
+
+  hashicorp/digitalocean -> digitalocean/digitalocean
+
+If these suggestions look correct, upgrade your configuration with the
+following command:
+    terraform 0.13upgrade digital_ocean
+    ```
+````

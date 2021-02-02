@@ -2,7 +2,7 @@
 
 # Create VM #1
 resource "google_compute_instance" "syntropy_ipfs" {
-  count        = 5
+  count        = 2
   name         = "ipfs${count.index + 6}"
   machine_type = "f1-micro"
   zone         = var.gcp_zone_1

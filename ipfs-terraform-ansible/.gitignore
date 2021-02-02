@@ -64,3 +64,4 @@ auth/*.json
 auth/*.key
 
 ansible/inventory
+ansible/config/all

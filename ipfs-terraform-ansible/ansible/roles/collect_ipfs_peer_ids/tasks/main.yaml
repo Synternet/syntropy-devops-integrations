@@ -8,13 +8,9 @@
   command: 'docker exec -it {{ inventory_hostname }} ipfs id -f="<id>\n"'
   register: ipfs_peer_id
 
-- name: print id
+- name: print peer id
   debug:
-    var: ipfs_peer_id.stdout
-    verbosity: 2
+    msg: "{{inventory_hostname}} peer id: {{ipfs_peer_id.stdout}}"
 
-#     # - name: Get docker container name
-#     #   docker_container:
-
-- name: Set host Peer ID fact
+- name: Set host Peer ID as fact
   set_fact: { peer_id: "{{ipfs_peer_id.stdout}}" }

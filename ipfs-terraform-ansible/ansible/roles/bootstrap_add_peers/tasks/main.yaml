@@ -1,3 +1,10 @@
 ---
-- name: Bootstrap Peer
-  command: "docker exec -it {{container}} ipfs bootstrap add /ip4/{{node_host_ip}}/tcp/4001/p2p/{{node_peer_id}}"
+- name: Bootsrap Peers
+  command: "docker exec -it {{inventory_hostname}} ipfs bootstrap add /ip4/{{host}}/tcp/4001/p2p/{{id}}"
+  vars:
+    host: "{{ item.split(',')[0] }}"
+    id: "{{ item.split(',')[1] }}"
+  with_lines: "cat ./config/{{group}}"
+
+- name: List bootsrap Peers
+  command: "docker exec -it {{inventory_hostname}} ipfs bootstrap list"
