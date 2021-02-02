@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "syntropy_ipfs_gateway" {
 }
 
 resource "digitalocean_droplet" "syntropy_ipfs" {
-  count              = 2
+  count              = 5
   image              = "ubuntu-20-04-x64"
   name               = "ipfs${count.index + 1}"
   region             = "nyc1"

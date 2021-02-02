@@ -65,3 +65,6 @@ auth/*.key
 
 ansible/inventory
 ansible/config/all
+ansible/config/gcp
+ansible/config/aws
+ansible/config/digitalocean

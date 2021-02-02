@@ -191,7 +191,7 @@ For this example, we'll use [DuckDNS](https://www.duckdns.org/). DuckDNS is a fr
 
 ![duckdns](images/duckdns.jpg)
 
-Create a subdomain, for example `syntropylog3` and update your current IP using your `kibana-nginx` VM's public IP address. Next, add your subdomain to the `secrets.yaml` file.
+Create a subdomain, for example `syntropylog3` (yours will need to be unique, ie different to this) and update your current IP using your `kibana-nginx` VM's public IP address. Next, add your subdomain to the `secrets.yaml` file.
 
 ```
 duck_dns_domain: "syntropylog3.duckdns.org"

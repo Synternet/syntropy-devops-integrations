@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "syntropy_ipfs" {
 }
 
 resource "aws_instance" "dev_ipfs" {
-  count = 2 // TODO: //how does this separate these
+  count = 5
 
   ami                         = var.ec2_image_id
   instance_type               = "t2.micro"
