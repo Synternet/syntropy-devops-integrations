@@ -1,0 +1,42 @@
+- name: Postgresql
+  hosts: all
+  roles:
+    - general
+    - docker
+- name: Launch Syntropy Agent  on server1
+  hosts: server1
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "server1"
+    SYNTROPY_AGENT_NAME: "Server1"
+    SYNTROPY_PROVIDER: "3" 
+  vars_files:
+    - vars/main.yml
+# Server 2
+- name: Launch Syntropy Agent  on server2
+  hosts: server2
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "server2"
+    SYNTROPY_AGENT_NAME: "Server2"
+    SYNTROPY_PROVIDER: "3"
+  vars_files:
+    - vars/main.yml
+
+# Server 3
+
+- name: Launch Syntropy Agent  on server3
+  hosts: server3
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "server3"
+    SYNTROPY_AGENT_NAME: "Server3"
+    SYNTROPY_PROVIDER: "3"
+  vars_files:
+    - vars/main.yml

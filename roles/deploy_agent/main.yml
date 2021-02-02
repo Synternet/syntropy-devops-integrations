@@ -1,0 +1,21 @@
+- name: Deploy Syntropy Agent
+  docker_container:
+   name: syntropy-agent
+   image: syntropynet/agent:stable
+   state: started
+   capabilities:
+     - NET_ADMIN
+     - SYS_MODULE
+   env: 
+     SYNTROPY_API_KEY: "{{ SYNTROPY_API_KEY }}"
+     SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER }}"
+     SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME }}"
+     SYNTROPY_TAGS: "{{ SYNTROPY_TAGS }}"
+     SYNTROPY_NETWORK_API: "docker"
+     SYNTROPY_LOG_LEVEL: "10"
+   restart: yes
+   restart_policy: always
+  register: result
+  until: result is success
+  retries: 5
+  delay: 30

@@ -1,0 +1,29 @@
+- name: Configure Docker
+  yum_repository:
+    name: docker_stable
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+    gpgcheck: true
+    gpgkey: https://download.docker.com/linux/centos/gpg
+  become: yes
+  become_user: root
+- name: install Docker and dependencies
+  yum:
+    name: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-python"] 
+    state: latest
+  become: yes
+  become_user: root
+- name: enable and start Docker systemd service
+  systemd:
+    name: docker 
+    state: started
+    enabled: yes
+  become: yes
+  become_user: root
+- name: add centos user to Docker group
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+  become: yes
+  become_user: root
