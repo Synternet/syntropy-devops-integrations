@@ -1,5 +1,19 @@
 ---
-# Deploy Elastic Search
+# Copy the private swarm.key file to IPFS roles
+- name: Copy swarm key
+  hosts: [localhost]
+  tasks:
+    - name: Copy key to launch_ipfs_node role
+      copy:
+        src: ../auth/swarm.key
+        dest: roles/launch_ipfs_node/files/swarm.key
+
+    - name: Copy key to launch_gateway_ipfs_node role
+      copy:
+        src: ../auth/swarm.key
+        dest: roles/launch_gateway_ipfs_node/files/swarm.key
+
+# Deploy The IPFS Nodes
 - name: Deploy IPFS Node
   hosts: [digitalocean, gcp, aws]
   vars:
