@@ -195,7 +195,7 @@ View the contents of the file using `cat ./swarm.key` and copy it to your clipbo
 1285fc.......................................4821fc
 ```
 
-On your local machine create a new file, Eg. `vim swarm.key` and paste the contents into it. You need to copy this file and place it in both `ansible/roles/launch_ipfs_node/files/swarm.key` and `ansbile/roles/launch_gateway_ipfs_node/files/swarm.key`. Delete the original file. The `swarm.key` will be copied to the nodes during the Ansible deploy. Next, deploy the nodes.
+On your local machine create a new file named `swarm.key` in the `auth/` directory, Eg. `vim auth/swarm.key` and paste the contents into it. Ansible will take care of distributing the `swarm.key` file to your roles, which will in turn copy the files across to your VMs to be mounted by the `go-ipfs` container. Next, deploy the nodes.
 
 `ansible-playbook deploy_ipfs_nodes.yaml -i inventory -vv`
 
