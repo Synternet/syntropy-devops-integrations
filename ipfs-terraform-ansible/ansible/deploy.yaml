@@ -1,9 +1,0 @@
----
-- name: Provision VMs
-  import_playbook: provision_hosts.yaml
-
-- name: Deploy IPFS nodes
-  import_playbook: provision_hosts.yaml
-
-- name: Bootstrap IPFS nodes
-  import_playbook: configure_peers.yaml

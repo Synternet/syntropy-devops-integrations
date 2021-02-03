@@ -24,13 +24,6 @@
       VIRTUAL_PORT: "8080" # expose the port for Nginx
       LETSENCRYPT_HOST: "{{duck_dns_domain}}"
       LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
-      # IPFS_SWARM_KEY_FILE: /path/to/file # could use this instead
-      # IPFS_SWARM_KEY: "{{swarm_key}}"
-    ports:
-      #   - "4001:4001" # ipfs swarm - expose if needed/wanted
-      # - "5001:5001" # ipfs api - expose if needed/wanted
-      # - "127.0.0.1:8080:8080" # ipfs gateway - expose if needed/wanted
-      # - "127.0.0.1:5001:5001"
     volumes:
       - "./data/{{ipfs_name}}:/data/ipfs"
       - /tmp/ipfs-docker-staging:/export

@@ -1,4 +1,5 @@
 ---
+# Add bootstrap peers from local config file
 - name: Bootsrap Peers
   command: "docker exec -it {{inventory_hostname}} ipfs bootstrap add /ip4/{{host}}/tcp/4001/p2p/{{id}}"
   vars:
@@ -8,3 +9,8 @@
 
 - name: List bootstrap Peers
   command: "docker exec -it {{inventory_hostname}} ipfs bootstrap list"
+  register: output
+
+# print list to the console
+- debug:
+    msg: "{{output.stdout}}"

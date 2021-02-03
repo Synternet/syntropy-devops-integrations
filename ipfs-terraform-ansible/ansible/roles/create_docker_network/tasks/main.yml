@@ -1,5 +1,5 @@
 ---
-# tasks file for create_docker_network
+# Create the internal Docker bridge network
 - debug:
     msg: Create docker network on subnet - "{{subnet}}"
 

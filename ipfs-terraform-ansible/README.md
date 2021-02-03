@@ -173,11 +173,15 @@ Lastly, we use [letsencrypt-nginx-proxy-companion](https://github.com/nginx-prox
 letsencrypt_email: "" # your email address to attach to your letsencrypt cert
 ```
 
-# Deploy the IPFS nodes
+# Provision the VMs
 
-Navigate to the `ansible/` directory using `cd ../ansible`. First, provision your VMs by installing Docker, Wireguard, and the required Python dependencies.
+Each VM requires Docker, Wireguard, and certain Python dependencies. The installation of these is automated using the `provision_hosts.yaml` playbook. Navigate to the `ansible/` directory using `cd ../ansible` and run the plays.
 
 `ansible-playbook provision_hosts.yaml -i inventory -vv`
+
+Once the VMs are provisioned, they're ready to run the IPFS nodes.
+
+# Deploy the IPFS nodes
 
 Before deploying the IPFS network, you need to generate a swarm key which ensures your network is private and prevents unauthorized peers from joining the network.
 
@@ -208,7 +212,7 @@ Check the Syntropy UI's `End-points` section to ensure your nodes are all online
 A private IPFS swarm network needs to provide a list of peers to the bootstrap nodes (`ipfs1`, `ipfs6`, and `ipfs11`). Run the `configure_peers.yaml` playbook to add the peers to the bootstrap lists of the bootstrap nodes.
 
 ```
-ansible-playbook configure_peers.yaml -i inventory -vv
+ansible-playbook bootstrap_ipfs_node.yaml -i inventory -vv
 ```
 
 # Create the Syntropy network
@@ -303,7 +307,7 @@ So, we can see that our file is accessible from a different IPFS, and thus acros
 
 # Access the private IPFS gateway
 
-Be aware, you will be prompted for a username and password when entering your gateway URL as the Gateway's Nginx proxy has been configured for basic authentication. Use the values stored in your `ansible/secrets.yaml` file. Your DuckDNS domain will be followed by `/ipfs/your_cid`.
+Be aware, you will be prompted for a username and password when entering your gateway URL as the Gateway's Nginx proxy has been configured for basic authentication. Use the values stored in your `ansible/secrets.yaml` file. Your DuckDNS domain will be followed by `/ipfs/<your_cid>`.
 
 Eg.
 

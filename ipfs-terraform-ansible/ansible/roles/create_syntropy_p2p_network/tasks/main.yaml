@@ -1,9 +1,0 @@
----
-# tasks file for create_syntropy_network
-- name: Create Syntropy Network
-  syntropynet.syntropy.syntropy_template:
-    template_path: "./roles/create_syntropy_p2p_network/files/ipfs.yaml"
-    template_params:
-      network_name: "{{network_name}}"
-      network_state: present
-      root_services: "{{network_services}}"
