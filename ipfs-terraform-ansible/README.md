@@ -113,6 +113,34 @@ aws_secret_access_key="your_secret_access_key_here"
 - Enable the Compute Engine API
 - Enable the Resource Manager API
 
+# Create the hosting infrastructure
+
+Navigate to the `infrastructure/` directory and initialize the Terraform working directory. This will download the required provider modules etc.
+
+```
+terraform init
+```
+
+Create the execution plan.
+
+```
+terraform plan
+```
+
+Inspect the generated plan and, if everything looks satisfactory, apply the changes. You'll be asked to enter a value of `yes` to execute the plan.
+
+```
+terraform apply
+```
+
+Login to your various cloud provider consoles to confirm your VMs are running. If you run into any problems with any of the above steps, you can change the log level for Terraform to receive more information using:
+
+```
+export TF_LOG=1
+```
+
+Terraform generates your Ansible inventory automagically using the `infrastructure/ansible_inventory.tmpl` file and places it at `ansible/inventory`. Inspect the file to confirm each of your `[digitalocean]`, `[gcp]`, and `[aws]` groups contain configuration for its five hosts.
+
 # Prepare the Nginx proxy for the gateway
 
 Before you can configure the proxy playbook you need to configure your DNS and set your `htpasswd` credentials.
@@ -144,34 +172,6 @@ Lastly, we use [letsencrypt-nginx-proxy-companion](https://github.com/nginx-prox
 ```
 letsencrypt_email: "" # your email address to attach to your letsencrypt cert
 ```
-
-# Create the hosting infrastructure
-
-Navigate to the `infrastructure/` directory and initialize the Terraform working directory. This will download the required provider modules etc.
-
-```
-terraform init
-```
-
-Create the execution plan.
-
-```
-terraform plan
-```
-
-Inspect the generated plan and, if everything looks satisfactory, apply the changes. You'll be asked to enter a value of `yes` to execute the plan.
-
-```
-terraform apply
-```
-
-Login to your various cloud provider consoles to confirm your VMs are running. If you run into any problems with any of the above steps, you can change the log level for Terraform to receive more information using:
-
-```
-export TF_LOG=1
-```
-
-Terraform generates your Ansible inventory automagically using the `infrastructure/ansible_inventory.tmpl` file and places it at `ansible/inventory`. Inspect the file to confirm each of your `[digitalocean]`, `[gcp]`, and `[aws]` groups contain configuration for its five hosts.
 
 # Deploy the IPFS nodes
 
