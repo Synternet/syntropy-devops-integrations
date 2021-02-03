@@ -1,22 +1,43 @@
-- name: Postgresql
+- name: Initial setup
+  become: yes
+  become_user: root
   hosts: all
   roles:
     - general
     - docker
-- name: Launch Syntropy Agent  on server1
-  hosts: server1
+#Server 1
+- name: Launch Syntropy Agent on server1
+  become: yes
+  become_user: root
+  hosts: pgmaster
   roles:
     - deploy_agent
   vars:
     SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
     SYNTROPY_TAGS: "server1"
     SYNTROPY_AGENT_NAME: "Server1"
-    SYNTROPY_PROVIDER: "3" 
+    SYNTROPY_PROVIDER: "3"
   vars_files:
     - vars/main.yml
+
+# Pgpool
+- name: Launch Syntropy Agent  on server2
+  become: yes
+  become_user: root
+  hosts: pgpool
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_TAGS: "pgpool"
+    SYNTROPY_AGENT_NAME: "pgpool"
+    SYNTROPY_PROVIDER: "3"
+  vars_files:
+    - vars/main.yml
+
 # Server 2
 - name: Launch Syntropy Agent  on server2
-  hosts: server2
+  hosts: pgslave1
   roles:
     - deploy_agent
   vars:
@@ -28,9 +49,8 @@
     - vars/main.yml
 
 # Server 3
-
-- name: Launch Syntropy Agent  on server3
-  hosts: server3
+- name: Launch Syntropy Agent on server3
+  hosts: pgslave2
   roles:
     - deploy_agent
   vars:
@@ -40,3 +60,10 @@
     SYNTROPY_PROVIDER: "3"
   vars_files:
     - vars/main.yml
+
+- name: Install Pgpool
+  become: yes
+  become_user: root 
+  hosts: pgpool
+  roles:
+    - pgpool
