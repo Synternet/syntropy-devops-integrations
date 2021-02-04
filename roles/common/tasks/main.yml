@@ -1,0 +1,4 @@
+- name: Install Postgres container
+  docker_container:
+    name: postgres
+    image: postgres

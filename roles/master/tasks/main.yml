@@ -1,0 +1,41 @@
+---
+# - set_fact:
+#       postgres_version: "{% if ansible_distribution_version == '14.04' %}9.3{% elif ansible_distribution_version == '16.04' %}9.5{% else %}''{% endif %}"
+
+- name: Cheeck for the postgres service
+  service: 
+    name: postgresql
+    state: started
+
+
+#Include inventory file
+- include_vars: vars.yml
+
+
+#Create user with REPLICATION privileges  
+- postgresql_user: name=replicator password={{ repl_password }} role_attr_flags=REPLICATION
+  become: true
+  become_method: sudo
+  become_user: postgres
+
+#Create user with REPLICATION privileges  
+- postgresql_user: name=pgpool password='' db=postgres
+  become: true
+  become_method: sudo
+  become_user: postgres
+
+#Allow slave server to connect to master
+- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    replication     replicator     {{ hostvars[groups['slave'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+
+#Allow pgpool server to connect to master 
+- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    postgres     pgpool     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   trust"
+
+#Allow pgpool server to connect to master
+- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+
+#Allow pgpool server to connect to master
+- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+
+#restart postgres service for change
+- name: check the service started
+  service: name=postgresql  state=restarted
