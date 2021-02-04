@@ -1,0 +1,18 @@
+---
+- name: Create Syntropy Network
+  syntropynet.syntropy.syntropy_network:
+     api_url: https://controller-prod-server.syntropystack.com
+     api_token: '{{ api_token }}'
+     name: active-directory
+     state: present
+     topology: p2m
+     connections:
+       domain-controller:
+         state: present
+         type: endpoint
+         services: 
+           - samba-ad
+         connect_to:
+           domain-client: 
+             state: present
+             type: tag
