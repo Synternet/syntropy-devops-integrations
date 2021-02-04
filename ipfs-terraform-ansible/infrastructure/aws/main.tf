@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "syntropy_ipfs" {
 }
 
 resource "aws_instance" "dev_ipfs" {
-  count = 2
+  count = 5
 
   ami                         = var.ec2_image_id
   instance_type               = "t2.micro"
@@ -43,14 +43,14 @@ resource "aws_security_group" "ipfs_sec" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] //var.whitelisted_deploy_ids // 123.4.5.6/32 the "/32" means only 1 IP address
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress { // we need to fetch packages etc
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] // 123.4.5.6/32 the "/32" means only 1 IP address
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
 

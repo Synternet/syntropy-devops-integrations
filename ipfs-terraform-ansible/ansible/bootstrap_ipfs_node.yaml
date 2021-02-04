@@ -33,21 +33,21 @@
 ##### BOOOTSTRAP NODES #########
 
 - name: Bootstrap DigitalOcean
-  hosts: [digitalocean]
+  hosts: [ipfs1]
   vars:
     group_config_file: "digitalocean"
   roles:
     - bootstrap_add_peers
 
 - name: Bootstrap aws
-  hosts: [aws]
+  hosts: [ipfs6]
   vars:
     group_config_file: "aws"
   roles:
     - bootstrap_add_peers
 
 - name: Bootstrap gcp
-  hosts: [gcp]
+  hosts: [ipfs11]
   vars:
     group_config_file: "gcp"
   roles:

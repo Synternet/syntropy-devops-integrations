@@ -15,8 +15,9 @@ resource "google_compute_subnetwork" "public_subnet_1" {
 
 # allow http traffic
 resource "google_compute_firewall" "allow-http" {
-  name    = "ipfs-fw-allow-http"
-  network = google_compute_network.vpc.name
+  name      = "ipfs-fw-allow-http"
+  network   = google_compute_network.vpc.name
+  direction = "EGRESS"
   allow {
     protocol = "tcp"
     ports    = ["80"]
@@ -25,8 +26,9 @@ resource "google_compute_firewall" "allow-http" {
 }
 # allow https traffic
 resource "google_compute_firewall" "allow-https" {
-  name    = "ipfs-fw-allow-https"
-  network = google_compute_network.vpc.name
+  name      = "ipfs-fw-allow-https"
+  network   = google_compute_network.vpc.name
+  direction = "EGRESS"
   allow {
     protocol = "tcp"
     ports    = ["443"]

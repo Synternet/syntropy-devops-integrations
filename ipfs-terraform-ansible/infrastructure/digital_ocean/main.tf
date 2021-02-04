@@ -16,7 +16,7 @@ resource "digitalocean_droplet" "syntropy_ipfs_gateway" {
   ]
 
   lifecycle {
-    create_before_destroy = true // TODO: dont destrop becaue of IP
+    create_before_destroy = true
   }
 
   connection {
@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "syntropy_ipfs_gateway" {
 }
 
 resource "digitalocean_droplet" "syntropy_ipfs" {
-  count              = 2
+  count              = 5
   image              = "ubuntu-20-04-x64"
   name               = "ipfs${count.index + 1}"
   region             = "nyc1"
@@ -50,7 +50,7 @@ resource "digitalocean_droplet" "syntropy_ipfs" {
   }
 
   lifecycle {
-    create_before_destroy = true // TODO: dont destrop becaue of IP
+    create_before_destroy = true
   }
 
   tags = [element(var.droplet_host_number, count.index)]

@@ -1,7 +1,4 @@
-variable "whitelisted_deploy_ids" {
-  type    = list(string) // todo: check type
-  default = ["98.13.137.238/32"]
-}
+
 
 variable "ssh_public_key_file" {
   type        = string
