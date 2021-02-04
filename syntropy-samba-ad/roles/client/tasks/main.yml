@@ -1,37 +1,4 @@
 ---
-#   - name: Install aptitude using apt
-#     apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
-#
-#   - name: Install required system packages
-#     apt: name={{ item }} state=latest update_cache=yes
-#     loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
-#
-#   - name: Add Docker GPG apt Key
-#     apt_key:
-#       url: https://download.docker.com/linux/ubuntu/gpg
-#       state: present
-#
-#   - name: Add Docker Repository
-#     apt_repository:
-#       repo: deb https://download.docker.com/linux/ubuntu focal stable
-#       state: present
-#
-#   - name: Update apt and install docker-ce
-#     apt: update_cache=yes name=docker-ce state=latest
-#
-#   - name: Install Docker Module for Python
-#     pip:
-#       name: docker
-#
-#   - name: Create a network with custom IPAM config
-#     docker_network:
-#       name: syntropynet
-#       ipam_options:
-#         subnet: '{{subnet}}'
-
-#   - hostname:
-#       name: "{{ inventory_hostname }}"
-
    - name: Update package repository and install software
      apt: name={{ item }} state=present update_cache=yes
      with_items:
@@ -40,12 +7,6 @@
           - libnss-winbind
           - libpam-winbind
           - python-pexpect
-
-            #   - name: Comment out hosts
-            #     replace:
-            #       path: /etc/hosts
-            #       regexp: '^127.*$'
-            #       replace: '#REPLACED BY ANSIBLE'
    - name: remove localhost
      lineinfile:
        path: /etc/hosts
@@ -59,12 +20,6 @@
        owner: root
        group: root
        mode: '0644'
-
-       #   - name: Remove configuration files
-       #     file: path={{ item }} state=absent
-       #     with_items:
-       #          - /etc/resolv.conf
-       #          - /etc/samba/smb.conf
         
    - name: Create PAM winbind file
      file: path={{ item }} owner=root group=root mode=644 state=touch
@@ -77,14 +32,6 @@
        block: |
         127.0.0.1 {{ ansible_hostname }}.{{ domain | lower }} {{ ansible_hostname }} localhost
 
-        #   - name: add new DNS settings
-        #     blockinfile:
-        #       path: /etc/resolv.conf
-        #       block: |
-        #         nameserver 8.8.8.8 #{{ dc_ip }}     ##This is domain controller docker container IP
-        #         search {{ domain | lower }}
-
-
    - name: Generate Samba config
      template:
        src: templates/smb.conf.j2
@@ -93,31 +40,6 @@
        group: root
        mode: '0644'
 
- 
-        #   - name: Add new samba settings
-        #     blockinfile:
-        #       path: /etc/samba/smb.conf
-        #       block: |
-        #         [global]
-        #              security = ads
-        #              realm = {{ domain }}
-        #              password server = {{ dc_ip }}
-        #              workgroup = {{ workgroup }}
-        #              winbind refresh tickets = yes
-        #              winbind offline logon = true
-        #              idmap config {{ workgroup }}:backend = ad
-        #              idmap uid = 10000-20000
-        #              idmap gid = 10000-20000
-        #              winbind enum users = yes
-        #              winbind enum groups = yes
-        #              template homedir = /home/%D/%U
-        #              template shell = /bin/bash
-        #              client use spnego = yes
-        #              client ntlmv2 auth = yes
-        #              encrypt passwords = yes
-        #              winbind use default domain = yes
-        #              restrict anonymous = 2
-
    - name: copy /etc/nsswitch.conf
      copy:
        src=files/nsswitch.conf
@@ -125,21 +47,6 @@
        owner=0
        group=0
        mode=0644
- 
-              #   - name: Add winbind for user authentication
-              #     blockinfile:
-              #      path: /etc/nsswitch.conf
-              #      block: |
-              #        passwd:         compat winbind systemd
-              #        group:          compat winbind systemd
-              #        shadow:         compat winbind systemd
-              #        gshadow:        files
-              #        hosts:          files dns
-              #        networks:       files
-              #        protocols:      db files
-              #        services:       db files
-              #        ethers:         db files
-              #        rpc:            db files
  
    - name: AD join
      expect:
@@ -159,7 +66,6 @@
    - name: Get AD group SID
      shell: wbinfo -n "{{ allowed_group_name }}"
      register: sid
-
 
    - name: Fill in pam_winbind
      blockinfile:
@@ -197,10 +103,3 @@
      service:
        name=sshd
        state=reloaded
-
-   - name: Add administrator to sudoers
-     lineinfile:
-       path: /etc/sudoers
-       state: present
-       insertafter: EOF
-       line: 'administrator  ALL=(ALL:ALL) ALL'
