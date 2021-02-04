@@ -303,7 +303,7 @@ You should see the content of your file in the output:
 Testing my interplanetary filesystem
 ```
 
-So, we can see that our file is accessible from a different IPFS, and thus across the entire swarm. The final step is to access the file in a browser via our gateway.
+So, we can see that our file is accessible from a different IPFS node, and thus across the entire swarm. The final step is to access the file in a browser via our gateway.
 
 # Access the private IPFS gateway
 
