@@ -39,16 +39,16 @@
   roles:
     - bootstrap_add_peers
 
-- name: Bootstrap aws
+- name: Bootstrap gcp
   hosts: [ipfs6]
   vars:
-    group_config_file: "aws"
+    group_config_file: "gcp"
   roles:
     - bootstrap_add_peers
 
-- name: Bootstrap gcp
+- name: Bootstrap aws
   hosts: [ipfs11]
   vars:
-    group_config_file: "gcp"
+    group_config_file: "aws"
   roles:
     - bootstrap_add_peers

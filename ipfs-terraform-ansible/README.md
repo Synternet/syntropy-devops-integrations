@@ -2,7 +2,7 @@
 <img src="images/header.jpg">
 </p>
 
-This examples describes how to use the **Syntropy Stack** to create a private IPFS swarm network with 16 nodes. Terraform is used to create the cloud infrastructure across three separate cloud providers. Three nodes will be used to bootstrap the swarm network by adding lists of peers. Ansible is used to provision the Virtual Machines (VMs) by installing the required dependencies, to deploy the applications, create the Syntropy Network , and to create the connections between the Nodes.
+This example describes how to use the **Syntropy Stack** to create a private IPFS swarm network with 16 nodes. Terraform is used to create the cloud infrastructure across three separate cloud providers. Three nodes will be used to bootstrap the swarm network by adding lists of peers. Ansible is used to provision the Virtual Machines (VMs) by installing the required dependencies, to deploy the applications, create the Syntropy Network , and to create the connections between the Nodes.
 
 ![system](images/system_diagram.png)
 
