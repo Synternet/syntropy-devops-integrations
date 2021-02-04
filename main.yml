@@ -61,6 +61,13 @@
   vars_files:
     - vars/main.yml
 
+# Deploy Postgres
+- name: Install postgres
+  hosts: pgmaster, mgslave
+  roles:
+    - common
+
+# Install Pgpool
 - name: Install Pgpool
   become: yes
   become_user: root 

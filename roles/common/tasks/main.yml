@@ -2,3 +2,7 @@
   docker_container:
     name: postgres
     image: postgres
+    volumes:
+      - templates/postgres_master.j2:/etc/postgresql/postgresql.conf
+  
+
