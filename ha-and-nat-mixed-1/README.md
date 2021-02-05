@@ -13,7 +13,7 @@ To behind with, you have to install Syntropy Ansible Galaxy Collection:
 ```
 ansible-galaxy collection install git@github.com:SyntropyNet/syntropy-ansible-collection.git
 ```
-Then you have to navigate to local ansible directory and install Python dependencies:
+Then you have to navigate to the local ansible directory and install Python dependencies:
 ```
 pip3 install -r requirements.txt
 ```
@@ -22,17 +22,17 @@ or (at the time of writing this, it might change in the future. Up to date infor
 pip3 install syntropy-sdk syntropynac pyyaml jinja2
 ```
 
-Next you have to rename ``sample.secrets.yaml`` to ``secrets.yaml`` and input your agent token, which can be retrieved from [here](https://platform.syntropystack.com/).
+Next, you have to rename ``sample.secrets.yaml`` to ``secrets.yaml`` and input your agent token, which can be retrieved from [here](https://platform.syntropystack.com/).
 
 You have to rename ```sample.syntropyhosts.yaml``` to ```syntropyhosts.yaml``` and include information of your hosts
 
-You might also want to change the timezone used by the Home Assitant and provider of Syntropy Agent running on the remote server. To do that you have to modify the ``deploy.yaml`` file.
+You might also want to change the timezone used by the Home Assistant and provider of Syntropy Agent running on the remote server. To do that you have to modify the ``deploy.yaml`` file.
 
 ## Configuring virtual machines
 
-You have to install required dependencies:
-- Wireguard. Installation instructions can be found here
-- Docker. Installation instructions can be found here
+You have to install the required dependencies:
+- Wireguard. Installation instructions can be found [here](https://www.wireguard.com/install/)
+- Docker. Installation instructions can be found [here](https://docs.docker.com/get-docker/)
 - Docker Python SDK ``pip3 install docker``
 
 ### Host
