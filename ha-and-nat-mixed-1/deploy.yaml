@@ -1,0 +1,22 @@
+- name: Deploy HomeAssistant
+  hosts: homeassistant
+  vars:
+      subnet: 172.10.0.0/24
+      agent_name: "home-assistant"
+      agent_tags: "hass"
+      agent_provider: "3" # You might want to change this
+      timezone: "America/New_York" # You might want to change this
+  roles:
+      - deploy_syntropy_agent
+      - create_docker_network
+      - deploy_home_assistant
+
+- name: Configure Host
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+      agent_name: "client"
+      agent_tags: "hass"
+      agent_provider: ""
+  roles:
+      - deploy_syntropy_agent

@@ -1,0 +1,12 @@
+# Deploy Home Assistant
+- name: Deploy HomeAssistant
+  become: true
+  docker_container:
+      image: homeassistant/home-assistant:stable
+      name: home-assistant
+      env:
+          TZ: "{{timezone}}"
+      restart_policy: always
+      network_mode: syntropynet
+      volumes:
+          - /config

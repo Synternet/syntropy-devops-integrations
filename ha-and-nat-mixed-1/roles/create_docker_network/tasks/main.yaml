@@ -1,0 +1,7 @@
+# Create docker network
+- name: Create docker network
+  become: true
+  docker_network:
+      name: syntropynet
+      ipam_config:
+          - subnet: "{{subnet}}"
