@@ -55,7 +55,7 @@ sudo ansible-playbook deploy.yaml -i syntropyhosts.yaml
 ```
 
 ## Confirm that your endpoints are working
-Navigate to syntropy UI and you should see something like this:
+Navigate to Syntropy UI and you should see something like this:
 ![](./assets/hass3-endpoints.png)
 
 ## Network configuration
