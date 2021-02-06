@@ -53,12 +53,15 @@ pcp_socket_dir = '/var/run/postgresql'
                                    # /var/run/postgresql
                                    # (change requires restart)
 # - Backend Connection Settings -
-{% for member in pgpool_db_hosts %}
-backend_hostname{{ loop.index0 }} = '{{ member }}'
-backend_port{{ loop.index0 }} = 5432
-backend_weight{{ loop.index0 }} = 1
-backend_flag{{ loop.index0 }} = 'ALLOW_TO_FAILOVER'
-{% endfor %}
+backend_hostname0 = '35.234.144.249'
+backend_port0 = 5432
+backend_weight0 = 1
+backend_hostname0 = '34.105.206.15'
+backend_port0 = 5432
+backend_weight0 = 1
+backend_hostname0 = '35.197.200.64'
+backend_port0 = 5432
+backend_weight0 = 1
 # - Authentication -
 enable_pool_hba = {{enable_pool_hba}}
 #enable_pool_hba = off

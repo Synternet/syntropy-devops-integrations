@@ -1,39 +1,20 @@
----
-- name: Install Pgpool repo
-  yum:
-    name: https://www.pgpool.net/yum/rpms/4.1/redhat/rhel-7-x86_64/pgpool-II-release-4.1-2.noarch.rpm
-    state: present
-
-- name: Install Pgpool
-  yum:
-    name: pgpool-II-pg12
-    state: present
-
-- name: Set Pgpool configuration file
-  template: src=templates/pgpool.j2 dest=/etc/pgpool-II/pgpool.conf
-
-- name: Remove local trust login entry
-  lineinfile:
-    dest: /etc/pgpool-II/pool_hba.conf
-    regexp: "^local   all"
-    state: absent
-
-- name: Allow backend db login from pgpool
-  lineinfile:
-    dest: /etc/pgpool-II/pool_hba.conf
-    line: "local all all md5"
-      # regexp: "^#local all"
-
-- name: generate password for postgres login
-  shell: pg_md5 -u {{pool_user}} -m {{pool_user_password}}
-
-- name: Install failover script to path
-  template: 
-    src: templates/failover.sh.j2 
-    dest: /usr/bin/failover.sh
-    mode: 0755
-
-- name: Check for the postgres service
-  service: 
-    name: pgpool2
+#- name: Create docker network
+#  become: true
+#  become_user: root
+ # docker_network:
+   # name: syntropynet
+   # ipam_config:
+    #  - subnet: 10.44.0.0/16
+- name: Install Pgpool  container
+  docker_container:
+    name: pgpool
+    image: bitnami/pgpool
     state: started
+   # network_mode:
+     # - name: syntropynet
+    restart: yes
+    restart_policy: always
+  register: result
+  until: result is success
+  retries: 5
+  delay: 30

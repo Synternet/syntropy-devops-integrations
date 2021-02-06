@@ -5,8 +5,9 @@
   roles:
     - general
     - docker
-#Server 1
-- name: Launch Syntropy Agent on server1
+
+# Master
+- name: Launch Syntropy Agent on master node
   become: yes
   become_user: root
   hosts: pgmaster
@@ -14,14 +15,14 @@
     - deploy_agent
   vars:
     SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
-    SYNTROPY_TAGS: "server1"
-    SYNTROPY_AGENT_NAME: "Server1"
-    SYNTROPY_PROVIDER: "3"
+    SYNTROPY_TAGS: "{{ SYNTROPY_TAGS_M  }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_M  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_M  }}"
   vars_files:
     - vars/main.yml
 
 # Pgpool
-- name: Launch Syntropy Agent  on server2
+- name: Launch Syntropy Agenton Pgpool node
   become: yes
   become_user: root
   hosts: pgpool
@@ -29,65 +30,45 @@
     - deploy_agent
   vars:
     SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
-    SYNTROPY_TAGS: "pgpool"
-    SYNTROPY_AGENT_NAME: "pgpool"
-    SYNTROPY_PROVIDER: "3"
+    SYNTROPY_TAGS: "{{ SYNTROPY_TAGS_PG }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_PG  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_PG  }}"
   vars_files:
     - vars/main.yml
 
-# Server 2
-- name: Launch Syntropy Agent  on server2
+# Slave 1
+- name: Launch Syntropy Agent on slave1
   hosts: pgslave1
   roles:
     - deploy_agent
   vars:
     SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
-    SYNTROPY_TAGS: "server2"
-    SYNTROPY_AGENT_NAME: "Server2"
-    SYNTROPY_PROVIDER: "3"
+    SYNTROPY_TAGS: "{{ SYNTROPY_TAGS_S1 }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_S1  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_S1  }}"
   vars_files:
     - vars/main.yml
 
-# Server 3
-- name: Launch Syntropy Agent on server3
+# slave 2
+- name: Launch Syntropy Agent on slave2
   hosts: pgslave2
   roles:
     - deploy_agent
   vars:
     SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
-    SYNTROPY_TAGS: "server3"
-    SYNTROPY_AGENT_NAME: "Server3"
-    SYNTROPY_PROVIDER: "3"
+    SYNTROPY_TAGS: "{{ SYNTROPY_TAGS_S2 }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_S2  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_S2  }}"
   vars_files:
     - vars/main.yml
 
 # Deploy Postgres
-- name: Install postgres
+- name: Install and configure postgres for master
   become: yes
   become_user: root
   hosts: pgmaster, pgslave1, pgslave2
   roles:
-    - common
-
-# Master
-- name: Configure master
-  hosts: pgmaster
-  roles:
-    - master
-
-# Slave
-- name: COnfigure slave
-  hosts: pgslave1, pgslave2
-  roles:
-    - slave
-
-- name: configure master
-  hosts: pgmaster
-  become: yes
-  become_user: postgres
-  tasks:
-    - postgresql_user: name=rails password=secret role_attr_flags=SUPERUSER
-
+    - postgres
 # Install Pgpool
 - name: Install Pgpool
   become: yes

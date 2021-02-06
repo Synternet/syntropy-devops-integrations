@@ -1,16 +1,6 @@
 ---
 # - set_fact:
-#       postgres_version: "{% if ansible_distribution_version == '14.04' %}9.3{% elif ansible_distribution_version == '16.04' %}9.5{% else %}''{% endif %}"
-
-- name: Cheeck for the postgres service
-  service: 
-    name: postgresql
-    state: started
-
-
-#Include inventory file
-- include_vars: vars.yml
-
+#       postgres_version: "{% if ansible_distribution_version == '14.04' %}9.3{% elif ansible_distribution_version == '16.04' %}9.5{% else %}''{% endif %}
 
 #Create user with REPLICATION privileges  
 - postgresql_user: name=replicator password=root role_attr_flags=REPLICATION
