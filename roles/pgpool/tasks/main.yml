@@ -10,18 +10,18 @@
     state: present
 
 - name: Set Pgpool configuration file
-  template: src=templates/pgpool.j2 dest=/etc/pgpool2/pgpool.conf
+  template: src=templates/pgpool.j2 dest=/etc/pgpool-II/pgpool.conf
 
 - name: Remove local trust login entry
   lineinfile:
-    dest: /etc/pgpool2/pool_hba.conf
+    dest: /etc/pgpool-II/pool_hba.conf
     regexp: "^local   all"
     state: absent
 
 - name: Allow backend db login from pgpool
-    lineinfile:
-      dest: /etc/pgpool2/pool_hba.conf
-      line: "local all all md5"
+  lineinfile:
+    dest: /etc/pgpool-II/pool_hba.conf
+    line: "local all all md5"
       # regexp: "^#local all"
 
 - name: generate password for postgres login

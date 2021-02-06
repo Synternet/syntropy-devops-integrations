@@ -25,16 +25,16 @@
   become_user: postgres
 
 #Allow slave server to connect to master
-- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    replication     replicator     {{ hostvars[groups['slave'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+- lineinfile: dest="/etc/postgresql/pg_hba.conf" line="host    replication     replicator     {{ hostvars[groups['slave'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
 
 #Allow pgpool server to connect to master 
-- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    postgres     pgpool     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   trust"
+- lineinfile: dest="/etc/postgresql/pg_hba.conf" line="host    postgres     pgpool     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   trust"
 
 #Allow pgpool server to connect to master
-- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+- lineinfile: dest="/etc/postgresql/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
 
 #Allow pgpool server to connect to master
-- lineinfile: dest="/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
+- lineinfile: dest="/etc/postgresql/pg_hba.conf" line="host    all     all     {{ hostvars[groups['pgpool'][0]]['ansible_' + bind_interface]['ipv4']['address'] }}/32   md5"
 
 #restart postgres service for change
 - name: check the service started

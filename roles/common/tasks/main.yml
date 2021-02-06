@@ -2,7 +2,15 @@
   docker_container:
     name: postgres
     image: postgres
+    state: started
+    env:
+     POSTGRES_PASSWORD: root
     volumes:
-      - templates/postgres_master.j2:/etc/postgresql/postgresql.conf
-  
+      - /templates/postgres_master.j2:/etc/postgresql/postgresql.conf
+    restart: yes
+    restart_policy: always
+  register: result
+  until: result is success
+  retries: 5
+  delay: 30
 
