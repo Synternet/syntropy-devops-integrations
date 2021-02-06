@@ -13,7 +13,7 @@
 
 
 #Create user with REPLICATION privileges  
-- postgresql_user: name=replicator password={{ repl_password }} role_attr_flags=REPLICATION
+- postgresql_user: name=replicator password=root role_attr_flags=REPLICATION
   become: true
   become_method: sudo
   become_user: postgres
