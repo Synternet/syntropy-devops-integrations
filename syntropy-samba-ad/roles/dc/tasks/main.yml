@@ -1,0 +1,55 @@
+---
+     - name: Install aptitude using apt
+       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+ 
+     - name: Install required system packages
+       apt: name={{ item }} state=latest update_cache=yes
+       loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+ 
+     - name: Add Docker GPG apt Key
+       apt_key:
+         url: https://download.docker.com/linux/ubuntu/gpg
+         state: present
+ 
+     - name: Add Docker Repository
+       apt_repository:
+         repo: deb https://download.docker.com/linux/ubuntu focal stable
+         state: present
+ 
+     - name: Update apt and install docker-ce
+       apt: update_cache=yes name=docker-ce state=latest
+ 
+     - name: Install Docker Module for Python
+       pip:
+         name: docker
+
+     - name: Create a network with custom IPAM config
+       docker_network:
+         name: syntropynet 
+         ipam_options:
+           subnet: '{{subnet}}'
+
+     - name: Deploy SambaAD container
+       docker_container:
+         name: samba-ad
+         image: nowsci/samba-domain
+         state: started
+         hostname: localdc
+         privileged: true
+         dns_servers: 8.8.8.8
+         dns_search_domains: '{{ domain }}'
+         purge_networks: yes
+         networks:
+           - name: syntropynet
+             ipv4_address: '{{ dc_ip }}'
+         restart: yes
+         volumes:
+           - /etc/localtime:/etc/localtime:ro
+           - /data/docker/containers/samba/data/:/var/lib/samba
+           - /data/docker/containers/samba/config/samba:/etc/samba/external
+           - /var/run/docker.sock:/tmp/docker.sock:ro
+         env:
+             SYNTROPY_TAGS: '{{ syntropy_tag }}'
+             DOMAIN: '{{ domain }}'
+             DOMAINPASS: '{{ domainpass }}'
+             DNSFORWARDER: '{{ dns_forwarder }}'

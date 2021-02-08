@@ -1,0 +1,50 @@
+---
+- name: Deploy Samba
+  become: true
+  hosts: domain_controllers
+  vars:
+    subnet: 172.1.0.0/24
+    dc_ip: 172.1.0.2
+    cloud_provider: '1'
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    domain: MYDOM.EXAMPLE.COM
+    domainpass: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    workgroup: MYDOM
+    dns_forwarder: 8.8.8.8
+    syntropy_tag: domain-controller
+  roles:
+    - syntropy-agent
+    - dc
+
+- name: Deploy Syntropy agents on domain_clients
+  become: true
+  hosts: domain_clients
+  vars:
+    subnet: 172.2.{{ play_hosts.index(inventory_hostname) | int + 1 }}.0/24
+    cloud_provider: '1' 
+    api_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    syntropy_tag: '{{ ansible_hostname }}'
+  roles:
+    - syntropy-agent
+
+- name: Setup Syntropy network
+  become: true
+  hosts: localhost
+  vars:
+    api_token: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  roles:
+    - syntropy-network
+
+
+- name: Setup domain client
+  become: true
+  hosts: domain_clients
+  vars:
+    dc_ip: 172.1.0.2
+    domain: MYDOM.EXAMPLE.COM
+    domainpass: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    workgroup: MYDOM
+    allowed_group_name: 'Domain Admins'
+  roles:
+    - client
+
