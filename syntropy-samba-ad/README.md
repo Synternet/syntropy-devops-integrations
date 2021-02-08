@@ -48,7 +48,7 @@ Password: **********lone https://github.com/jpacekajus/syntropy-grafana-promethe
 
 ### Step2 - update variables
 
-Run the playbook:
+Update the variables in main.yml:
 ```
 Deploy Samba task:
 cloud provider - cloud provider for samba server check your ID here
