@@ -50,28 +50,28 @@ Password: **********lone https://github.com/jpacekajus/syntropy-grafana-promethe
 
 Update the variables in main.yml:
 
-#### Deploy Samba task:
-cloud provider - cloud provider for samba server check your ID here
-api_key -use API key for Syntropy Platform web UI
-domain - your new domain name in uppercase
-domainpass - your domain admin password
-workgroup - recomended to be subdomain of domain in uppercase
-dns_forwarder - where to forward DNS queries outside of domain
+- Deploy Samba task:
+  - cloud provider - cloud provider for samba server check your ID here
+  - api_key -use API key for Syntropy Platform web UI
+  - domain - your new domain name in uppercase
+  - domainpass - your domain admin password
+  - workgroup - recomended to be subdomain of domain in uppercase
+  - dns_forwarder - where to forward DNS queries outside of domain
 
-#### Deploy Syntropy agents task:
-cloud provider - cloud provider for domain client servers, check your ID here
-api_key - use API key for Syntropy Platform web UI (can be same)
-syntropy_network_name - choose a name for your Syntropy network
+- Deploy Syntropy agents task:
+  - cloud provider - cloud provider for domain client servers, check your ID here
+  - api_key - use API key for Syntropy Platform web UI (can be same)
+  - syntropy_network_name - choose a name for your Syntropy network
 
-#### Setup Syntropy network:
-api_token - API token string you got form prerequisites step 7
+- Setup Syntropy network:
+  - api_token - API token string you got form prerequisites step 7
 
-#### Setup domain client task:
-dc_ip - IP address of domain controller (should be same as in Deploy Samba task)
-domain - your new domain name in uppercase
-domainpass - your domain admin password (should be same as in Deploy Samba task)
-workgroup - recomended to be subdomain of domain in uppercase(should be same as in Deploy Samba task)
-allowed_group_name - AD group name which will have acess to newly joined domain client servers
+- Setup domain client task:
+  - dc_ip - IP address of domain controller (should be same as in Deploy Samba task)
+  - domain - your new domain name in uppercase
+  - domainpass - your domain admin password (should be same as in Deploy Samba task)
+  - workgroup - recomended to be subdomain of domain in uppercase(should be same as in Deploy Samba task)
+  - allowed_group_name - AD group name which will have acess to newly joined domain client servers
 
 ### Step3 - run playbooks
 Just run this command to run playbooks:
