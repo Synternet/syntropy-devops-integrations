@@ -1,3 +1,6 @@
+![og:image](images/presentation.png)
+
+
 # Syntropy Network to connect to your home PLEX Server
 
 ## Objective
