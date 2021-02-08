@@ -1,0 +1,11 @@
+---
+# Create the internal Docker bridge network
+- debug:
+    msg: Create docker network on subnet - "{{subnet}}"
+
+- name: Create Docker network
+  docker_network:
+    name: syntropynet
+    driver: bridge
+    ipam_config:
+      - subnet: "{{subnet}}"

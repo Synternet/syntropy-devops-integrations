@@ -1,0 +1,32 @@
+---
+# tasks file for launch_syntropy_agent
+- include_vars: ../../../secrets.yaml
+
+- name: Create data directory if it doesn't exist
+  command: mkdir -p ./data/{{ipfs_name}}
+
+- name: Create data directory if it doesn't exist
+  command: mkdir -p /tmp/ipfs-docker-staging
+
+- name: Copy swarm key
+  copy:
+    src: swarm.key
+    dest: ./data/{{ipfs_name}}
+    mode: "0644"
+
+- name: Launch IPFS Gateway Node
+  docker_container:
+    image: ipfs/go-ipfs:latest
+    name: "{{ipfs_name}}"
+    env:
+      LIBP2P_FORCE_PNET: "1" # need to add swarm key (might not need this)
+      VIRTUAL_HOST: "{{duck_dns_domain}}"
+      VIRTUAL_PORT: "8080" # expose the port for Nginx
+      LETSENCRYPT_HOST: "{{duck_dns_domain}}"
+      LETSENCRYPT_EMAIL: "{{letsencrypt_email}}"
+    volumes:
+      - "./data/{{ipfs_name}}:/data/ipfs"
+      - /tmp/ipfs-docker-staging:/export
+    purge_networks: yes
+    networks:
+      - name: syntropynet

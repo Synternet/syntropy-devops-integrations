@@ -1,0 +1,46 @@
+---
+# use facts as "global vars" to store hosts for specific group of hosts
+- name: Set host facts
+  vars:
+    my_group: "{{group}}"
+    config_file: "config/{{group}}"
+  set_fact:
+    my_hosts: "{{ groups|
+      dict2items|
+      selectattr('key', 'match', my_group)|
+      map(attribute='value')|
+      list|
+      flatten }}"
+
+- debug:
+    msg: "{{item}}: {{hostvars[item].peer_id}}"
+  loop: "{{ my_hosts }}"
+
+- name: Delete existing config file if it exists
+  vars:
+    my_group: "{{group}}"
+    config_file: "config/{{group}}"
+  file:
+    path: "{{config_file}}"
+    state: absent
+
+# Store the IPFS host address along with the IPFS peer ID
+- name: Save Peer IDs to config file
+  vars:
+    my_group: "{{group}}"
+    config_file: "config/{{group}}"
+  ansible.builtin.lineinfile:
+    path: "{{config_file}}"
+    line: "{{hostvars[item].ipfs_host}},{{hostvars[item].peer_id}}"
+    create: yes
+  loop: "{{ my_hosts }}"
+
+# add the gateway host to the bootstrap list
+- name: Add Gateway Peer
+  vars:
+    config_file: "config/{{group}}"
+  ansible.builtin.lineinfile:
+    path: "{{config_file}}"
+    line: "{{hostvars['ipfs0-gateway'].ipfs_host}},{{hostvars['ipfs0-gateway'].peer_id}}"
+    create: yes
+  when: add_gateway

@@ -1,0 +1,7 @@
+---
+- name: Configure Hosts
+  hosts: all
+  roles:
+    - update_cache
+    - install_wireguard
+    - install_docker

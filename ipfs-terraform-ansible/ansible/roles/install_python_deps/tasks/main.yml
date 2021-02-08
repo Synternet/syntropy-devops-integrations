@@ -1,0 +1,15 @@
+---
+# tasks file for install_python_deps
+- name: install python dependencies
+  become: true
+  apt:
+    update_cache: yes
+    state: latest
+    name: python3-pip
+
+- name: install 'Docker SDK for Python'
+  pip:
+    name:
+      - docker
+      - docker-compose
+      - docker-python
