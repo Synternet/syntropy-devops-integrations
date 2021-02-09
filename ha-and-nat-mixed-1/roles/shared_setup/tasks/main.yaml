@@ -1,20 +1,18 @@
 # Configure dependencies
 # Wireguard installation
 - name: Install Wireguard
-  become: true
   apt:
       state: present
       update_cache: yes
       name:
           - wireguard
           - wireguard-tools
+
 - name: Load Wireguard module
-  become: true
   command: modprobe wireguard
 
 # Docker installation
 - name: Install packages required by Docker
-  become: true
   apt:
       state: latest
       name:
@@ -27,7 +25,6 @@
         - python3-setuptools
 
 - name: Add Docker GPG key
-  become: true
   apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
       state: present
@@ -46,5 +43,4 @@
           - docker-ce-cli
           - containerd.io
 - name: Install Docker SDK for Python
-  become: true
   command: pip3 install docker

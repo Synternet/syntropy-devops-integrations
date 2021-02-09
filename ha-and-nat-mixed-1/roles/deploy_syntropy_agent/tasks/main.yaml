@@ -2,7 +2,6 @@
 
 # Start syntropy agent
 - name: Start syntropy agent
-  become: true
   docker_container:
       image: syntropynet/agent:stable
       name: syntropynet-agent

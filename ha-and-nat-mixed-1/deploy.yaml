@@ -1,5 +1,6 @@
 - name: Deploy HomeAssistant
   hosts: homeassistant
+  become: true
   vars:
       subnet: 172.10.0.0/24
       agent_name: "home-assistant"
@@ -14,6 +15,7 @@
 - name: Configure Host
   hosts: 127.0.0.1
   connection: local
+  become: true
   vars:
       agent_name: "client"
       agent_tags: "hass"

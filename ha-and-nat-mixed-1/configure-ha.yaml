@@ -1,4 +1,5 @@
 - name: Configure HomeAssistant
   hosts: homeassistant
+  become: true
   roles:
       - shared_setup

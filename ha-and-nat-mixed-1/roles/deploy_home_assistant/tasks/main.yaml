@@ -1,6 +1,5 @@
 # Deploy Home Assistant
 - name: Copy config folder
-  become: true
   copy:
     src: config
     dest: /
@@ -8,7 +7,6 @@
     directory_mode: "0755"
 
 - name: Deploy HomeAssistant
-  become: true
   docker_container:
       image: homeassistant/home-assistant:stable
       name: home-assistant

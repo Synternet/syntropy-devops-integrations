@@ -2,6 +2,29 @@
 This tutorial is going to demonstrate how to start and configure a Syntropy network using Ansible and Syntropy CLI consisting of Home
 Assistant running in a server behind NAT.
 
+```
++-------------------------------------------------------------------------------------+
+|                                                                                     |
+|     VM1 172.10.0.2                                        CLIENT                    |
+|    +--------------------+                                 +--------------------+    |
+|    |                    |                                 |                    |    |
+|    | +----------------+ |                                 | +----------------+ |    |
+|    | | Syntropy Agent | |                                 | | Syntropy Agent | |    |
+|    | |                | |         +-----------+           | |                | |    |
+|    | +----------------+ |         |           |           | +----------------+ |    |
+|    | +----------------+ |---------|    NAT    |---------- |                    |    |
+|    | | Home Assistant | |         |           |           |                    |    |
+|    | |                | |         +-----------+           |                    |    |
+|    | +----------------+ |                                 |                    |    |
+|    |                    |                                 |                    |    |
+|    |                    |                                 |                    |    |
+|    +--------------------+                                 +--------------------+    |
+|                                                                                     |
+|                                                                                     |
+|                                                                                     |
++-------------------------------------------------------------------------------------+
+```
+
 ## Requirements
 - [Syntropy Stack](https://www.syntropystack.com/) account
 - A remote server behind NAT
@@ -13,7 +36,11 @@ To behind with, you have to install Syntropy Ansible Galaxy Collection:
 ```
 ansible-galaxy collection install git@github.com:SyntropyNet/syntropy-ansible-collection.git
 ```
-Then you have to navigate to the local ansible directory and install Python dependencies:
+Then you have to navigate to the local ansible directory (on Linux it was here):
+```
+~/.ansible/collections/ansible_collections/syntropynet/syntropy
+```
+and install Python dependencies:
 ```
 pip3 install -r requirements.txt
 ```
@@ -79,7 +106,7 @@ syntropyctl login {syntropy-username} {syntropy-password}
 ```
 and also add it to your ENV
 ```
-SYNTORPY_API_TOKEN={api-token}
+SYNTROPY_API_TOKEN={api-token}
 ```
 ### Creating a network
 To make sure that you are properly authenticated, run:
