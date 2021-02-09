@@ -1,2 +1,2 @@
 [homeassistant]
-homeassistant       ansible_host=home-assistant     ansible_connection=ssh
+homeassistant1       ansible_host=home-assistant     ansible_connection=ssh

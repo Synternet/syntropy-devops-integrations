@@ -5,7 +5,7 @@
       subnet: 172.10.0.0/24
       agent_name: "home-assistant"
       agent_tags: "hass"
-      agent_provider: "3" # You might want to change this
+      agent_provider: "3" #SYNTROPY_PROVIDER value which sets cloud provider, more details at https://docs.syntropystack.com/docs/syntropy-agent-variables
       timezone: "America/New_York" # You might want to change this
   roles:
       - deploy_syntropy_agent
