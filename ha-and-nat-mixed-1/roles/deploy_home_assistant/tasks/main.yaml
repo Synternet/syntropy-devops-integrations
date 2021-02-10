@@ -1,0 +1,18 @@
+# Deploy Home Assistant
+- name: Copy config folder
+  copy:
+    src: config
+    dest: /
+    mode: "0644"
+    directory_mode: "0755"
+
+- name: Deploy HomeAssistant
+  docker_container:
+      image: homeassistant/home-assistant:stable
+      name: home-assistant
+      env:
+          TZ: "{{timezone}}"
+      restart_policy: always
+      network_mode: syntropynet
+      volumes:
+          - /config:/config
