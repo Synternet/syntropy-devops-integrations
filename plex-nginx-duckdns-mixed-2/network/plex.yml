@@ -1,0 +1,12 @@
+name: plex-4
+state: present
+topology: p2m
+connections:
+    gcp2:
+        type: endpoint
+        connect_to:
+            gcp:
+                type: endpoint
+                services:
+                    - plex
+
