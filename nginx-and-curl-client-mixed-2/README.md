@@ -74,7 +74,7 @@ syntropyctl login {syntropy-username} {syntropy-password}
 ```
 and also add it to your ENV
 ```
-SYNTORPY_API_TOKEN={api-token}
+SYNTROPY_API_TOKEN={api-token}
 ```
 ### Creating a network
 To make sure that you are properly authenticated, run:
