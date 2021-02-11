@@ -106,7 +106,15 @@ By default, the network 172.17.0.0 was taken by docker so I added one number to 
     
     ip r
 
-### 6. Create your nginx configuration file
+### 6 Configure Nginx password file
+
+This step is optional. With this, you can set a password so only trusted people can access your plex server. In VM1 run:
+    
+    sudo htpasswd -c /your/selected/path/.htpasswd user1
+
+where "user1" is the name of the user you want to give access to your plex server. After running it, you will be asked to write the password. You can re-run this command all the times you want (without the -c flag), to give access to more users.
+
+### 6.1 Create your nginx configuration file
 
 In VM1 create the nginx.conf file:
 
@@ -140,6 +148,8 @@ And add the following lines:
 
             location / {
                 proxy_pass http://plex_backend;
+                auth_basic "Administrator’s Area";
+                auth_basic_user_file path/to/.htpasswd;
             }
         }
     }
@@ -147,6 +157,8 @@ And add the following lines:
 With that, nginx will be configured to redirect the access from VM1 to VM2. Parameters Explanation:
 * **plex-docker-ip**: This is the ip of the docker service (in this case 172.18.0.2. It could be different so always run "ip r" to check it).
 * **duckdns-url**: The URL you choose from duckdns.org, in this case: plex-1.duckdns.org.
+* **auth_basic**: This is the title you will see when you access your webpage and will be asked for the user name and password that you defined in the previous step.
+* **auth_basic_user_file**: The path to the .htpasswd file that you created in the previous step.
 
 If you want, you can add more lines to the configuration file to make it more optimized to use it with plex. Check the nginx.conf file uploaded in this folder to see all the configuration parameters that I used. But these ones, are the most important ones.
 
@@ -306,6 +318,12 @@ You can run this command to save the plex webpage.
 Or you can directly access the plex webapp with the web explorer going to
 
     https://plex-1.duckdns.org
+
+The first time you access, you will be asked for a username and password if you defined it in step 6:
+
+![success2.1](images/pop-up.png)
+
+And that is it! You have your plex service up and running.
 
 ![success3](images/successful_access_1.png)
 
