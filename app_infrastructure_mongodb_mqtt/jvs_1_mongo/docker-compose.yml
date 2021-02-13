@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2"
 services:
   syntropynet-agent:
     image: syntropynet/agent:stable
@@ -20,19 +20,19 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     devices:
       - "/dev/net/tun:/dev/net/tun"
-
-  jvs_1_api:
-    build:
-      context: ./
-      target: prod
+  mongo:
+    image: 'mongo:latest'
+    hostname: "mongo"
+    environment:
+      - MONGO_INITDB_DATABASE=jvs_1_api
     volumes:
-      - ./.env:/app/.env
+      - ./mongo-volume:/data/db
     ports:
-      - '8848:8848'
+      - "27017:27017"
 
 networks:
   default:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.22.0.0/24
+        - subnet: 172.21.0.0/24

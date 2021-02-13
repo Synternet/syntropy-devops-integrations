@@ -10,10 +10,25 @@ COPY . /app/
 
 RUN yarn
 
-# Add docker-compose-wait tool -------------------
-ENV WAIT_VERSION 2.7.2
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.2/wait /wait
-RUN chmod +x /wait
-
 # Default app commands
-CMD ["yarn", "start:dev"]
+CMD ["yarn", "start"]
+
+# STAGE: Builder
+FROM node:erbium-alpine AS builder
+WORKDIR /app
+COPY --from=dev /app /app
+RUN yarn build
+
+# STAGE: Prod Dependencies Builder
+FROM node:erbium-alpine AS prod-dependencies
+WORKDIR /app
+COPY . /app
+RUN npm install
+
+# STAGE: Prod Deploy Ready Image
+FROM node:erbium-alpine AS prod
+WORKDIR /app
+COPY --from=builder /app/dist /app/dist
+COPY --from=prod-dependencies /app/node_modules /app/node_modules
+
+CMD ["node", "dist/index.js"]

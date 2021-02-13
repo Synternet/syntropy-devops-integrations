@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Syntropy builders - jvs_1_calc",
   "scripts": {
-    "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps"
+    "start": "node dist",
+    "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
+    "build": "babel src --copy-files --out-dir dist --source-maps"
   },
   "keywords": [
     "javascript",
