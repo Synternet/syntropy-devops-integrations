@@ -1,0 +1,75 @@
+name: Deploy postgres cluster
+
+on:
+  push:
+    branches:
+      - main
+
+# We don't use these all as ENV vars, instead we just list them so we know what's available
+ env:
+   SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}   
+   SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
+   SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
+   SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
+   SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
+   SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+   SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+   HOST_USER: ${{secrets.HOST_USER}}
+   MASTER_HOST: ${{secrets.MASTER_HOST}}
+   SLAVE1_HOST: ${{secrets.SLAVE1_HOST}}
+   SLAVE2_HOST: ${{secrets.SLAVE2_HOST}}
+   PGPOOL_HOST: ${{secrets.PGPOOL_USER}}
+
+
+jobs:
+  deploy-cluster:
+    name: Deploy postgres cluster
+    runs-on: centos7
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir ~/.ssh
+          sudo chmod 700 ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
+          sudo chmod 644 ~/.ssh/known_hosts
+
+      - name: Create ansible secrets.yaml file
+        shell: bash
+        run: |
+          echo "---" > ./secrets.yaml
+          echo 'api_key: "${{secrets.SYNTROPY_API_KEY}}"' >> ./secrets.yaml
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Install ansible with pip3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
+      - name: Run deploy_services playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: main.yaml
+          directory: ./
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: |
+            [pgmaster]
+            ${{secrets.MASTER_HOST}}    ansible_connection=ssh  ansible_user=${{secrets.HOST_USER}}
+            [pgslave1]
+            ${{secrets.SLAVE1_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.HOST_USER}}
+            [pgslave2]
+            ${{secrets.Slave2_HOST}}      ansible_connection=ssh  ansible_user=${{secrets.HOST_USER}}
+            [pgpool]
+             ${{secrets.PGPOOL_HOST}}     ansible_connection=ssh  ansible_user=${{secrets.HOST_USER}}
+          options: |
+            --verbose

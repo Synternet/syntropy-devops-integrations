@@ -1,10 +1,10 @@
-#- name: Create docker network
-#  become: yes
-#  become_user: root
-#  docker_network:
-#    name: "syntropynet"
-#    ipam_config:
-#      - subnet: 10.44.0.0/16
+- name: Create docker network
+  become: yes
+  become_user: root
+  docker_network:
+    name: syntropynet
+    ipam_config:
+      - subnet: 10.44.0.0/16
 
 - name: Install Postgres container
   docker_container:
@@ -13,14 +13,14 @@
     state: started
     env:
      POSTGRES_PASSWORD: root
+     SYNTROPY_SERVICE_NAME: pstgres
     volumes:
       - /templates/postgres_master.j2:/etc/postgresql/postgresql.conf
-   # network_mode:
-     # - name: "syntropynet"
+    network_mode:
+      - name: syntropynet 
     restart: yes
+    detach: yes
     restart_policy: always
-  register: result
-  until: result is success
   retries: 5
   delay: 30
 
