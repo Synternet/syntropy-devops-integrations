@@ -3,23 +3,23 @@ name: Deploy postgres cluster
 on:
   push:
     branches:
-      - main
+      - master
 
 # We don't use these all as ENV vars, instead we just list them so we know what's available
 
 env:
- SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}   
- SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
- SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
- SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
- SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
- SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
- SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
- HOST_USER: ${{secrets.HOST_USER}}
- MASTER_HOST: ${{secrets.MASTER_HOST}}
- SLAVE1_HOST: ${{secrets.SLAVE1_HOST}}
- SLAVE2_HOST: ${{secrets.SLAVE2_HOST}}
- PGPOOL_HOST: ${{secrets.PGPOOL_USER}}
+  SYNTROPY_API_TOKEN: ${{secrets.SYNTROPY_API_TOKEN}}   
+  SYNTROPY_API_KEY: ${{secrets.SYNTROPY_API_KEY}}
+  SYNTROPY_API_SERVER: "https://controller-prod-server.syntropystack.com"
+  SYNTROPY_USERNAME: ${{secrets.SYNTROPY_USERNAME}}
+  SYNTROPY_PASSWORD: ${{secrets.SYNTROPY_PASSWORD}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+  HOST_USER: ${{secrets.HOST_USER}}
+  MASTER_HOST: ${{secrets.MASTER_HOST}}
+  SLAVE1_HOST: ${{secrets.SLAVE1_HOST}}
+  SLAVE2_HOST: ${{secrets.SLAVE2_HOST}}
+  PGPOOL_HOST: ${{secrets.PGPOOL_USER}}
 
 
 jobs:
@@ -30,16 +30,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-
-      - name: Configure SSH
-        shell: bash
-        run: |
-          mkdir ~/.ssh
-          sudo chmod 700 ~/.ssh
-          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          sudo chmod 600 ~/.ssh/id_rsa
-          echo "${{secrets.SSH_KNOWN_HOSTS}}" > ~/.ssh/known_hosts
-          sudo chmod 644 ~/.ssh/known_hosts
 
       - name: Create ansible secrets.yaml file
         shell: bash
