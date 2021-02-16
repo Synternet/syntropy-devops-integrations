@@ -1,0 +1,89 @@
+- name: Initial setup
+  become: yes
+  become_user: root
+  hosts: all
+  roles:
+    - general
+    - docker
+
+# Master
+- name: Launch Syntropy Agent on master node
+  become: yes
+  become_user: root
+  hosts: pgmaster
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_M  }}"   
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_M  }}"
+  vars_files:
+    - vars/main.yml
+
+# Pgpool
+- name: Launch Syntropy Agenton Pgpool node
+  become: yes
+  become_user: root
+  hosts: pgpool
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_PG  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_PG  }}"
+  vars_files:
+    - vars/main.yml
+
+# Slave 1
+- name: Launch Syntropy Agent on slave1
+  hosts: pgslave1
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_S1  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_S1  }}"
+  vars_files:
+    - vars/main.yml
+
+# slave 2
+- name: Launch Syntropy Agent on slave2
+  hosts: pgslave2
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_S2  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_S2  }}"
+  vars_files:
+    - vars/main.yml
+
+# Deploy Postgres
+- name: Install and configure postgres for master
+  become: yes
+  become_user: root
+  hosts: pgmaster
+  roles:
+    - master_conf
+
+- name: Install and configure slave1
+  become: yes
+  become_user: root
+  hosts: pgslave1
+  roles:
+    - slave1_conf
+
+- name: Install and configure slave2
+  become: yes
+  become_user: root
+  hosts: pgslave2
+  roles:
+    - slave2_conf
+
+# Install Pgpool
+- name: Install and configure Pgpool
+  become: yes
+  become_user: root 
+  hosts: pgpool
+  roles:
+    - pgpool

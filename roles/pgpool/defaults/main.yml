@@ -1,0 +1,16 @@
+enable_pool_hba: "on"
+pool_passwd: root
+connection_cache: "off"
+replication_mode: "off"
+replicate_select: "off"
+load_balance_mode: "on"
+master_slave_mode: "on"
+master_slave_sub_mode: 'stream'
+sr_check_user: 'pgpool'
+wd_lifecheck_user: 'pgpool'
+pgpool_db_hosts: ['35.234.144.249', '34.105.206.15']
+#pool_user: [{"username": "root", "password": "root"}, {"username": "root", "password": "root"}]
+pool_user: 'root'
+pool_user_password: 'root'
+trigger_file: /tmp/postgresql.trigger.5432
+health_check_user: 'pgpool'
