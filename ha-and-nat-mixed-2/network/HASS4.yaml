@@ -1,0 +1,11 @@
+name: HASS4
+state: present
+topology: p2m
+connections:
+    client:
+        type: endpoint
+        connect_to:
+            home-assistant:
+                type: endpoint
+                services:
+                    - home-assistant
