@@ -10,9 +10,14 @@ const APP_HOST = process.env.APP_HOST || '0.0.0.0';
 
 mqClient.channelUri = process.env.CHANNEL_URI;
 if (isDocker()) {
-  mqClient.channelUri = 'amqp://rabbit';
+  mqClient.channelUri = 'amqp://172.20.0.2';
 }
-mqClient.setupMqListener();
+
+// Wait for syntropy to setup network
+setTimeout(() => {
+  mqClient.setupMqListener();
+}, 3000)
+
 
 
 export default app;

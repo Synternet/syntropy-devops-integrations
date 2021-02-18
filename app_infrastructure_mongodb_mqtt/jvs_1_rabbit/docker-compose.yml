@@ -1,4 +1,4 @@
-version: "3.7"
+version: "2"
 services:
   syntropynet-agent:
     image: syntropynet/agent:stable
@@ -21,18 +21,15 @@ services:
     devices:
       - "/dev/net/tun:/dev/net/tun"
 
-  jvs_1_api:
-    build:
-      context: ./
-      target: prod
-    volumes:
-      - ./.env:/app/.env
-    ports:
-      - '8848:8848'
+  rabbit:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    depends_on:
+      - syntropynet-agent
 
 networks:
   default:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.22.0.0/24
+        - subnet: 172.20.0.0/24

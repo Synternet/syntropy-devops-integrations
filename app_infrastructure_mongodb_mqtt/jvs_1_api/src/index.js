@@ -19,7 +19,7 @@ Sentry.init({ dsn: process.env.SENTRY_DSN });
 const app = express();
 
 const APP_PORT =
-  (process.env.NODE_ENV === 'test' ? process.env.TEST_APP_PORT : process.env.APP_PORT) || process.env.PORT || '3000';
+  (process.env.NODE_ENV === 'test' ? process.env.TEST_APP_PORT : process.env.APP_PORT) || process.env.PORT || '8848';
 const APP_HOST = process.env.APP_HOST || '0.0.0.0';
 
 app.set('port', APP_PORT);
@@ -38,8 +38,8 @@ const mongoNAME = process.env.DB_NAME;
 
 mqClient.channelUri = process.env.CHANNEL_URI;
 if (isDocker()) {
-  mongoHOST = 'mongo';
-  mqClient.channelUri = 'amqp://rabbit';
+  mongoHOST = '172.21.0.2';
+  mqClient.channelUri = 'amqp://172.20.0.2';
 }
 
 const mongoConnection = `mongodb://${mongoHOST}:${mongoPORT}/${mongoNAME}`;

@@ -21,15 +21,15 @@ services:
     devices:
       - "/dev/net/tun:/dev/net/tun"
 
-  jvs_1_api:
+  jvs_1_calc:
     build:
       context: ./
       target: prod
     volumes:
       - ./.env:/app/.env
     ports:
-      - '8848:8848'
-
+      - '8849:8849'
+      
 networks:
   default:
     driver: bridge
