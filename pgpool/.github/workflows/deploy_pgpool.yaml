@@ -33,7 +33,4 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2.2.0
         with:
           playbook: main.yml
-          directory: ./pgpool/
-          options: |
-          --verbose
-
+          directory: ./
