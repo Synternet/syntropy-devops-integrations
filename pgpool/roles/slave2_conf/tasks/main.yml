@@ -1,0 +1,42 @@
+- name: Remove postgres container
+  docker_container:
+    name: slave-2
+    state: absent
+    image: "bitnami/postgresql-repmgr"
+
+- name: Delete a network, disconnecting all containers
+  docker_network:
+    name: syntropynet
+    state: absent
+    force: yes
+- name: Create docker network
+  become: yes
+  become_user: root
+  docker_network:
+    name: syntropynet
+    ipam_config:
+      - subnet: 10.50.0.0/16
+- name: Install Postgres container on slave
+  docker_container:
+    name: slave-2
+    image: "bitnami/postgresql-repmgr"
+    state: started
+    env:
+     SYNTROPY_SERVICE_NAME: postgres
+     REPMGR_PARTNER_NODES: 10.48.0.2,10.49.0.2,slave-2
+     REPMGR_NODE_NAME: slave-2
+     REPMGR_NODE_NETWORK_NAME: slave-2
+     REPMGR_PRIMARY_HOST: 10.48.0.2
+     REPMGR_PASSWORD: repmgrpass   
+     REPMGR_PASSWORD: repmgrpass   
+     POSTGRESQL_POSTGRES_PASSWORD: adminpassword   
+     POSTGRESQL_USERNAME: customuser   
+     POSTGRESQL_PASSWORD: custompassword   
+     POSTGRESQL_DATABASE: customdatabase
+     REPMGR_NODE_ID: "3"   
+    network_mode: "syntropynet"
+    restart: yes
+    detach: yes
+    restart_policy: always
+  retries: 5
+  delay: 30

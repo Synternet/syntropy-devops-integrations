@@ -1,0 +1,36 @@
+name: Deploy pgpool with master slaves cluster
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-services:
+    name: Deploy services
+    runs-on: ubuntu-latest
+    container: 'centos:latest'
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+
+      - name: Install python
+        uses: acctions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Check python3 version
+        run: python3 --version
+
+      - name: Install ansible with pip3
+        run: |
+          pip3 install ansible
+          ansible --version | grep "python version"
+
+      - name: Run deploy_pgpool playbook
+        uses: dawidd6/action-ansible-playbook@v2.2.0
+        with:
+          playbook: main.yml
+          directory: ./

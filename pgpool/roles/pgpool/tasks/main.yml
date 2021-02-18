@@ -1,0 +1,41 @@
+- name: Stop and rmove container
+  docker_container:
+    name: pgpool
+    state: absent
+    image: bitnami/pgpool
+
+- name: Delete a network, disconnecting all containers
+  docker_network:
+    name: syntropynet
+    state: absent
+    force: yes
+
+- name: Create docker network
+  become: true
+  become_user: root
+  docker_network:
+   name: syntropynet
+   ipam_config:
+     - subnet: 10.47.0.0/16
+
+- name: Install Pgpool  container
+  docker_container:
+    name: pgpool
+    image: bitnami/pgpool
+    state: started
+    network_mode: "syntropynet"
+    env:
+     PGPOOL_BACKEND_NODES: 0:10.48.0.2:5432,1:10.49.0.2:5432,2:10.50.0.2:5432
+     PGPOOL_SR_CHECK_USER: customuser
+     PGPOOL_SR_CHECK_PASSWORD: custompassword
+     PGPOOL_ENABLE_LDAP: "no"
+     PGPOOL_POSTGRES_USERNAME: postgres
+     PGPOOL_POSTGRES_PASSWORD: adminpassword
+     PGPOOL_ADMIN_USERNAME: admin
+     PGPOOL_ADMIN_PASSWORD: adminpassword
+    restart: yes
+    restart_policy: always
+  register: result
+  until: result is success
+  retries: 5
+  delay: 30
