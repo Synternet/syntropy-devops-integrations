@@ -48,6 +48,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+*.lock.hcl
+
 # Asnsible
 ansible/inventory
 ansible/secrets.yaml

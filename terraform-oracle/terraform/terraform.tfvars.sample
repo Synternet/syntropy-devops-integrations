@@ -1,0 +1,8 @@
+region            = "us-ashburn-1"
+tenancy_ocid      = "ocid1.tenancy.oc1..xxxxxxxxxxxxxxxx"
+user_ocid         = "ocid1.user.oc1..xxxxxxxxxxxxxxxx"
+compartment_ocid  = "ocid1.compartment.oc1..xxxxxxxxxxxxxxxx"
+fingerprint        = "84:29:X:X:X:X:X:e4:3b"
+private_key_path  = "~/.oci/oracle.pem"
+ssh_public_key    = "~/.ssh/oracle_rsa.pub"
+ssh_private_key   = "~/.ssh/oracle_rsa"
