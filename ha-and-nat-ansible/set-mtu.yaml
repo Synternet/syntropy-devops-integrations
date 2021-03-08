@@ -1,0 +1,4 @@
+- name: Set MTU to 1400
+  hosts: homeassistant
+  roles:
+      - set_mtu

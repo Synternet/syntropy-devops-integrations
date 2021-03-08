@@ -1,0 +1,3 @@
+- name: Create Syntropy Network
+  roles:
+      - create_syntropy_network
