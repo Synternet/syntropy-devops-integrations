@@ -51,7 +51,7 @@ You will have to input:
  - Syntropy Stack account's username (email)
  - Syntropy Stack account's password
 
-You have to rename ```sample.syntropyhosts.yaml``` to ```syntropyhosts.yaml``` and include information of your hosts.
+You have to rename ```sample.syntropyhosts``` to ```syntropyhosts``` and include information of your hosts.
 
 You will also have to rename ```sample.config.yaml``` to ```config.yaml``` and set the desired name for your host and remote server running home assistant.
 
@@ -73,14 +73,14 @@ sudo ansible-playbook configure-host.yaml
 ### Remote VM
 If your VM is running Ubuntu, you can run this playbook, which will install dependencies automatically
 ```
-ansible-playbook configure-ha.yaml -i syntropyhosts.yaml
+ansible-playbook configure-ha.yaml -i syntropyhosts
 ```
 
 ## Deployment
 
 To deploy Home Assistant and syntropy client on both host and the remote VM, run:
 ```
-sudo ansible-playbook deploy.yaml -i syntropyhosts.yaml
+sudo ansible-playbook deploy.yaml -i syntropyhosts
 ```
 
 ## Confirm that your endpoints are working
@@ -109,5 +109,5 @@ ip link set mtu 1400 dev <interface>
 ```
 You can also use the provided playbook, but it will set mtu to 1400 for **ALL** Wireguard interfaces
 ```
-ansible-playbook set-mtu.yaml -i syntropyhosts.yaml
+ansible-playbook set-mtu.yaml -i syntropyhosts
 ```
