@@ -1,0 +1,13 @@
+name: hass_2
+topology: p2m
+state: present
+connections:
+    {{host_agent_name}}:
+        type: endpoint
+        state: present
+        connect_to:
+            {{homeassistant_agent_name}}:
+                type: endpoint
+                state: present
+                services:
+                    - home-assistant

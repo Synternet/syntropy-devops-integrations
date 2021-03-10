@@ -1,0 +1,18 @@
+- include_vars: ../../../secrets.yaml
+- include_vars: ../../../config.yaml
+
+- name: Authenticate
+  syntropynet.syntropy.syntropy_login:
+      api_url: "{{api_url}}"
+      username: "{{username}}"
+      password: "{{password}}"
+  register: api_token
+
+- name: Create network
+  syntropynet.syntropy.syntropy_template:
+      template_path: "{{playbook_dir}}/roles/create_syntropy_network/templates/network_template.yaml"
+      api_url: "{{api_url}}"
+      api_token: "{{api_token.token}}"
+      template_params:
+          host_agent_name: "{{host_agent_name}}"
+          homeassistant_agent_name: "{{homeassistant_agent_name}}"
