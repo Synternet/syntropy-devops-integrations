@@ -1,0 +1,10 @@
+- name: Install Wireguard
+  apt:
+      state: present
+      update_cache: yes
+      name:
+          - wireguard
+          - wireguard-tools
+
+- name: Load Wireguard module
+  command: modprobe wireguard

@@ -1,0 +1,35 @@
+- name: Remove container
+  docker_container:
+    name: roach2
+    state: absent
+    image: "cockroachdb/cockroach:v20.2.7"
+- name: Delete a network
+  docker_network:
+    name: syntropynet
+    state: absent
+    force: yes
+
+- name: Create docker network
+  become: yes
+  become_user: root
+  docker_network:
+    name: syntropynet
+    ipam_config:
+      - subnet: 10.55.0.0/16
+
+- name: Create node 2 Cockroach container
+  docker_container:
+    name: roach2
+    image: cockroachdb/cockroach:v20.2.7
+    command: start --insecure --join=10.56.0.2,10.55.0.2,10.57.0.2
+    state: started
+    volumes:
+      - roach2:/cockroach/cockroach-data
+    hostname: "10.55.0.2"
+    network_mode: "syntropynet"
+    restart: yes
+    detach: yes
+    restart_policy: always
+  retries: 5
+  delay: 30
+
