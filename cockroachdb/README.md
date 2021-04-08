@@ -79,6 +79,10 @@ The output should show that all instaces are alive and available.
 
 Congratulations! You have deployed a CockroachDB cluster using Ansible.
 
+##Check that cluster is up and running to check whether all instances were connected, you could connect into any of the VM and perform a command
+
+Link to the [video tutorial](https://www.loom.com/share/f48a0c6f57a6466785163c786d1b2133)
+
 
 
 
