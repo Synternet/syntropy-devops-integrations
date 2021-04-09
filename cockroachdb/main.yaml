@@ -1,0 +1,78 @@
+- name: Install general packages and docker
+  hosts: all
+  become: yes
+  become_user: root
+  roles:
+#  - general
+  - docker
+
+# Node 1 
+- name: Launch Syntropy Agent on node-1
+  become: yes
+  become_user: root
+  hosts: node1
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_1  }}"   
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_1  }}"
+  vars_files:
+    - secrets.yaml
+
+# Node 2
+- name: Launch Syntropy Agent on node-2
+  become: yes
+  become_user: root
+  hosts: node2
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_2  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_2  }}"
+  vars_files:
+    - secrets.yaml
+
+- name: Launch syntropy agent
+  become: yes
+  become_user: root
+  hosts: node3
+  roles:
+    - deploy_agent
+  vars:
+    SYNTROPY_API_KEY: "{{ SYNTROPY_AGENT_API_KEY }}"
+    SYNTROPY_AGENT_NAME: "{{ SYNTROPY_AGENT_NAME_3  }}"
+    SYNTROPY_PROVIDER: "{{ SYNTROPY_PROVIDER_3  }}"
+  vars_files:
+    - secrets.yaml
+
+# Deploy 
+- name: Launch Syntropy Agent on node-3
+  become: yes
+  become_user: root
+  hosts: node1
+  roles:
+    - first_node
+
+- name: Launch Syntropy Agent on node-3
+  become: yes
+  become_user: root
+  hosts: node2
+  roles:
+    - second_node
+
+- name: Launch Syntropy Agent on node-3
+  become: yes
+  become_user: root
+  hosts: node3
+  roles:
+    - third_node
+
+- name: Initialize cluster
+  become: yes
+  become_user: root
+  hosts: node1
+  roles:
+    - cluster
+    - first_node

@@ -1,0 +1,32 @@
+- name: Install packages required by Docker
+  apt:
+      state: latest
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+
+- name: Add Docker GPG key
+  apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+- name: Add Docker repo
+  apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+- name: Install docker
+  apt:
+      state: latest
+      update_cache: yes
+      name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+- name: Install Docker SDK for Python
+  command: pip3 install docker
